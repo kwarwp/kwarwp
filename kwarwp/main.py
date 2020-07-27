@@ -11,12 +11,16 @@ Changelog
 
 """
 from _spy.vitollino.main import Jogo
+from kwarwp.kwarapp import main as kwarup_main
 
 
 class Vitollino(Jogo):
     """ Empacota o engenho de jogo Vitollino """
     pass
-    
+
+def main():
+    kwarwp_main(Vitollino)
+        
     
 if __name__ == "__main__":
-    Vitollino()
+    main()
