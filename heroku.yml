@@ -1,0 +1,13 @@
+build:
+  docker:
+    web: Dockerfile
+    worker: Dockerfile
+run:
+  web: 
+    command:
+      - gunicorn bottle_app
+    image: web
+  worker: 
+    command:
+      - python bottle_app
+    image: worker
