@@ -20,7 +20,7 @@ class Kwarwp():
     ABERTURA = "https://i.imgur.com/dZQ8liT.jpg"
     
     def __init__(self, vitollino=None, cenario="default"):
-        self.v = vitollino
+        self.v = vitollino()
         self.cena = self.cria(cenario=cenario) if vitollino else None
         
     def cria(self, cenario="default"):
