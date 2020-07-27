@@ -27,7 +27,7 @@ class Test_Kwarwp(TestCase):
     
     def setUp(self):
         self.v = MagicMock(name="Vitollino")
-        self.v.c = MagicMock(name="Vitollino_cria")
+        self.v().c = MagicMock(name="Vitollino_cria")
         self.k = Kwarwp(self.v)
         
     def testa_cria(self):
