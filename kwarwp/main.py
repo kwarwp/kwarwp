@@ -11,7 +11,7 @@ Changelog
 
 """
 from _spy.vitollino.main import Jogo
-from kwarwp.kwarapp import main as kwarup_main
+from kwarwp.kwarapp import main as kwarwp_main
 
 
 class Vitollino(Jogo):
