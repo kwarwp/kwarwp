@@ -35,4 +35,5 @@ def main(vitollino):
         
     
 if __name__ == "__main__":
-    main(None)
+    from _spy.vitollino.main import Jogo
+    main(Jogo)
