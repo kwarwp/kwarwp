@@ -20,8 +20,8 @@ Step 1
 e clique no botão fork localizado a direita (sinalizado em verde na imagem abaixo 👇). 
 
 .. image:: https://i.imgur.com/pOjo09B.png
-   :height: 200
-   :width: 200
+   :height: 500
+   :width: 900
    :scale: 50
    :alt: Iniciando um fork
    :align: center
@@ -31,8 +31,8 @@ Step 2
 - Escolha a conta para a qual deseja enviar a "cópia" do projeto (forkar) 👇
 
 .. image:: https://i.imgur.com/VWNgaRA.png
-   :height: 200
-   :width: 200
+   :height: 500
+   :width: 900
    :scale: 50
    :alt: Escolha a conta
    :align: center
@@ -43,8 +43,8 @@ Step 3
 - Depois de alguns segundos a cópia será enviada para a sua conta, você irá notar que o nome do seu usuário vai aparecer antes do nome do projeto (como mostra a imagem 👇).
 
 .. image:: https://i.imgur.com/dmN41Xe.png
-   :height: 200
-   :width: 200
+   :height: 500
+   :width: 900
    :scale: 50
    :alt: Executando um fork
    :align: center
@@ -55,8 +55,8 @@ Step 4
 - Agora você pode realizar mudanças sem alterar o projeto principal, para que suas mudanças sejam aplicadas ao projeto original você deve fazer um Pull request, assim o usuário original pode verificar se aceita ou não suas mudanças. 👇
 
 .. image:: https://i.imgur.com/c5yqMti.png
-   :height: 200
-   :width: 200
+   :height: 500
+   :width: 900
    :scale: 50
    :alt: Pedindo um pul-request
    :align: center
