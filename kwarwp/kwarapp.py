@@ -48,9 +48,8 @@ class Kwarwp():
 
             :param mapa: Um texto representando o mapa do desafio.
         """
-        """Cria um matriz com os elementos excluindo a primeira e última linha"""
-        mapa = mapa.split()[1:-1]
-        print(mapa)
+        """Cria um matriz com os elementos descritos em cada linha de texto"""
+        mapa = mapa.split()
         """Largura da casa da arena dos desafios, número de colunas no mapa"""
         lado, col = 100, len(mapa[0]) 
         """Cria um cenário com imagem de terra de chão batido, céu e sol"""
@@ -58,7 +57,7 @@ class Kwarwp():
         ceu = self.v.a(self.GLIFOS["~"], w=lado*col, h=lado, x=0, y=0, cena=cena)
         sol = self.v.a(self.GLIFOS["*"], w=60, h=60, x=0, y=40, cena=cena)
         """Posiciona os elementos segundo suas posições i, j na matriz mapa"""
-        [self.v.a(self.GLIFOS[imagem], w=lado, h=lado, x=i*lado, y=j*lado, cena=cena)
+        [self.v.a(self.GLIFOS[imagem], w=lado, h=lado, x=i*lado, y=j*lado+lado, cena=cena)
             for j, linha in enumerate(mapa) for i, imagem in enumerate(linha)]
         cena.vai()
         return cena
