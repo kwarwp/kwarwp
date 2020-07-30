@@ -31,6 +31,7 @@ Tutorial
    
    ambiente.rst
    inicio.rst
+   tela_matriz.rst
 
 
 .. _Projeto Kwarwp: http://activufrj.nce.ufrj.br/wiki/labase/Projeto_Kwarwp
