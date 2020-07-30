@@ -20,7 +20,13 @@ MAPA_INICIO = """
 ......
 .#.^..
 """
-
+class Casa:
+    
+    def __init__(self, i, j, cena):
+        self.v = Kwarwp.VITOLLINO
+        """Cria um matriz com os elementos descritos em cada linha de texto"""
+        lado = self.lado
+        return self.v.a(Kwarwp.GLIFOS["."], w=lado, h=lado, x=i*lado, y=j*lado+lado, cena=cena)
 
 class Kwarwp():
     """ Arena onde os desafios ocorrem.
@@ -28,6 +34,7 @@ class Kwarwp():
         :param vitollino: Empacota o engenho de jogo Vitollino.
         :param mapa: Um texto representando o mapa do desafio.
     """
+    VITOLLINO = None
     GLIFOS = {
     "&": "https://i.imgur.com/dZQ8liT.jpg",  # OCA
     "^": "https://imgur.com/8jMuupz.png",  # INDIO
@@ -40,7 +47,7 @@ class Kwarwp():
     }
     
     def __init__(self, vitollino=None, mapa=MAPA_INICIO, medidas={}):
-        self.v = vitollino()
+        Kwarwp.VITOLLINO = self.v = vitollino()
         """Cria um matriz com os elementos descritos em cada linha de texto"""
         mapa = mapa.split()
         """Largura da casa da arena dos desafios, número de colunas no mapa"""
