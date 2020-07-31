@@ -20,13 +20,7 @@ MAPA_INICIO = """
 ......
 .#.^..
 """
-class Casa:
-    
-    def __init__(self, i, j, cena):
-        self.v = Kwarwp.VITOLLINO
-        """Cria um matriz com os elementos descritos em cada linha de texto"""
-        lado = self.lado
-        return self.v.a(Kwarwp.GLIFOS["."], w=lado, h=lado, x=i*lado, y=j*lado+lado, cena=cena)
+
 
 class Kwarwp():
     """ Arena onde os desafios ocorrem.
@@ -36,14 +30,15 @@ class Kwarwp():
     """
     VITOLLINO = None
     GLIFOS = {
-    "&": "https://i.imgur.com/dZQ8liT.jpg",  # OCA
-    "^": "https://imgur.com/8jMuupz.png",  # INDIO
-    ".": "https://i.imgur.com/npb9Oej.png",  # VAZIO
-    "_": "https://i.imgur.com/sGoKfvs.jpg",  # SOLO
-    "#": "https://imgur.com/ldI7IbK.png",  # TORA
-    "@": "https://imgur.com/tLLVjfN.png",  # PICHE
-    "~": "https://i.imgur.com/UAETaiP.gif",  # CEU
-    "*": "https://i.imgur.com/PfodQmT.gif"  # SOL
+    "&": "https://i.imgur.com/dZQ8liT.jpg", # OCA
+    "^": "https://imgur.com/8jMuupz.png",   # INDIO
+    ".": "https://i.imgur.com/npb9Oej.png", # VAZIO
+    "_": "https://i.imgur.com/sGoKfvs.jpg", # SOLO
+    "#": "https://imgur.com/ldI7IbK.png",   # TORA
+    "@": "https://imgur.com/tLLVjfN.png",   # PICHE
+    "~": "https://i.imgur.com/UAETaiP.gif", # CEU
+    "*": "https://i.imgur.com/PfodQmT.gif", # SOL
+    "|":" https://i.imgur.com/uwYPNlz.png"  # CERCA
     }
     
     def __init__(self, vitollino=None, mapa=MAPA_INICIO, medidas={}):

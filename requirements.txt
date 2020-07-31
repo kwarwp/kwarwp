@@ -2,3 +2,4 @@ bottle
 gunicorn
 pytest
 sphinx
+sphinxcontrib-mermaid

@@ -38,6 +38,8 @@ LABASE_ - NCE_ - UFRJ_
 .. _NCE: http://nce.ufrj.br
 .. _UFRJ: http://www.ufrj.br
 .. _Keep a Changelog: https://keepachangelog.com/en/1.0.0/
+.. _20.07: https://github.com/kwarwp/kwarwp/releases/tag/20.07
+.. _20.07.1: https://github.com/kwarwp/kwarwp/releases/tag/20.07.1
 
 .. |LABASE| image:: https://cetoli.gitlab.io/spyms/image/labase-logo-8.png
    :target: http://labase.activufrj.nce.ufrj.br
