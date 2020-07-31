@@ -3,10 +3,11 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Tela Inicial
+Usando um Mapa
 ===============
 
 Nesta tela vamos montar um simulacro do primeiro desafio kwarwp.
+O desafio será montado a partir de um mapa com símbolos.
 
 .. note::
     Nesta versão estamos usando um componente especial do vitollino o **Jogo**. 
@@ -31,6 +32,8 @@ Aqui especificamos um mapa que orienta a construção da arena.
 Cada símbolo representa um elemento, definido a seguir
 num dicionário de imagens dos elementos.
 
+
+
 .. code:: python
 
   MAPA_INICIO = """
@@ -41,10 +44,10 @@ num dicionário de imagens dos elementos.
   """
 
 
-Este versão recebe como parâmetro um mapa que define a montagem da arena.
-
 Arena onde os desafios ocorrem.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Esta versão recebe como parâmetro um mapa que define a montagem da arena.
 
    :param vitollino: Empacota o engenho de jogo Vitollino.
    :param mapa: Um texto representando o mapa do desafio.
@@ -133,8 +136,8 @@ Tela Gerada
 ------------
 
 .. image:: https://i.imgur.com/iRaafk8.png
-   :height: 200
-   :width: 200
+   :height: 600
+   :width: 600
    :scale: 50
    :alt: Tela inicial do Kwarwp
    :align: center

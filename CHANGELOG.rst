@@ -17,10 +17,11 @@ The format is based on `Keep a Changelog`_.
 
 Added
 +++++
-
+- Code with map reader and image dict.
+- tutorial with map reader
 - Original Code.
 - Initial docs.
-- initil tests (pytest)
+- initial tests (pytest)
 
 -------
 
