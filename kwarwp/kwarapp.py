@@ -97,12 +97,12 @@ class Kwarwp():
         ceu = self.v.a(self.GLIFOS["~"], w=lado*self.col, h=lado, x=0, y=0, cena=cena)
         sol = self.v.a(self.GLIFOS["*"], w=60, h=60, x=0, y=40, cena=cena)
         """Posiciona os elementos segundo suas posições i, j na matriz mapa"""
-        [self.cria_elemento( x=i*lado, y=j*lado+lado, cena=cena)
+        [self.cria_elemento(imagem, x=i*lado, y=j*lado+lado, cena=cena)
             for j, linha in enumerate(mapa) for i, imagem in enumerate(linha)]
         cena.vai()
         return cena
         
-    def cria_elemento(self, x, y, cena):
+    def cria_elemento(self, imagem, x, y, cena):
         """ Cria um elemento na arena do Kwarwp na posição definida.
 
             :param x: coluna em que o elemento será posicionado.
@@ -110,7 +110,7 @@ class Kwarwp():
             :param cena: cena em que o elemento será posicionado.
         """
         lado = self.lado
-        return self.v.a(self.GLIFOS[imagem], w=lado, h=lado, x=i*lado, y=j*lado+lado, cena=cena)
+        return self.v.a(self.GLIFOS[imagem], w=lado, h=lado, x=x*lado, y=y*lado+lado, cena=cena)
 
 def main(vitollino):
     Kwarwp(vitollino)
