@@ -26,9 +26,9 @@ copyright = '2020, Carlo E. T. Oliveira'
 author = 'Carlo E. T. Oliveira'
 
 # The short X.Y version
-version = ''
+version = '20.07.1'
 # The full version, including alpha/beta/rc tags
-release = '20.07'
+release = '20.07.1'
 
 
 # -- General configuration ---------------------------------------------------
@@ -45,6 +45,7 @@ extensions = [
     'sphinx.ext.doctest',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
+    'sphinxcontrib.mermaid'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
