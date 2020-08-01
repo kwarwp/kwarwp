@@ -6,11 +6,6 @@
 Kwarwp
 =========
 
-Jogo para aprendizado de programação.
-
-Kwarwp
-------
-
 Um jogo de aventura que se joga aprendendo e criando programas na linguagem Python.
 
 Este ambiente facilita a aprendizagem da linguagem Python.
@@ -21,11 +16,7 @@ O jogo é dirigido principalmente ao ensino de programação de computadores par
 Documentação
 ------------
 
-Descrição dos módulos do Kwarwp
-
-
-.. note::
-    Só gera a versão.
+Descrição dos módulos do Kwarwp.
 
 .. automodule:: kwarwp.kwarapp
     :members:
@@ -33,11 +24,8 @@ Descrição dos módulos do Kwarwp
     :platform: Web
     :synopsis: Aplicativo principal do Kwarwp.
 
-
-
-
 Indices and tables
-==================
+------------------
 
 * :ref:`genindex`
 * :ref:`modindex`

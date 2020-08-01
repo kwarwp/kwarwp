@@ -45,7 +45,7 @@ num dicionário de imagens dos elementos.
 
 
 Arena onde os desafios ocorrem.
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Esta versão recebe como parâmetro um mapa que define a montagem da arena.
 
