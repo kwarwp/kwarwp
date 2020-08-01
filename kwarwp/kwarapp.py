@@ -72,6 +72,7 @@ class Taba():
             :param mapa: Um texto representando o mapa do desafio.
         """
         Fab = nt("Fab", "action image")
+        """Esta tupla nomeada serve para definir o objeto construido e sua image."""
         fabrica = {
         "&": Fab(self.coisa, "{IMGUR}dZQ8liT.jpg"), # OCA
         "^": Fab(self.indio, "{IMGUR}8jMuupz.png"), # INDIO
@@ -116,22 +117,38 @@ class Kwarwp():
         medidas.update(width=w, height=f"{h}px")
         self.cena = self.cria(mapa=self.mapa) if vitollino else None
         
-    def cria(self, mapa=""):
-        """ Cria o ambiente de programação Kwarwp.
+    # def cria(self, mapa):
 
+    def cria(self, mapa=""):
+        """ Fábrica de componentes.
+        
             :param mapa: Um texto representando o mapa do desafio.
         """
-        """Cria um cenário com imagem de terra de chão batido, céu e sol"""
+        Fab = nt("Fab", "action image")
+        """Esta tupla nomeada serve para definir o objeto construido e sua imagem."""
+
+        fabrica = {
+        "&": Fab(self.coisa, "{IMGUR}dZQ8liT.jpg"), # OCA
+        "^": Fab(self.indio, "{IMGUR}8jMuupz.png"), # INDIO
+        ".": Fab(self.vazio, "{IMGUR}npb9Oej.png"), # VAZIO
+        "_": Fab(self.coisa, "{IMGUR}sGoKfvs.jpg"), # SOLO
+        "#": Fab(self.coisa, "{IMGUR}ldI7IbK.png"), # TORA
+        "@": Fab(self.coisa, "{IMGUR}tLLVjfN.png"), # PICHE
+        "~": Fab(self.coisa, "{IMGUR}UAETaiP.gif"), # CEU
+        "*": Fab(self.coisa, "{IMGUR}PfodQmT.gif"), # SOL
+        "|": Fab(self.coisa, "{IMGUR}uwYPNlz.png")  # CERCA       
+        }
         mapa = mapa if mapa != "" else self.mapa
+        """Cria um cenário com imagem de terra de chão batido, céu e sol"""
         mapa = self.mapa
         lado = self.lado
         print(f"cria(self, mapa={mapa}, col={len(self.mapa[0])}")
         cena = self.v.c(self.GLIFOS["_"])
         ceu = self.v.a(self.GLIFOS["~"], w=lado*self.col, h=lado, x=0, y=0, cena=cena)
         sol = self.v.a(self.GLIFOS["*"], w=60, h=60, x=0, y=40, cena=cena)
-        """Posiciona os elementos segundo suas posições i, j na matriz mapa"""
         [self.cria_elemento(imagem, x=i*lado, y=j*lado+lado, cena=cena)
             for j, linha in enumerate(mapa) for i, imagem in enumerate(linha)]
+        """Posiciona os elementos segundo suas posições i, j na matriz mapa"""
         cena.vai()
         return cena
         
