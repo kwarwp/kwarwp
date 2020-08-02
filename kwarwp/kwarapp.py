@@ -30,60 +30,24 @@ MAPA_INICIO = """
 .#.^..
 """
 """Mapa com o posicionamento inicial dos elementos."""
+Ponto = nt("Ponto", "x y")
+"""Par de coordenadas na direção horizontal (x) e vertiacal (y)."""
+Rosa = nt("Rosa", "n l s o")
+"""Rosa dos ventos com as direções norte, leste, sul e oeste."""
 
 
 class Indio():
-    """ Personagem principal do jogo.
-        
-        .. image:: https://i.imgur.com/wghTu6y.png
-            :height: 100
-            :width: 400
-            :alt: X X X - E M ---  C O N S T R U Ç Ã O - X X X
-            :align: center
+    """ Cria o personagem principal na arena do Kwarwp na posição definida.
 
+        :param imagem: A figura representando o índio na posição indicada.
+        :param x: Coluna em que o elemento será posicionado.
+        :param y: Cinha em que o elemento será posicionado.
+        :param cena: Cena em que o elemento será posicionado.
     """
-    ...
-
-
-class Taba():
-    """ Arena onde os desafios ocorrem.
     
-        Na taba cada casa se relaciona com quatro outras, ao 
-        **Norte, Sul, Leste e Oeste**
-
-        .. mermaid::
-
-            graph TD
-                Casa --> Oeste & Norte & Leste & Sul 
-   
-        :param vitollino: Empacota o engenho de jogo Vitollino.
-        :param mapa: Um texto representando o mapa do desafio.
-
-    
-    """
-    def __init__(self, cena, taba=None, mapa=MAPA_INICIO):
-        self.v = Kwarwp.VITOLLINO
-        self.taba = taba if taba else self.cria(mapa)
-        self.norte = self.sul = self.leste = self.oeste = self
-
-    def cria(self, mapa):
-        """ Fábrica de componentes.
-        
-            :param mapa: Um texto representando o mapa do desafio.
-        """
-        Fab = nt("Fab", "action image")
-        """Esta tupla nomeada serve para definir o objeto construido e sua image."""
-        fabrica = {
-        "&": Fab(self.coisa, "{IMGUR}dZQ8liT.jpg"), # OCA
-        "^": Fab(self.indio, "{IMGUR}8jMuupz.png"), # INDIO
-        ".": Fab(self.vazio, "{IMGUR}npb9Oej.png"), # VAZIO
-        "_": Fab(self.coisa, "{IMGUR}sGoKfvs.jpg"), # SOLO
-        "#": Fab(self.coisa, "{IMGUR}ldI7IbK.png"), # TORA
-        "@": Fab(self.coisa, "{IMGUR}tLLVjfN.png"), # PICHE
-        "~": Fab(self.coisa, "{IMGUR}UAETaiP.gif"), # CEU
-        "*": Fab(self.coisa, "{IMGUR}PfodQmT.gif"), # SOL
-        "|": Fab(self.coisa, "{IMGUR}uwYPNlz.png")  # CERCA       
-        }
+    def __init__(self, imagem, x, y, cena):
+        self.lado = lado = Kwarwp.LADO
+        self.indio = Kwarwp.VITOLLINO.a(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
 
 class Kwarwp():
     """ Jogo para ensino de programação.
@@ -94,18 +58,8 @@ class Kwarwp():
     """
     VITOLLINO = None
     """Referência estática para obter o engenho de jogo."""
-    GLIFOS = {
-    "&": "{IMGUR}dZQ8liT.jpg", # OCA
-    "^": "{IMGUR}8jMuupz.png",   # INDIO
-    ".": "{IMGUR}npb9Oej.png", # VAZIO
-    "_": "{IMGUR}sGoKfvs.jpg", # SOLO
-    "#": "{IMGUR}ldI7IbK.png",   # TORA
-    "@": "{IMGUR}tLLVjfN.png",   # PICHE
-    "~": "{IMGUR}UAETaiP.gif", # CEU
-    "*": "{IMGUR}PfodQmT.gif", # SOL
-    "|":" {IMGUR}uwYPNlz.png"  # CERCA
-    }
-    """Dicionário contendo as imagens dos elementos."""
+    LADO = None
+    """Referência estática para definir o lado do piso da casa."""
     
     def __init__(self, vitollino=None, mapa=MAPA_INICIO, medidas={}):
         Kwarwp.VITOLLINO = self.v = vitollino()
@@ -113,7 +67,10 @@ class Kwarwp():
         self.mapa = mapa.split()
         """Largura da casa da arena dos desafios, número de colunas no mapa"""
         self.lado, self.col, self.lin = 100, len(self.mapa[0]), len(self.mapa)+1
+        Kwarwp.LADO = self.lado
         w, h = self.col *self.lado, self.lin *self.lado
+        self.taba = {}
+        """Dicionário que a partir de coordenada (i,J) localiza um piso da taba"""
         medidas.update(width=w, height=f"{h}px")
         self.cena = self.cria(mapa=self.mapa) if vitollino else None
         
@@ -124,20 +81,21 @@ class Kwarwp():
         
             :param mapa: Um texto representando o mapa do desafio.
         """
-        Fab = nt("Fab", "action image")
+        Fab = nt("Fab", "objeto imagem")
         """Esta tupla nomeada serve para definir o objeto construido e sua imagem."""
 
         fabrica = {
-        "&": Fab(self.coisa, "{IMGUR}dZQ8liT.jpg"), # OCA
-        "^": Fab(self.indio, "{IMGUR}8jMuupz.png"), # INDIO
-        ".": Fab(self.vazio, "{IMGUR}npb9Oej.png"), # VAZIO
-        "_": Fab(self.coisa, "{IMGUR}sGoKfvs.jpg"), # SOLO
-        "#": Fab(self.coisa, "{IMGUR}ldI7IbK.png"), # TORA
-        "@": Fab(self.coisa, "{IMGUR}tLLVjfN.png"), # PICHE
-        "~": Fab(self.coisa, "{IMGUR}UAETaiP.gif"), # CEU
-        "*": Fab(self.coisa, "{IMGUR}PfodQmT.gif"), # SOL
-        "|": Fab(self.coisa, "{IMGUR}uwYPNlz.png")  # CERCA       
+        "&": Fab(self.coisa, f"{IMGUR}dZQ8liT.jpg"), # OCA
+        "^": Fab(self.indio, f"{IMGUR}8jMuupz.png"), # INDIO
+        ".": Fab(self.vazio, f"{IMGUR}npb9Oej.png"), # VAZIO
+        "_": Fab(self.coisa, f"{IMGUR}sGoKfvs.jpg"), # SOLO
+        "#": Fab(self.coisa, f"{IMGUR}ldI7IbK.png"), # TORA
+        "@": Fab(self.coisa, f"{IMGUR}tLLVjfN.png"), # PICHE
+        "~": Fab(self.coisa, f"{IMGUR}UAETaiP.gif"), # CEU
+        "*": Fab(self.coisa, f"{IMGUR}PfodQmT.gif"), # SOL
+        "|": Fab(self.coisa, f"{IMGUR}uwYPNlz.png")  # CERCA       
         }
+        """Dicionário que define o tipo e a imagem do objeto para cada elemento."""
         mapa = mapa if mapa != "" else self.mapa
         """Cria um cenário com imagem de terra de chão batido, céu e sol"""
         mapa = self.mapa
@@ -146,13 +104,13 @@ class Kwarwp():
         cena = self.v.c(self.GLIFOS["_"])
         ceu = self.v.a(self.GLIFOS["~"], w=lado*self.col, h=lado, x=0, y=0, cena=cena)
         sol = self.v.a(self.GLIFOS["*"], w=60, h=60, x=0, y=40, cena=cena)
-        [self.cria_elemento(imagem, x=i*lado, y=j*lado+lado, cena=cena)
-            for j, linha in enumerate(mapa) for i, imagem in enumerate(linha)]
+        self.taba = {(i, j): fabrica[imagem].objeto(fabrica[imagem].imagem, x=i*lado, y=j*lado+lado, cena=cena)
+            for j, linha in enumerate(mapa) for i, imagem in enumerate(linha)}
         """Posiciona os elementos segundo suas posições i, j na matriz mapa"""
         cena.vai()
         return cena
         
-    def cria_elemento(self, imagem, x, y, cena):
+    def coisa(self, imagem, x, y, cena):
         """ Cria um elemento na arena do Kwarwp na posição definida.
 
             :param x: coluna em que o elemento será posicionado.
@@ -160,7 +118,27 @@ class Kwarwp():
             :param cena: cena em que o elemento será posicionado.
         """
         lado = self.lado
-        return self.v.a(self.GLIFOS[imagem], w=lado, h=lado, x=x, y=y, cena=cena)
+        return self.v.a(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
+        
+    def vazio(self, imagem, x, y, cena):
+        """ Cria um espaço vazio na arena do Kwarwp na posição definida.
+
+            :param x: coluna em que o elemento será posicionado.
+            :param y: linha em que o elemento será posicionado.
+            :param cena: cena em que o elemento será posicionado.
+        """
+        lado = self.lado
+        return self.v.a(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
+        
+    def indio(self, imagem, x, y, cena):
+        """ Cria o personagem principal na arena do Kwarwp na posição definida.
+
+            :param x: coluna em que o elemento será posicionado.
+            :param y: linha em que o elemento será posicionado.
+            :param cena: cena em que o elemento será posicionado.
+        """
+        lado = self.lado
+        return Indio(imagem, x=x, y=y, cena=cena)
 
 def main(vitollino, medidas={}):
     """ Rotina principal que invoca a classe Kwarwp.
