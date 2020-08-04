@@ -75,7 +75,7 @@ exclude_patterns = []
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = None
-
+html_favicon = '_static/favicon.png'
 
 # -- Options for HTML output -------------------------------------------------
 
