@@ -11,9 +11,10 @@
 
     Changelog
     ---------
-    .. versionadded::    20.08
-        Usa um mapa de caracteres para colocar os elementos.
+    .. versionadded::    20.08.a0
+        Fábrica de componentes
         classe Indio.
+        Usa um mapa de caracteres para colocar os elementos.
             
     .. versionadded::    20.07
         classe Kwarwp.
