@@ -15,7 +15,7 @@ import sys
 sys.path.insert(0, os.path.abspath('../'))
 from unittest import TestCase
 from unittest.mock import MagicMock
-from kwarwp.kwarapp import Kwarwp
+from kwarwp.kwarapp import Kwarwp, Indio
 #sys.path.insert(0, os.path.abspath('../../libs'))
 
 class Test_Kwarwp(TestCase):
@@ -34,6 +34,13 @@ class Test_Kwarwp(TestCase):
         """ Cria o ambiente de programação Kwarwp."""
         cena = self.k.cria()
         self.assertIn("Vitollino_cria",  str(cena), cena)
+        
+    def testa_cria_indio(self):
+        """ Cria o ambiente de programação Kwarwp."""
+        cena = self.k.cria()
+        coisa = self.k.taba[3,3]
+        self.assertIsInstance(coisa,  Indio, f"but coisa was {coisa}")
+        self.assertEquals(100, coisa.lado, f"but coisa.lado was {coisa.lado}")
     
 if __name__ == "__main__":
     from unittest import main
