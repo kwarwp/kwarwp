@@ -12,7 +12,14 @@ The format is based on `Keep a Changelog`_.
 -------------
 - to be defined
 
-`20.08`_
+`20.08.a1`_
+--------
+
+Added
++++++
+- Indian class add moves and execs
+
+`20.08.a0`_
 --------
 
 Added
@@ -47,7 +54,8 @@ LABASE_ - NCE_ - UFRJ_
 .. _UFRJ: http://www.ufrj.br
 .. _Keep a Changelog: https://keepachangelog.com/en/1.0.0/
 .. _20.07: https://github.com/kwarwp/kwarwp/releases/tag/20.07
-.. _20.08: https://github.com/kwarwp/kwarwp/releases/tag/20.08
+.. _20.08.a0: https://github.com/kwarwp/kwarwp/releases/tag/20.08.a0
+.. _20.08.a1: https://github.com/kwarwp/kwarwp/releases/tag/20.08.a1
 
 .. |LABASE| image:: https://cetoli.gitlab.io/spyms/image/labase-logo-8.png
    :target: http://labase.activufrj.nce.ufrj.br

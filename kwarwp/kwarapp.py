@@ -7,10 +7,12 @@
     Classes neste módulo:
         - :py:class:`Kwarwp` Jogo para ensino de programação.
         - :py:class:`Indio` Personagem principal do jogo.
-        - :py:class:`Taba` Arena onde os desafios ocorrem.
 
     Changelog
     ---------
+    .. versionadded::    20.08.a1
+        Classe Indio que executa roteiro e anda.
+            
     .. versionadded::    20.08.a0
         Fábrica de componentes
         classe Indio.
@@ -48,7 +50,21 @@ class Indio():
     
     def __init__(self, imagem, x, y, cena):
         self.lado = lado = Kwarwp.LADO
+        self.posicao = (x//lado,y//lado)
         self.indio = Kwarwp.VITOLLINO.a(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
+        
+    def anda(self):
+        """ Faz o índio caminhar na direção em que está olhando.
+        """
+        self.posicao = (self.posicao[0],self.posicao[1]-1)
+        self.indio.y = self.posicao[1]*self.lado
+        self.indio.x = self.posicao[0]*self.lado
+         
+    def executa(self):
+        """ Roteiro do índio. Conjunto de comandos para ele executar.
+        """
+        self.anda()
+
 
 class Kwarwp():
     """ Jogo para ensino de programação.
@@ -64,10 +80,12 @@ class Kwarwp():
     
     def __init__(self, vitollino=None, mapa=MAPA_INICIO, medidas={}):
         Kwarwp.VITOLLINO = self.v = vitollino()
-        """Cria um matriz com os elementos descritos em cada linha de texto"""
         self.mapa = mapa.split()
-        """Largura da casa da arena dos desafios, número de colunas no mapa"""
+        """Cria um matriz com os elementos descritos em cada linha de texto"""
+        self.o_indio = None
+        """Instância do personagem principal, o índio"""
         self.lado, self.col, self.lin = 100, len(self.mapa[0]), len(self.mapa)+1
+        """Largura da casa da arena dos desafios, número de colunas no mapa"""
         Kwarwp.LADO = self.lado
         w, h = self.col *self.lado, self.lin *self.lado
         self.taba = {}
@@ -103,13 +121,18 @@ class Kwarwp():
         lado = self.lado
         print(f"cria(self, mapa={mapa}, col={len(self.mapa[0])}")
         cena = self.v.c(fabrica["_"].imagem)
-        ceu = self.v.a(fabrica["~"].imagem, w=lado*self.col, h=lado, x=0, y=0, cena=cena)
+        ceu = self.v.a(fabrica["~"].imagem, w=lado*self.col, h=lado, x=0, y=0, cena=cena, vai= self.executa)
         sol = self.v.a(fabrica["*"].imagem, w=60, h=60, x=0, y=40, cena=cena)
         self.taba = {(i, j): fabrica[imagem].objeto(fabrica[imagem].imagem, x=i*lado, y=j*lado+lado, cena=cena)
             for j, linha in enumerate(mapa) for i, imagem in enumerate(linha)}
         """Posiciona os elementos segundo suas posições i, j na matriz mapa"""
         cena.vai()
         return cena
+        
+    def executa(self, *_):
+        """ Ordena a execução do roteiro do índio.
+        """
+        self.o_indio.executa()
         
     def coisa(self, imagem, x, y, cena):
         """ Cria um elemento na arena do Kwarwp na posição definida.
@@ -138,8 +161,8 @@ class Kwarwp():
             :param y: linha em que o elemento será posicionado.
             :param cena: cena em que o elemento será posicionado.
         """
-        lado = self.lado
-        return Indio(imagem, x=x, y=y, cena=cena)
+        self.o_indio = Indio(imagem, x=x, y=y, cena=cena)
+        return self.o_indio
 
 def main(vitollino, medidas={}):
     """ Rotina principal que invoca a classe Kwarwp.
