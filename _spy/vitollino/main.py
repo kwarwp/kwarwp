@@ -27,11 +27,22 @@ Gerador de labirintos e jogos tipo *'novel'*.
 
 .. moduleauthor:: Carlo Oliveira <carlo@ufrj.br>
 
+Changelog
+---------
+.. versionadded::    20.08
+	Add img, siz and pos properties to Elemento    
+
+.. versionadded::    20.07
+	Fix Elemento x, y setters; add z function to Jogo
+	
+Descrição
+---------
+
 Gerador de labirintos e jogos tipo *'novel'*.
 
 .. seealso::
 
-    `Vitollino em Github <https://github.com/carlotolla/vitollino>`_
+`Vitollino em Github <https://github.com/carlotolla/vitollino>`_
 
 """
 import json
@@ -409,12 +420,10 @@ INVENTARIO = Inventario()
 class Elemento_:
     """
     Um objeto de interação que é representado por uma imagem em uma cena.
-    
-    .. code:: python
 
-        papel = Elemento(
-            img="papel.png", tit="caderno de notas",
-            vai=pega_papel, style=dict(left=350, top=550, width=60))
+            papel = Elemento(
+             img="papel.png", tit="caderno de notas",
+             vai=pega_papel, style=dict(left=350, top=550, width=60))
 
 
     :param img: URL de uma imagem
@@ -430,7 +439,7 @@ class Elemento_:
 
     def __init__(self, img="", vai=None, style=NS, tit="", alt="", cena=INVENTARIO, score=NOSC, drag=False, drop='', **kwargs):
         self._auto_score = self.score if score else self._auto_score
-        self.img = img
+        self._img = img
         self.vai = vai if vai else lambda _=0: None
         self.cena = cena
         self.nome = tit
@@ -443,8 +452,8 @@ class Elemento_:
         self.scorer = dict(ponto=1, valor=cena.nome, carta=tit or img, casa=self.xy, move=None)
         self.scorer.update(score)
         if img:
-            self.img = html.IMG(src=img, title=tit, alt=alt, style=EIMGSTY)  # width=self.style["width"])
-            self.elt <= self.img
+            self._img = html.IMG(src=img, title=tit, alt=alt, style=EIMGSTY)  # width=self.style["width"])
+            self.elt <= self._img
         self.elt.onclick = self._click
         self.c(**kwargs)
         # _ = Dragger(self.elt) if drag else None
@@ -490,11 +499,10 @@ class Elemento(Elemento_):
     """
     Um objeto de interação que é representado por uma imagem em uma cena.
 
-    .. code:: python
-
             papel = Elemento(
              img="papel.png", tit="caderno de notas",
              vai=pega_papel, style=dict(left=350, top=550, width=60))
+
 
     :param img: URL de uma imagem
     :param vai: função executada quando se clica no objeto
@@ -518,7 +526,7 @@ class Elemento(Elemento_):
                  x=0, y=0, w=100, h=100, o=1, texto='',
                  cena=INVENTARIO, score=NDCT, drag=False, drop={}, tipo="100% 100%", **kwargs):
         self._auto_score = self.score if score else self._auto_score
-        self.img, self.title, self.dropper, self.alt = img, tit, drop, alt
+        self._img, self.title, self.dropper, self.alt = img, tit, drop, alt
         self._drag = self._over = self._drop = self._dover = self.vai = lambda *_: None
         self.cena = cena
         self.nome = tit
@@ -543,9 +551,9 @@ class Elemento(Elemento_):
         self.scorer = dict(ponto=1, valor=cena.nome, carta=tit or img, casa=self.xy, move=None)
         self.scorer.update(score)
         # if False:
-        #     self.img = html.IMG(Id="img_" + tit, src=img, title=tit, alt=alt,
+        #     self._img = html.IMG(Id="img_" + tit, src=img, title=tit, alt=alt,
         #                         style=EIMGSTY)  # width=self.style["width"])
-        #     self.elt <= self.img
+        #     self.elt <= self._img
         self.elt.onclick = self._click
         self.c(**kwargs)
         # _ = Dragger(self.elt) if drag else None
@@ -555,7 +563,7 @@ class Elemento(Elemento_):
         self.elt.onmouseover = lambda ev: self._over(ev)
         self.elt.ondrop = lambda ev: self._drop(ev)
         self.elt.ondragover = lambda ev: self._dover(ev)
-        # self.img.onmousedown = self.img_prevent
+        # self._img.onmousedown = self._img_prevent
         self.do_drag(drag)
         self.do_drop(drop)
         #Elemento._scorer_()
@@ -578,7 +586,7 @@ class Elemento(Elemento_):
     def _do_foi(self):
         style = {'opacity': "inherited", 'width': 30, 'height': "30px", 'min-height': '30px', 'float': 'left',
                  'position': 'unset', 'overflow': 'hidden',
-                 'background-image': 'url({})'.format(self.img),
+                 'background-image': 'url({})'.format(self._img),
                  'background-position': '{} {}'.format(0, 0),
                  'background-size': '{}px {}px'.format(30, 20),
                  }
@@ -587,9 +595,55 @@ class Elemento(Elemento_):
         _texto = self.texto if self.tit == self.title else CORRECT.format(self.tit)
         self.vai = Texto(self.cena, _texto).vai
 
-        clone_mic = Elemento(self.img, tit=self.title, drag=True, style=style, cena=INVENTARIO)
+        clone_mic = Elemento(self._img, tit=self.title, drag=True, style=style, cena=INVENTARIO)
         clone_mic.entra(INVENTARIO)
         self._do_foi = lambda *_: None
+                         
+    @property
+    def siz(self):
+        """Recupera uma tupla de inteiros reportando o tamanho da imagem do elemento"""
+        siz = self.elt.style.backgroundSize
+        siz = [int("".join(i for i in c if i.isdigit())) for c in siz.split()]
+        return siz
+                         
+    @siz.setter
+    def siz(self, wh):
+        """Recebe uma tupla de inteiros definindo o tamanho da imagem do elemento
+        
+            :param wh: w - tamanho da imagem na horizontal a partir da esquerda
+            :param hh: h - tamanho da imagem na vertical a partir do topo
+        """
+        self.elt.style.backgroundSize = "{}px {}px".format(*wh)
+                         
+    @property
+    def pos(self):
+        """Recupera uma tupla de inteiros reportando a posição da imagem do elemento"""
+        pos = self.elt.style.backgroundPosition
+        pos = [int("".join(i for i in c if i.isdigit())) for c in pos.split()]
+        return pos
+                         
+    @pos.setter
+    def pos(self, xy):
+        """Recebe uma tupla de inteiros definindo a posição da imagem do elemento
+        
+            :param xy: x - posição da imagem na horizontal a partir da esquerda
+            :param xy: y - posição da imagem na vertical a partir do topo
+        """
+        self.elt.style.backgroundPosition = '{}px {}px'.format(*xy)
+                         
+    @property
+    def img(self):
+        """Recupera a URI da imagem do elemento"""
+        img = self.elt.style.backgroundImage
+        img = img.split('"')[1] if '"' in img else ""
+        return img
+                         
+    @img.setter
+    def img(self, value):
+        """Atribui a imagem do elemento para este novo valor
+            :param value: URI da imagem
+        """
+        self.elt.style.backgroundImage = f"url({value})"
                          
     @property
     def o(self):
@@ -702,13 +756,9 @@ class Elemento(Elemento_):
 class Codigo(Elemento):
     """
     Um objeto de interação que é representado por uma trecho de código em uma cena.
-
-    .. code:: python
-
-        exemplo = Codigo(
-            codigo="from anna import main", topo="Importando um módulo",
-            vai=testa_codigo, style=dict(left=350, top=550, width=60))
-
+            exemplo = Codigo(
+             codigo="from anna import main", topo="Importando um módulo",
+             vai=testa_codigo, style=dict(left=350, top=550, width=60))
     :param codigo: O código de programa
     :param vai: função executada quando se clica no objeto
     :param style: dicionário com dimensões do objeto {"left": ..., "top": ..., width: ..., height: ...}
@@ -716,7 +766,7 @@ class Codigo(Elemento):
     :param cena: cena onde o objeto vai ser colocado
     """
     def __init__(self, codigo="", topo="", cena=INVENTARIO, img="", vai=None, style=NS):
-        self.img = img
+        self._img = img
         self.vai = vai if vai else lambda _=0: None
         self.cena = cena
         self.opacity = 0
@@ -728,8 +778,8 @@ class Codigo(Elemento):
         istyle = dict(EIMGSTY)
         istyle.update(opacity=0.3)
         if img:
-            self.img = html.IMG(src=img, style=istyle)
-            self.elt <= self.img
+            self._img = html.IMG(src=img, style=istyle)
+            self.elt <= self._img
         if topo:
             self.topo = html.DIV(color="black", style=dict(padding="15px"))
             self.topo.html = topo
@@ -972,8 +1022,7 @@ class Salao(Sala):
 class Cena:
     """
     Use para construir uma cena.
-
-    .. code:: python
+    ::
 
         from _spy.vitollino import Cena
 
@@ -1665,6 +1714,10 @@ class Jogo:
         self.window = win
         self.timer = timer
         pass
+
+    def z(self):
+        """ Zera, limpa a área de desenho"""
+        DOC_PYDIV.html = ""
 
     @property
     def cena(self):
