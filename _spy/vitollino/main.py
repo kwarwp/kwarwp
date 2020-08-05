@@ -27,7 +27,6 @@ Gerador de labirintos e jogos tipo *'novel'*.
 
 .. moduleauthor:: Carlo Oliveira <carlo@ufrj.br>
 
-
 Gerador de labirintos e jogos tipo *'novel'*.
 
 .. seealso::

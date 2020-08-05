@@ -3,39 +3,30 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-.. _adicionando_indio:
+.. _movendo_indio:
 
-Adicionando o Indio
+Movendo o Indio
 ===================
 
-Para melhorar o nosso jogo kwarwp, teremos que fazer o índio executar coisas guiadas pela programação.
-Precisamos agora ter uma classe Indio, para que ela possa executar os comandos.
-Neste exercício só iremos separar a construção do índio, usando uma classe para isso.
-No momento o índio não apresenta nenhum comportamento especial, foi somente uma refatoração.
-Este código é uma modificação do código descrito em :ref:`usando_mapa`
-
-.. note ::
-
- Refatoração (do inglês Refactoring) é o processo de modificar um sistema de software para melhorar a estrutura interna do código sem alterar seu comportamento externo.
-
- O uso desta técnica aprimora a concepção (design) de um software e evita a deterioração tão comum durante o ciclo de vida de um código. Esta deterioração é geralmente causada por mudanças com objetivos de curto prazo ou por alterações realizadas sem a clara compreensão da concepção do sistema.
-
- Outra consequência é a melhora no entendimento do código, o que facilita a manutenção e evita a inclusão de defeitos. Esta melhora no entendimento vem da constante alteração do código com objetivo de facilitar a comunicação de motivações, intenções e objetivos por parte do programador. 
-
- A refatoração é comumente feita quando se vai criar novas funcionalidades no código. 
- O código é preparado para que as novidades sejam incorporadas da melhor maneira,
- sem perturbar ou incluir códigos confusos.
-
- Wikipedia_
-
-.. _Wikipedia : https://pt.wikipedia.org/wiki/Refatoração
-
+Para mover o índio, adicionamos o método **anda ()** na sua classe. No Kwarwp original,
+havia um método que executava o roteiros de comandos programado pelo usuário. 
+Colocamos então um método **executa ()** que vai conter estes comandos.
+Também no jogo original bastava clicar no céu para executar os comandos.
+Programamos então um enlace do evento clique com método executa.
+No caso, o **ceu** pertence à classe Kwarwp então criamos um método **executa ()**
+na classe Kwarwp e chamamos o respectivo método do índio, **self.o_indio.executa ()**.
+No momento o índio só apresenta o comportamento de andar.
+Este código é uma modificação do código descrito em :ref:`adicionando_indio`
 
 Classe Indio
 ------------
 
 Com esta classe vamos separar o índio dos outros elementos da tela.
 Com isso poderemos colocar funcionalidades nela que os outros não tem.
+No momento o índio tem o método :py:meth:`kwarwp.kwarapp.Indio.anda` que movimenta
+o personagem na direção que está olhando. O método :py:meth:`kwarwp.kwarapp.Indio.executa`
+contém o conjunto de comandos que dever ser executados para resolver 
+o desafio.
 
 Cria o personagem principal na arena do Kwarwp na posição definida.
 
@@ -52,14 +43,42 @@ Cria o personagem principal na arena do Kwarwp na posição definida.
          self.lado = lado = Kwarwp.LADO
          self.indio = Kwarwp.VITOLLINO.a(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
 
-Classe Kwarwp
+Método Anda
 -------------
 
-Vamos começar melhorando a classe Kwarwp, aplicando nela o conceito de fábrica.
-A fábrica constrói um componente segundo a especicificação dada.
-No nosso caso temos um símbolo que identifica o componenete no mapa.
-Este símbolo nos diz que tipo de objeto tem ali e também qual é a imagem
-que deve representar este objeto.
+Este método define um comportamento que faz o personagem andar
+na direção para onde está olhando.
+
+.. code :: python
+
+        
+   def anda(self):
+      """ Faz o índio caminhar na direção em que está olhando.
+      """
+      self.posicao = (self.posicao[0], self.posicao[1]-1)
+      """Assumimos que o índio está olhando para cima, decrementamos a posição **y**"""
+      self.indio.y = self.posicao[1]*self.lado
+      self.indio.x = self.posicao[0]*self.lado
+
+Método Executa
+--------------
+
+Este método define um roteiro do comportamento que o personagem
+vai executar.
+
+.. code :: python
+
+   def executa(self):
+      """ Roteiro do índio. Conjunto de comandos para ele executar.
+      """
+      self.anda()
+
+
+Kwarwp - Enlace do Céu
+----------------------
+
+A classe Kwarwp vai ter um enlace que liga o clique no céu
+com o chamado do roteiro de execuções do indio.
 
 Jogo para ensino de programação.
       
@@ -71,25 +90,16 @@ Jogo para ensino de programação.
 
    class Kwarwp():
       VITOLLINO = None
-      """Referência estática para obter o engenho de jogo."""
-      LADO = None
-      """Referência estática para definir o lado do piso da casa."""
-      
-      def __init__(self, vitollino=None, mapa=MAPA_INICIO, medidas={}):
-         Kwarwp.VITOLLINO = self.v = vitollino()
-         """Cria um matriz com os elementos descritos em cada linha de texto"""
-         self.mapa = mapa.split()
-         """Largura da casa da arena dos desafios, número de colunas no mapa"""
-         self.lado, self.col, self.lin = 100, len(self.mapa[0]), len(self.mapa)+1
-         Kwarwp.LADO = self.lado
-         w, h = self.col *self.lado, self.lin *self.lado
-         self.taba = {}
-         """Dicionário que a partir de coordenada (i,J) localiza um piso da taba"""
-         medidas.update(width=w, height=f"{h}px")
-         self.cena = self.cria(mapa=self.mapa) if vitollino else None
+      ...
+      self.o_indio = None
+      """Instância do personagem principal, o índio, vai ser atribuído pela fábrica do índio"""
+      ...
 
-Método Cria
--------------
+Veja o código completo no tutorial :ref:`adiciona_cria_indio`    
+
+
+Enlace no Método Cria
+---------------------
 
 Este método define uma fábrica de componentes.
          
@@ -98,127 +108,47 @@ Este método define uma fábrica de componentes.
 .. code :: python
 
       def cria(self, mapa=""):
+      ...
+      ceu = self.v.a(fabrica["~"].imagem, w=lado*self.col, h=lado, x=0, y=0, cena=cena, vai= self.executa)
+      """No argumento *vai*, associamos o clique no céu com o método **executa ()** desta classe"""
+      ...
 
-.. note ::
+Delegando a Execução
+--------------------
 
- O Python suporta um tipo de contêiner como dicionários chamado “namedtuples ()” presente no módulo, “coleções”.
- Como dicionários, eles contêm chaves com hash para um valor específico.
- Mas, pelo contrário, suporta o acesso a partir do valor-chave e da iteração, a funcionalidade que falta nos dicionários.
- Uma tupla nomeada assume o formato **nome_tupla = namedtuple("nome_tupla", "nome dos campos separados por branco")**
-
- Operações em namedtuple ():
-   Operações de acesso
-
-      1. Acesso por índice: os valores de atributo de namedtuple () são ordenados e podem ser acessados usando o número do índice, diferentemente dos dicionários que não são acessíveis pelo índice.
-
-      2. Acesso por nome da chave: O acesso por nome da chave também é permitido como nos dicionários.
-
-      3. usando getattr (): - Essa é outra maneira de acessar o valor, fornecendo o valor nomeado de parâmetro e chave como argumento.
-
- GeeksForGeeks-Namedtuple_
-
-.. _GeeksForGeeks-Namedtuple: https://www.geeksforgeeks.org/namedtuple-in-python/
-
-Esta tupla nomeada serve para definir o objeto construido e sua imagem.
-    :nome Fab: O nome da tupla que descreve a fábrica.
-    :campo objeto: O tipo de objeto que vai ser criado.
-    :campo imagem: A imagem que representa o objeto que vai ser criado.
-
-.. code :: python
-
-         from collections import namedtuple as nt
-         Fab = nt("Fab", "objeto imagem")
-
-O atributo **fabrica** é um dicionário que relaciona o símbolo no mapa com a fábrica necessária para criar o componente.
-
-Dicionário que define o tipo e a imagem do objeto para cada elemento.
-
-.. code :: python
-
-         fabrica = {
-         "&": Fab(self.coisa, f"{IMGUR}dZQ8liT.jpg"), # OCA
-         "^": Fab(self.indio, f"{IMGUR}8jMuupz.png"), # INDIO
-         ".": Fab(self.vazio, f"{IMGUR}npb9Oej.png"), # VAZIO
-         "_": Fab(self.coisa, f"{IMGUR}sGoKfvs.jpg"), # SOLO
-         "#": Fab(self.coisa, f"{IMGUR}ldI7IbK.png"), # TORA
-         "@": Fab(self.coisa, f"{IMGUR}tLLVjfN.png"), # PICHE
-         "~": Fab(self.coisa, f"{IMGUR}UAETaiP.gif"), # CEU
-         "*": Fab(self.coisa, f"{IMGUR}PfodQmT.gif"), # SOL
-         "|": Fab(self.coisa, f"{IMGUR}uwYPNlz.png")  # CERCA
-         }
-
-Cria um cenário com imagem de terra de chão batido, céu e sol.
-O mapa pode pode ser o definido no argumento ou atributo da instância do Kwarwp.
-
-.. code :: python
-
-         mapa = mapa if mapa != "" else self.mapa
-
-         mapa = self.mapa
-         lado = self.lado
-         cena = self.v.c(fabrica["_"].imagem)
-         ceu = self.v.a(fabrica["~"].imagem, w=lado*self.col, h=lado, x=0, y=0, cena=cena)
-         sol = self.v.a(fabrica["*"].imagem, w=60, h=60, x=0, y=40, cena=cena)
-
-Cria um cenário com imagem de terra de chão batido, céu e sol.
-O mapa pode pode ser o definido no argumento ou atributo da instância do Kwarwp.
-Esta construção é uma compreensão de dicionário que posiciona os elementos
-segundo suas posições i, j na matriz mapa
-
-.. note ::
-
- Como a compreensão de lista, o **Python** permite a compreensão de dicionário.
- Podemos criar dicionários  usando expressões simples.
- Uma compreensão de dicionário assume o formato **{key: value for (key, value) em iterável}**
-
- GeeksForGeeks_Dict_Comprenension_
-
-.. _`GeeksForGeeks_Dict_Comprenension`: https://www.geeksforgeeks.org/python-dictionary-comprehension/
-
-.. code :: python
-
-         self.taba = {(i, j): fabrica[imagem].objeto(
-               fabrica[imagem].imagem, x=i*lado, y=j*lado+lado, cena=cena)
-               for j, linha in enumerate(mapa) for i, imagem in enumerate(linha)}
-
-         cena.vai()
-         return cena
+Este método recebe o evento .
          
-Métodos Fabricantes - Coisa
------------------------------
-
-Este método define uma fábrica para coisas que estão no cenário.
-         
-               :param imagem: imagem que representa o elemento que será posicionado.
-               :param x: coluna em que o elemento será posicionado.
-               :param y: linha em que o elemento será posicionado.
-               :param cena: cena em que o elemento será posicionado.
-
-Cria um elemento na arena do Kwarwp na posição definida.
+   :param _: este argumento recebe a estrutura oriunda do evento, o **_** indica que não será usado.
 
 .. code :: python
+    
+   def executa(self, *_):
+      """ Ordena a execução do roteiro do índio.
+      """
+      self.o_indio.executa()
 
-      def coisa(self, imagem, x, y, cena):
-         lado = self.lado
-         return self.v.a(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
 
-Métodos Fabricantes - Indio
+Atribuindo o Indio na Fábrica
 -----------------------------
 
 Este método define uma fábrica criando o índio o personagem principal.
          
-               :param imagem: imagem que representa o elemento que será posicionado.
-               :param x: coluna em que o elemento será posicionado.
-               :param y: linha em que o elemento será posicionado.
-               :param cena: cena em que o elemento será posicionado.
+   :param imagem: imagem que representa o elemento que será posicionado.
+   :param x: coluna em que o elemento será posicionado.
+   :param y: linha em que o elemento será posicionado.
+   :param cena: cena em que o elemento será posicionado.
 
 Cria o personagem principal na arena do Kwarwp na posição definida.
 Em vez de criar diretamente um elemento do Vitollino, cria uma classe
 para lidar com o componente e seu comportamento distinto.
+O atributo da instância **o_indio** passa a ser uma referência para
+uma instância da classe :py:class:`kwarwp.kwarapp.Indio`
 
 .. code :: python
 
       def indio(self, imagem, x, y, cena):
-         lado = self.lado
-         return Indio(imagem, x=x, y=y, cena=cena)
+         self.o_indio = Indio(imagem, x=x, y=y, cena=cena)
+         return self.o_indio
+
+
 

@@ -56,7 +56,8 @@ class Indio():
     def anda(self):
         """ Faz o índio caminhar na direção em que está olhando.
         """
-        self.posicao = (self.posicao[0],self.posicao[1]-1)
+        self.posicao = (self.posicao[0], self.posicao[1]-1)
+        """Assumimos que o índio está olhando para cima, decrementamos a posição **y**"""
         self.indio.y = self.posicao[1]*self.lado
         self.indio.x = self.posicao[0]*self.lado
          
@@ -83,9 +84,9 @@ class Kwarwp():
         self.mapa = mapa.split()
         """Cria um matriz com os elementos descritos em cada linha de texto"""
         self.o_indio = None
-        """Instância do personagem principal, o índio"""
+        """Instância do personagem principal, o índio, vai ser atribuído pela fábrica do índio"""
         self.lado, self.col, self.lin = 100, len(self.mapa[0]), len(self.mapa)+1
-        """Largura da casa da arena dos desafios, número de colunas no mapa"""
+        """Largura da casa da arena dos desafios, número de colunas e linhas no mapa"""
         Kwarwp.LADO = self.lado
         w, h = self.col *self.lado, self.lin *self.lado
         self.taba = {}
@@ -121,7 +122,8 @@ class Kwarwp():
         lado = self.lado
         print(f"cria(self, mapa={mapa}, col={len(self.mapa[0])}")
         cena = self.v.c(fabrica["_"].imagem)
-        ceu = self.v.a(fabrica["~"].imagem, w=lado*self.col, h=lado, x=0, y=0, cena=cena, vai= self.executa)
+        ceu = self.v.a(fabrica["~"].imagem, w=lado*self.col, h=lado, x=0, y=0, cena=cena, vai=self.executa)
+        """No argumento *vai*, associamos o clique no céu com o método **ececuta ()** desta classe"""
         sol = self.v.a(fabrica["*"].imagem, w=60, h=60, x=0, y=40, cena=cena)
         self.taba = {(i, j): fabrica[imagem].objeto(fabrica[imagem].imagem, x=i*lado, y=j*lado+lado, cena=cena)
             for j, linha in enumerate(mapa) for i, imagem in enumerate(linha)}
