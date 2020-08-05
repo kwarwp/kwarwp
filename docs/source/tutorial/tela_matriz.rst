@@ -3,6 +3,9 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+
+.. _usando_mapa:
+
 Usando um Mapa
 ===============
 
@@ -45,7 +48,7 @@ num dicionário de imagens dos elementos.
 
 
 Arena onde os desafios ocorrem.
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Esta versão recebe como parâmetro um mapa que define a montagem da arena.
 
