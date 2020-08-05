@@ -33,6 +33,7 @@ Tutorial
    inicio.rst
    tela_matriz.rst
    indio.rst
+   move_indio.rst
 
 
 .. _Projeto Kwarwp: http://activufrj.nce.ufrj.br/wiki/labase/Projeto_Kwarwp

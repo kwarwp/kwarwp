@@ -36,11 +36,28 @@ class Test_Kwarwp(TestCase):
         self.assertIn("Vitollino_cria",  str(cena), cena)
         
     def testa_cria_indio(self):
-        """ Cria o ambiente de programação Kwarwp."""
+        """ Cria o índio com a fábrica."""
         cena = self.k.cria()
         coisa = self.k.taba[3,3]
         self.assertIsInstance(coisa,  Indio, f"but coisa was {coisa}")
         self.assertEquals(100, coisa.lado, f"but coisa.lado was {coisa.lado}")
+        
+    def testa_usa_indio(self):
+        """ Obtem o índio como atributo Kwarwp."""
+        cena = self.k.cria()
+        indio = self.k.o_indio
+        self.assertIsInstance(indio,  Indio, f"but coisa was {indio}")
+
+    def testa_move_indio(self):
+        """ Move o índio, andando em frente."""
+        cena = self.k.cria()
+        indio = self.k.o_indio
+        pos = indio.posicao
+        self.assertEquals((3, 4),  pos, f"but previous pos was {pos}")
+        indio.anda()
+        pos = indio.posicao
+        self.assertEquals((3, 3),  pos, f"but last pos was {pos}")
+        # self.assertIsInstance(indio,  Indio, f"but coisa was {indio}")
     
 if __name__ == "__main__":
     from unittest import main

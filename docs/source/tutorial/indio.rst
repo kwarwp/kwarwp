@@ -88,6 +88,8 @@ Jogo para ensino de programação.
          medidas.update(width=w, height=f"{h}px")
          self.cena = self.cria(mapa=self.mapa) if vitollino else None
 
+.. _adiciona_cria_indio:
+
 Método Cria
 -------------
 
