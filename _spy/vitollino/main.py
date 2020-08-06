@@ -580,6 +580,12 @@ class Elemento(Elemento_):
         scr.entra(INVENTARIO)
         
 
+    def ocupa(self, ocupante):
+        if hasattr(ocupante, 'elt'):
+            self.elt <= ocupante.elt
+        else:
+            self.elt <= ocupante
+
     def foi(self):
         self._do_foi()
 

@@ -17,7 +17,7 @@ Tutorial - Como fazer um fork no github
 Step 1
 ^^^^^^
 - Após logar em sua conta do github acesse o repositorio do kwarwp Link: https://github.com/kwarwp/kwarwp
-e clique no botão fork localizado a direita (sinalizado em verde na imagem abaixo 👇). 
+  e clique no botão fork localizado a direita (sinalizado em verde na imagem abaixo 👇). 
 
 .. image:: https://i.imgur.com/pOjo09B.png
    :height: 500
