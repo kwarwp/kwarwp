@@ -59,8 +59,10 @@ class Vazio():
         self.vazio = Kwarwp.VITOLLINO.a(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
         self._nada = Kwarwp.VITOLLINO.a()
         self.acessa = self._acessa
+        """O **acessa ()** é usado como método dinâmico, variando com o estado da vaga.
+        Inicialmente tem o comportamento de **_acessa ()** que é o estado vago, aceitando ocupantes"""
         self.ocupante = ocupante or self
-        """O ocupante será definido pelo acessa, por default é o vazio"""
+        """O ocupante se não for fornecido é encenado pelo próprio vazio, agindo como nulo"""
         self.acessa(ocupante)
         
     def _valida_acessa(self, ocupante):
@@ -250,7 +252,7 @@ class Kwarwp():
         return cena
         
     def ocupa(self, *_):
-        """ O Kwarwp é aqui usado como uma vaga falsa, o pedido de ocupar é ignorado.
+        """ O Kwarwp é aqui usado como um ocupante falso, o pedido de ocupar é ignorado.
         """
         pass
         
@@ -280,6 +282,7 @@ class Kwarwp():
         :param cena: cena em que o elemento será posicionado.
         """
         vaga = Vazio(imagem, x=x, y=y, cena=cena, ocupante=self)
+        """ O Kwarwp é aqui usado como um ocupante nulo, que não ocupa uma vaga vazia."""
         return vaga
         
     def indio(self, imagem, x, y, cena):
