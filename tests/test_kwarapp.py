@@ -39,7 +39,7 @@ class Test_Kwarwp(TestCase):
         """ Cria o índio com a fábrica."""
         cena = self.k.cria()
         coisa = self.k.taba[3,3]
-        self.assertIsInstance(coisa,  Indio, f"but coisa was {coisa}")
+        self.assertIsInstance(coisa.ocupante,  Indio, f"but coisa was {coisa}")
         self.assertEquals(100, coisa.lado, f"but coisa.lado was {coisa.lado}")
         
     def testa_usa_indio(self):
@@ -53,10 +53,10 @@ class Test_Kwarwp(TestCase):
         cena = self.k.cria()
         indio = self.k.o_indio
         pos = indio.posicao
-        self.assertEquals((3, 4),  pos, f"but previous pos was {pos}")
+        self.assertEquals((3, 3),  pos, f"but previous pos was {pos}")
         indio.anda()
         pos = indio.posicao
-        self.assertEquals((3, 3),  pos, f"but last pos was {pos}")
+        self.assertEquals((3, 2),  pos, f"but last pos was {pos}")
         # self.assertIsInstance(indio,  Indio, f"but coisa was {indio}")
     
 if __name__ == "__main__":

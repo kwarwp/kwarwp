@@ -34,6 +34,7 @@ Tutorial
    tela_matriz.rst
    indio.rst
    move_indio.rst
+   organiza_taba.rst
 
 
 .. _Projeto Kwarwp: http://activufrj.nce.ufrj.br/wiki/labase/Projeto_Kwarwp
