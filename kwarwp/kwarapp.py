@@ -84,12 +84,13 @@ class Vazio():
     def ocupou(self, ocupante):
         """ O candidato à vaga decidiu ocupá-la e efetivamente entra neste espaço.
         
+        :param ocupante: O canditato a ocupar a posição corrente.
+        
         Este ocupante vai entrar no elemento do Vitollino e definitivamente se tornar
         o ocupante da vaga. Com isso ele troca o estado do método acessa para primeiro
         consultar a si mesmo, o ocupante corrente usando o protocolo definido em
         **_valida_acessa ()**
 
-            :param ocupante: O canditato a ocupar a posição corrente.
         """
         self.vazio.ocupa(ocupante)
         self.ocupante = ocupante
@@ -166,6 +167,8 @@ class Indio():
         
     def ocupa(self, vaga):
         """ Pedido por uma vaga para que ocupe a posição nela.
+        
+        :param vaga: A vaga que será ocupada pelo componente.
 
         No caso do índio, requisita que a vaga seja ocupada por ele.
         """
@@ -176,10 +179,10 @@ class Indio():
         
     def acessa(self, ocupante):
         """ Pedido de acesso a essa posição, delegada ao ocupante pela vaga.
+        
+        :param ocupante: O componente candidato a ocupar a vaga já ocupada pelo índio.
 
         No caso do índio, ele age como um obstáculo e não prossegue com o protocolo.
-        
-            :param ocupante: O componente candidato a ocupar a vaga já ocupada pelo índio.
         """
         pass
 
@@ -214,7 +217,7 @@ class Kwarwp():
     def cria(self, mapa=""):
         """ Fábrica de componentes.
         
-            :param mapa: Um texto representando o mapa do desafio.
+        :param mapa: Um texto representando o mapa do desafio.
         """
         Fab = nt("Fab", "objeto imagem")
         """Esta tupla nomeada serve para definir o objeto construido e sua imagem."""
@@ -258,12 +261,12 @@ class Kwarwp():
         
     def coisa(self, imagem, x, y, cena):
         """ Cria um elemento na arena do Kwarwp na posição definida.
+
+        :param x: coluna em que o elemento será posicionado.
+        :param y: linha em que o elemento será posicionado.
+        :param cena: cena em que o elemento será posicionado.
         
         Cria uma vaga vazia e coloca o componente dentro dela.
-
-            :param x: coluna em que o elemento será posicionado.
-            :param y: linha em que o elemento será posicionado.
-            :param cena: cena em que o elemento será posicionado.
         """
         coisa = Indio(imagem, x=0, y=0, cena=cena, taba=self)
         vaga = Vazio("", x=x, y=y, cena=cena, ocupante=coisa)
@@ -272,9 +275,9 @@ class Kwarwp():
     def vazio(self, imagem, x, y, cena):
         """ Cria um espaço vazio na arena do Kwarwp na posição definida.
 
-            :param x: coluna em que o elemento será posicionado.
-            :param y: linha em que o elemento será posicionado.
-            :param cena: cena em que o elemento será posicionado.
+        :param x: coluna em que o elemento será posicionado.
+        :param y: linha em que o elemento será posicionado.
+        :param cena: cena em que o elemento será posicionado.
         """
         vaga = Vazio(imagem, x=x, y=y, cena=cena, ocupante=self)
         return vaga
@@ -282,9 +285,9 @@ class Kwarwp():
     def indio(self, imagem, x, y, cena):
         """ Cria o personagem principal na arena do Kwarwp na posição definida.
 
-            :param x: coluna em que o elemento será posicionado.
-            :param y: linha em que o elemento será posicionado.
-            :param cena: cena em que o elemento será posicionado.
+        :param x: coluna em que o elemento será posicionado.
+        :param y: linha em que o elemento será posicionado.
+        :param cena: cena em que o elemento será posicionado.
         """
         # self.o_indio = Indio(imagem, x=x, y=y, cena=cena)
         self.o_indio = Indio(imagem, x=0, y=0, cena=cena, taba=self)
@@ -295,8 +298,8 @@ class Kwarwp():
 def main(vitollino, medidas={}):
     """ Rotina principal que invoca a classe Kwarwp.
     
-        :param vitollino: Empacota o engenho de jogo Vitollino.
-        :param medidas: Um dicionário usado para redimensionar a tela.
+    :param vitollino: Empacota o engenho de jogo Vitollino.
+    :param medidas: Um dicionário usado para redimensionar a tela.
     """
     # print(f"main(vitollino={vitollino} medidas={medidas}")
     Kwarwp(vitollino, medidas=medidas)
