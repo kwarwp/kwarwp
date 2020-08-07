@@ -10,7 +10,7 @@ Organizando a Taba
 ===================
 
 O movimento do índio ainda está errático pois ele não sonda o ambiente, não respeita
-os limites da taba e atroplea os objetos. Vamos povoar a taba com espaços vazios
+os limites da taba e atropela os objetos. Vamos povoar a taba com espaços vazios
 predeterminados. As coisas e o índio serão colocados nestes espaços e o índio só poderá
 ir para um vazio se ele estiver dentro dos limites da taba e estiver desocupado.
 
@@ -24,10 +24,10 @@ Nesta ele muda o elemento para um **Vazio** adjacente.
 O protocolo duplo despacho
 --------------------------
 
-Neste protocolo é estabelecido um diálogo entre um objeto que quer entrar
+Neste protocolo é estabelecido um diálogo entre um objeto que quer entrar,
 o **Imigrante** e a vaga que quer ocupar, o **Destino**. O destino estando
 vago, pede para o imigrante ocupar imediatamente e recebe o pedido **ocupou ()**
-do imigrante. Caso odestino esteja ocupapo, ele delega a decisão ao **Ocupante**
+do imigrante. Caso odestino esteja ocupado, ele delega a decisão ao **Ocupante**
 que decide ignorar ou acatar o pedido de acesso enviando o pedido de **ocupa**
 no últino caso. Neste exemplo, o protocolo está implementado em `Classe Indio - Duplo Despacho`_
 e na `Classe Vazio`_
@@ -45,7 +45,7 @@ e na `Classe Vazio`_
         Imigrante->>Destino: acessa(imigrante) # pede para entrar
         Destino->>Imigrante: ocupa(destino)
         Note left of Destino: Destino vago <br/>autoriza o ocupa
-        Destino->>Ocupante: ocupa(destino)
+        Destino->>Ocupante: acessa(imigrante)
         Note right of Destino: Destino ocupado <br/>consulta ocupante
         Ocupante->>Imigrante: ocupa(destino)
         Note left of Ocupante: Ocupante autoriza <br/>ser substituído
@@ -258,11 +258,14 @@ Cria o personagem principal na arena do Kwarwp na posição definida.
 
 .. code :: python
 
-   class Indio():
+    class Indio():
       
-      def __init__(self, imagem, x, y, cena):
-         self.lado = lado = Kwarwp.LADO
-         self.indio = Kwarwp.VITOLLINO.a(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
+        def __init__(self, imagem, x, y, cena):
+            self.lado = lado = Kwarwp.LADO
+            self.indio = Kwarwp.VITOLLINO.a(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
+            self.vaga = self
+            self.posicao = (x//lado,y//lado)
+            self.indio = Kwarwp.VITOLLINO.a(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
 
 Método Anda - Acessa uma Vaga
 -----------------------------

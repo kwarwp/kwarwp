@@ -137,6 +137,12 @@ class Indio():
         self.vaga = self
         self.posicao = (x//lado,y//lado)
         self.indio = Kwarwp.VITOLLINO.a(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
+        self.x = x
+        if x:
+            self.indio.siz = (lado*3, lado*4)
+            sprite = sum(self.posicao) % 3
+            self.indio.pos = (-self.lado*sprite, -lado*3)
+
         
     def anda(self):
         """ Faz o índio caminhar na direção em que está olhando.
@@ -177,7 +183,9 @@ class Indio():
         self.vaga.sai()
         self.posicao = vaga.posicao
         vaga.ocupou(self)
-        self.vaga = vaga
+        if self.x:
+            sprite = sum(self.posicao) % 3
+            self.indio.pos = (-self.lado*sprite, -self.lado*3)
         
     def acessa(self, ocupante):
         """ Pedido de acesso a essa posição, delegada ao ocupante pela vaga.
@@ -226,7 +234,7 @@ class Kwarwp():
 
         fabrica = {
         "&": Fab(self.coisa, f"{IMGUR}dZQ8liT.jpg"), # OCA
-        "^": Fab(self.indio, f"{IMGUR}8jMuupz.png"), # INDIO
+        "^": Fab(self.indio, f"{IMGUR}jAuzTV4.png"), # INDIO
         ".": Fab(self.vazio, f"{IMGUR}npb9Oej.png"), # VAZIO
         "_": Fab(self.coisa, f"{IMGUR}sGoKfvs.jpg"), # SOLO
         "#": Fab(self.coisa, f"{IMGUR}ldI7IbK.png"), # TORA
@@ -293,7 +301,7 @@ class Kwarwp():
         :param cena: cena em que o elemento será posicionado.
         """
         # self.o_indio = Indio(imagem, x=x, y=y, cena=cena)
-        self.o_indio = Indio(imagem, x=0, y=0, cena=cena, taba=self)
+        self.o_indio = Indio(imagem, x=1, y=0, cena=cena, taba=self)
         """o índio tem deslocamento zero, pois é relativo à vaga"""
         vaga = Vazio("", x=x, y=y, cena=cena, ocupante=self.o_indio)
         return vaga
