@@ -11,6 +11,9 @@
 
     Changelog
     ---------
+    .. versionadded::    20.08.a3
+        Movimentação do índio para esquerda e direita.
+            
     .. versionadded::    20.08.a2
         Classe Vazio que recebe cada componente do mapa.
         Movimentação do índio é feita pulando para outro vazio.
@@ -130,9 +133,11 @@ class Indio():
         :param cena: Cena em que o elemento será posicionado.
         :param taba: Representa a taba onde o índio faz o desafio.
     """
+    AZIMUTE = Rosa(Ponto(0, -1),Ponto(1, 0),Ponto(0, 1),Ponto(-1, 0),)
     
     def __init__(self, imagem, x, y, cena, taba):
         self.lado = lado = Kwarwp.LADO
+        self.azimute = self.AZIMUTE.n
         self.taba = taba
         self.vaga = self
         self.posicao = (x//lado,y//lado)
@@ -140,14 +145,31 @@ class Indio():
         self.x = x
         if x:
             self.indio.siz = (lado*3, lado*4)
-            sprite = sum(self.posicao) % 3
-            self.indio.pos = (-self.lado*sprite, -lado*3)
+            self.mostra
+       
+    def mostra(self):
+        """ Faz o índio mudar de na direção em que está olhando para a esquerda.
+        """
+        sprite = sum(self.posicao) % 3
+        spriter = self.AZIMUTE.index(self.azimute)
+        self.indio.pos = (-self.lado*sprite, -self.lado*spriter)
+       
+    def esquerda(self):
+        """ Faz o índio mudar de na direção em que está olhando para a esquerda.
+        """
+        self.azimute = self.AZIMUTE[self.AZIMUTE.index(self.azimute)-1]
+        self.mostra()
+       
+    def direita(self):
+        """ Faz o índio mudar de na direção em que está olhando para a esquerda.
+        """
+        self.azimute = self.AZIMUTE[self.AZIMUTE.index(self.azimute)-3]
+        self.mostra()
 
-        
     def anda(self):
         """ Faz o índio caminhar na direção em que está olhando.
         """
-        destino = (self.posicao[0], self.posicao[1]-1)
+        destino = (self.posicao[0]+self.azimute.x, self.posicao[1]+self.azimute.y)
         """Assumimos que o índio está olhando para cima, decrementamos a posição **y**"""
         taba = self.taba.taba
         if destino in taba:
@@ -183,9 +205,9 @@ class Indio():
         self.vaga.sai()
         self.posicao = vaga.posicao
         vaga.ocupou(self)
+        self.vaga = vaga
         if self.x:
-            sprite = sum(self.posicao) % 3
-            self.indio.pos = (-self.lado*sprite, -self.lado*3)
+            self.mostra
         
     def acessa(self, ocupante):
         """ Pedido de acesso a essa posição, delegada ao ocupante pela vaga.
@@ -234,7 +256,7 @@ class Kwarwp():
 
         fabrica = {
         "&": Fab(self.coisa, f"{IMGUR}dZQ8liT.jpg"), # OCA
-        "^": Fab(self.indio, f"{IMGUR}jAuzTV4.png"), # INDIO
+        "^": Fab(self.indio, f"{IMGUR}UCWGCKR.png"), # INDIO
         ".": Fab(self.vazio, f"{IMGUR}npb9Oej.png"), # VAZIO
         "_": Fab(self.coisa, f"{IMGUR}sGoKfvs.jpg"), # SOLO
         "#": Fab(self.coisa, f"{IMGUR}ldI7IbK.png"), # TORA
@@ -252,7 +274,7 @@ class Kwarwp():
         cena = self.v.c(fabrica["_"].imagem)
         ceu = self.v.a(fabrica["~"].imagem, w=lado*self.col, h=lado, x=0, y=0, cena=cena, vai=self.executa)
         """No argumento *vai*, associamos o clique no céu com o método **ececuta ()** desta classe"""
-        sol = self.v.a(fabrica["*"].imagem, w=60, h=60, x=0, y=40, cena=cena)
+        sol = self.v.a(fabrica["*"].imagem, w=60, h=60, x=0, y=40, cena=cena, vai=self.esquerda)
         self.taba = {(i, j): fabrica[imagem].objeto(fabrica[imagem].imagem, x=i*lado, y=j*lado+lado, cena=cena)
             for j, linha in enumerate(mapa) for i, imagem in enumerate(linha)}
         """Posiciona os elementos segundo suas posições i, j na matriz mapa"""
@@ -263,6 +285,11 @@ class Kwarwp():
         """ O Kwarwp é aqui usado como um ocupante falso, o pedido de ocupar é ignorado.
         """
         pass
+        
+    def esquerda(self, *_):
+        """ Ordena a execução do roteiro do índio.
+        """
+        self.o_indio.esquerda()
         
     def executa(self, *_):
         """ Ordena a execução do roteiro do índio.

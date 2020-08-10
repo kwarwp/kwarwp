@@ -12,7 +12,14 @@ The format is based on `Keep a Changelog`_.
 -------------
 - to be defined
 
-`20.08.a2`_
+`20.08.a3`_
+--------
+
+Added
++++++
+- Actions turn left and right.
+
+`20.08.a3`_
 --------
 
 Added
@@ -64,6 +71,7 @@ LABASE_ - NCE_ - UFRJ_
 .. _20.08.a0: https://github.com/kwarwp/kwarwp/releases/tag/20.08.a0
 .. _20.08.a1: https://github.com/kwarwp/kwarwp/tree/release_20_08_a1
 .. _20.08.a2: https://github.com/kwarwp/kwarwp/tree/release_20_08_a2
+.. _20.08.a3: https://github.com/kwarwp/kwarwp/tree/release_20_08_a3
 
 .. |LABASE| image:: https://cetoli.gitlab.io/spyms/image/labase-logo-8.png
    :target: http://labase.activufrj.nce.ufrj.br
