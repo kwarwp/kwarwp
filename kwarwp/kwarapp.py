@@ -145,14 +145,16 @@ class Indio():
         self.x = x
         if x:
             self.indio.siz = (lado*3, lado*4)
-            self.mostra
+            self.mostra()
        
     def mostra(self):
-        """ Faz o índio mudar de na direção em que está olhando para a esquerda.
+        """ Modifica a figura (Sprite) do índio mostrando para onde está indo.
         """
-        sprite = sum(self.posicao) % 3
-        spriter = self.AZIMUTE.index(self.azimute)
-        self.indio.pos = (-self.lado*sprite, -self.lado*spriter)
+        sprite_col = sum(self.posicao) % 3
+        """Faz com que três casas adjacentes tenha valores diferentes para a coluna do sprite"""
+        sprite_lin = self.AZIMUTE.index(self.azimute)
+        """A linha do sprite depende da direção dque índio está olhando"""
+        self.indio.pos = (-self.lado*sprite_col, -self.lado*sprite_lin)
        
     def esquerda(self):
         """ Faz o índio mudar de na direção em que está olhando para a esquerda.
@@ -161,7 +163,7 @@ class Indio():
         self.mostra()
        
     def direita(self):
-        """ Faz o índio mudar de na direção em que está olhando para a esquerda.
+        """ Faz o índio mudar de na direção em que está olhando para a direita.
         """
         self.azimute = self.AZIMUTE[self.AZIMUTE.index(self.azimute)-3]
         self.mostra()
@@ -207,7 +209,7 @@ class Indio():
         vaga.ocupou(self)
         self.vaga = vaga
         if self.x:
-            self.mostra
+            self.mostra()
         
     def acessa(self, ocupante):
         """ Pedido de acesso a essa posição, delegada ao ocupante pela vaga.
