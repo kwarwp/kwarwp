@@ -14,9 +14,36 @@ O movimento do índio pode melhorar, podendo dobrar à esquerda e direita.
 Para direcionar o índio, modificamos o método **anda ()** para considerar a direção.
 Adicionamos `Os Métodos Direcionais e a Fala`_
 
+Neste tutorial também incuímos duas novas classes e seus comportamentos, a **Oca**
+e o **Piche**. Ele tem comportamentos que se assemelham entre si e também se
+parecem com o **Vazio**. Para tirar proveito disso usamos o mecanismo de heranca
+da linguagem Python.
+
 
 .. seealso::
  Este código é uma modificação do código descrito em :ref:`organiza_taba`
+
+Pontos cardeais
+------------------
+
+Estas tuplas nomeadas formam um vetor de pares ordenados que corespondem
+às componentes em *x* e *y* dos vetores unitários dos pontos cardeais na
+Rosa dos Ventos.
+
+.. image :: https://i.imgur.com/illvVvw.jpg
+    :width: 100px
+    :height: 100px
+    :alt: Rosa dos Ventos
+
+.. code :: python
+
+    from collections import namedtuple as nt
+
+    Ponto = nt("Ponto", "x y")
+    """Par de coordenadas na direção horizontal (x) e vertiacal (y)."""
+    Rosa = nt("Rosa", "n l s o")
+    """Rosa dos ventos com as direções norte, leste, sul e oeste."""
+
 
 Classe Indio - Com Direção 
 -----------------------------
@@ -27,17 +54,27 @@ Cria o personagem principal na arena do Kwarwp na posição definida.
    :param x: Coluna em que o elemento será posicionado.
    :param y: Linha em que o elemento será posicionado.
    :param cena: Cena em que o elemento será posicionado.
+   :param taba: Representa a taba onde o índio faz o desafio.
 
 .. code :: python
 
-    class Indio():
-      
-        def __init__(self, imagem, x, y, cena):
-            self.lado = lado = Kwarwp.LADO
-            self.indio = Kwarwp.VITOLLINO.a(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
-            self.vaga = self
-            self.posicao = (x//lado,y//lado)
-            self.indio = Kwarwp.VITOLLINO.a(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
+    AZIMUTE = Rosa(Ponto(0, -1),Ponto(1, 0),Ponto(0, 1),Ponto(-1, 0),)
+    """Constante com os pares ordenados que representam os vetores unitários dos pontos cardeais."""
+    
+    def __init__(self, imagem, x, y, cena, taba):
+        self.lado = lado = Kwarwp.LADO
+        self.azimute = self.AZIMUTE.n
+        """índio olhando para o norte"""
+        self.taba = taba
+        self.vaga = self
+        self.posicao = (x//lado,y//lado)
+        self.indio = Kwarwp.VITOLLINO.a(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
+        self.x = x
+        """Este x provisoriamente distingue o índio de outras coisas construídas com esta classe"""
+        if x:
+            self.indio.siz = (lado*3, lado*4)
+            """Define as proporções da folha de sprites"""
+            self.mostra()
 
 Os Métodos Direcionais e a Fala
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -61,7 +98,7 @@ de exibição. Desta forma, a posição correta do índio vai aparecer na tela.
 
 .. _`Definição de Sprite Sheet`: https://gamerdesconstrutor.blogspot.com/2014/12/sprite-sheets-definicao.html
 
-Os métodos **esquerda** e **direita** trocam a direção (azimute) para o qual o índio
+Os métodos **esquerda ()** e **direita ()** trocam a direção (azimute) para o qual o índio
 está olhando. Eles usam uma propriedade das listas em Python de circularidade
 dos índices negativos. Quando se tenta acessar uma posição de uma lista com um
 índice negativo, a posição é contada do fim da lista para o princípio.
@@ -94,13 +131,13 @@ dos índices negativos. Quando se tenta acessar uma posição de uma lista com u
         self.indio.pos = (-self.lado*sprite_col, -self.lado*sprite_lin)
        
     def esquerda(self):
-        """ Faz o índio mudar de na direção em que está olhando para a esquerda.
+        """ Faz o índio mudar da direção em que está olhando para a esquerda.
         """
         self.azimute = self.AZIMUTE[self.AZIMUTE.index(self.azimute)-1]
         self.mostra()
        
     def direita(self):
-        """ Faz o índio mudar de na direção em que está olhando para a direita.
+        """ Faz o índio mudar da direção em que está olhando para a direita.
         """
         self.azimute = self.AZIMUTE[self.AZIMUTE.index(self.azimute)-3]
         self.mostra()
@@ -165,7 +202,7 @@ Em uma armadilha leniente, segue normalmente. Numa armadilha rígida, o seu pedi
         """ Faz o índio caminhar na direção em que está olhando.
         """
         destino = (self.posicao[0]+self.azimute.x, self.posicao[1]+self.azimute.y)
-        """Assumimos que o índio está olhando para cima, decrementamos a posição **y**"""
+        """A posição para onde o índio vai depende do vetor de azimute corrente"""
         taba = self.taba.taba
         if destino in taba:
             vaga = taba[destino]
@@ -177,7 +214,7 @@ Kwarwp - Oca e Piche
 --------------------
 
 A classe Kwarwp vai ser modificada para agregar novas fábricas.
-Além do `Classe Indio - Com Direção`_ e do vazio teremos a
+Além do `Classe Indio - Com Direção`_ e do `Vazio - A Vaga`_ teremos a
 `Oca - O Destino`_ e o `Piche - A Armadilha`_
 
 Jogo para ensino de programação.
@@ -208,7 +245,8 @@ e **"@"** remete a **barra**. Uma outra alteração é que a
 construção do **sol** agora se liga ao tratador de evento **esquerda**.
 Isto permite que se experimente andar com o índio no cenário.
 Note que agora o **ceu** foi convertido em atributo de instância.
-Por isso agora ele é referido como **self.ceu**.
+Por isso agora ele é referido como **self.ceu**. O céu será referenciado
+por outros objetos que precisam escrever textos, e o céu é onde será escrito.
        
     :param mapa: Um texto representando o mapa do desafio.
 
@@ -340,7 +378,7 @@ Vazio - A Vaga
 O Vazio vai ser atualizado aqui para funcionar como uma vaga leniente,
 ou seja, deixa sair quem quiser abandonar a vaga.
 
-A principar ideia aqui vai ser usar o **Vazio** como *classe base* de uma
+A principal ideia aqui vai ser usar o **Vazio** como *classe base* de uma
 linhagem de herança, onde outras classes vão herdar o seu comportamento.
 No diagrama abaixo vemos que **Piche** herda de **Vazio** e por sua vez **Oca**
 herda de **Piche**
@@ -408,7 +446,7 @@ herda de **Piche**
 O Objeto de Estado Sair
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-O `Vazio - A Vaga`_ tem um outro `objeto de estado`_ além do **acessa ()**.
+O `Vazio - A Vaga`_ tem um outro `estado de objeto`_ além do **acessa ()**.
 Este objeto é o **sair ()**, que assume os estados **_sair** quando a vaga
 está livre ou **_pede_sair ()** quando está ocupada.
 
@@ -419,7 +457,7 @@ está livre ou **_pede_sair ()** quando está ocupada.
             self.ocupante.siga()      
         
         def _pede_sair(self):
-            """Objeto tenta sair e secebe autorização para seguir"""
+            """Objeto tenta sair e consulta o ocupante para seguir"""
             self.ocupante.sair()      
 
 Piche - A Armadilha
@@ -430,7 +468,7 @@ O piche vai funcionar como uma forma especializada do `Vazio - A Vaga`_
 .. code :: python
 
     class Piche(Vazio):
-        """ Poça de Piche que gruda o ńdio se ele cair nela.
+        """ Poça de Piche que gruda o índio se ele cair nela.
 
             :param imagem: A figura representando o índio na posição indicada.
             :param x: Coluna em que o elemento será posicionado.
@@ -439,54 +477,35 @@ O piche vai funcionar como uma forma especializada do `Vazio - A Vaga`_
             :param taba: Representa a taba onde o índio faz o desafio.
         """
         
-        def __init__(self, imagem, x, y, cena, taba):
-            self.taba = taba
-            self.vaga = taba
-            self.lado = lado = Kwarwp.LADO
-            self.posicao = (x//lado,y//lado-1)
-            self.vazio = Kwarwp.VITOLLINO.a(imagem, w=lado, h=lado, x=0, y=0, cena=cena)
-            self._nada = Kwarwp.VITOLLINO.a()
-            self.acessa = self._acessa
-            """O **acessa ()** é usado como método dinâmico, variando com o estado da vaga.
-            Inicialmente tem o comportamento de **_acessa ()** que é o estado vago, aceitando ocupantes"""
-            self.sair = self._sair
-            """O **sair ()** é usado como método dinâmico, variando com o estado da vaga.
-            Inicialmente tem o comportamento de **_sair ()** que é o estado vago, aceitando ocupantes"""
-
-        @property        
-        def elt(self):
-            """ A propriedade elt faz parte do protocolo do Vitollino para anexar um elemento no outro .
-
-            No caso do piche, retorna o elt do elemento do atributo **self.vazio**.
-            """
-            return self.vazio.elt
-            
-        def ocupa(self, vaga):
-            """ Pedido por uma vaga para que ocupe a posição nela.
-            
-            :param vaga: A vaga que será ocupada pelo componente.
-
-            No caso do piche, requisita que a vaga seja ocupada por ele.
-            """
-            self.vaga.sai()
-            self.posicao = vaga.posicao
-            vaga.ocupou(self)
-            self.vaga = vaga
+    def __init__(self, imagem, x, y, cena, taba):
+        self.taba = taba
+        self.vaga = taba
+        self.lado = lado = Kwarwp.LADO
+        self.posicao = (x//lado,y//lado-1)
+        self.vazio = Kwarwp.VITOLLINO.a(imagem, w=lado, h=lado, x=0, y=0, cena=cena)
+        self._nada = Kwarwp.VITOLLINO.a()
+        self.acessa = self._acessa
+        """O **acessa ()** é usado como método dinâmico, variando com o estado da vaga.
+        Inicialmente tem o comportamento de **_acessa ()** que é o estado vago, aceitando ocupantes"""
+        self.sair = self._sair
+        """O **sair ()** é usado como método dinâmico, variando com o estado da vaga.
+        Inicialmente tem o comportamento de **_sair ()** que é o estado vago, aceitando ocupantes"""
         
-        def _pede_sair(self):
-            """Objeto tenta sair mas não é autorizado"""
-            self.taba.fala("Você ficou preso no piche")       
-            
-        def _acessa(self, ocupante):
-            """ Atualmente a posição está vaga e pode ser acessada pelo novo ocupante.
-            
-            A responsabilidade de ocupar definitivamente a vaga é do candidato a ocupante
-            Caso ele esteja realmente apto a ocupar a vaga deve cahamar de volta ao vazio
-            com uma chamada **ocupou (ocupante)**.
+    def ocupa(self, vaga):
+        """ Pedido por uma vaga para que ocupe a posição nela.
+        
+        :param vaga: A vaga que será ocupada pelo componente.
 
-                :param ocupante: O canditato a ocupar a posição corrente.
-            """
-            ocupante.ocupa(self)
+        No caso do piche, requisita que a vaga seja ocupada por ele.
+        """
+        self.vaga.sai()
+        self.posicao = vaga.posicao
+        vaga.ocupou(self)
+        self.vaga = vaga
+    
+    def _pede_sair(self):
+        """Objeto tenta sair mas não é autorizado"""
+        self.taba.fala("Você ficou preso no piche")       
 
 Oca - O Destino
 -------------------
@@ -522,3 +541,4 @@ A Oca vai funcionar como uma forma especializada do `Piche - A Armadilha`_
             ocupante.ocupa(self)
 
 .. _`duplo despacho`: http://www.dpi.ufv.br/projetos/apri/?page_id=726
+.. _`estado de objeto`: http://www.dpi.ufv.br/projetos/apri/?page_id=745

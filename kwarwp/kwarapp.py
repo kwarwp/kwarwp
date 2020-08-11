@@ -94,11 +94,11 @@ class Vazio():
         ocupante.ocupa(self)
     
     def _sair(self):
-        """Objeto tenta sair e secebe autorização para seguir"""
+        """Objeto tenta sair e recebe autorização para seguir"""
         self.ocupante.siga()      
     
     def _pede_sair(self):
-        """Objeto tenta sair e secebe autorização para seguir"""
+        """Objeto tenta sair e consulta o ocupante para seguir"""
         self.ocupante.sair()      
 
     def ocupou(self, ocupante):
@@ -151,17 +151,21 @@ class Indio():
         :param taba: Representa a taba onde o índio faz o desafio.
     """
     AZIMUTE = Rosa(Ponto(0, -1),Ponto(1, 0),Ponto(0, 1),Ponto(-1, 0),)
+    """Constante com os pares ordenados que representam os vetores unitários dos pontos cardeais."""
     
     def __init__(self, imagem, x, y, cena, taba):
         self.lado = lado = Kwarwp.LADO
         self.azimute = self.AZIMUTE.n
+        """índio olhando para o norte"""
         self.taba = taba
         self.vaga = self
         self.posicao = (x//lado,y//lado)
         self.indio = Kwarwp.VITOLLINO.a(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
         self.x = x
+        """Este x provisoriamente distingue o índio de outras coisas construídas com esta classe"""
         if x:
             self.indio.siz = (lado*3, lado*4)
+            """Define as proporções da folha de sprites"""
             self.mostra()
        
     def mostra(self):
@@ -174,13 +178,13 @@ class Indio():
         self.indio.pos = (-self.lado*sprite_col, -self.lado*sprite_lin)
        
     def esquerda(self):
-        """ Faz o índio mudar de na direção em que está olhando para a esquerda.
+        """ Faz o índio mudar da direção em que está olhando para a esquerda.
         """
         self.azimute = self.AZIMUTE[self.AZIMUTE.index(self.azimute)-1]
         self.mostra()
        
     def direita(self):
-        """ Faz o índio mudar de na direção em que está olhando para a direita.
+        """ Faz o índio mudar da direção em que está olhando para a direita.
         """
         self.azimute = self.AZIMUTE[self.AZIMUTE.index(self.azimute)-3]
         self.mostra()
@@ -208,7 +212,7 @@ class Indio():
         """ Faz o índio caminhar na direção em que está olhando.
         """
         destino = (self.posicao[0]+self.azimute.x, self.posicao[1]+self.azimute.y)
-        """Assumimos que o índio está olhando para cima, decrementamos a posição **y**"""
+        """A posição para onde o índio vai depende do vetor de azimute corrente"""
         taba = self.taba.taba
         if destino in taba:
             vaga = taba[destino]
@@ -267,7 +271,7 @@ class Piche(Vazio):
         :param cena: Cena em que o elemento será posicionado.
         :param taba: Representa a taba onde o índio faz o desafio.
     """
-    
+   
     def __init__(self, imagem, x, y, cena, taba):
         self.taba = taba
         self.vaga = taba
@@ -281,18 +285,6 @@ class Piche(Vazio):
         self.sair = self._sair
         """O **sair ()** é usado como método dinâmico, variando com o estado da vaga.
         Inicialmente tem o comportamento de **_sair ()** que é o estado vago, aceitando ocupantes"""
-
-    @property        
-    def elt(self):
-        """ A propriedade elt faz parte do protocolo do Vitollino para anexar um elemento no outro .
-
-        No caso do piche, retorna o elt do elemento do atributo **self.vazio**.
-        """
-        return self.vazio.elt
-
-    def _ocupa(self, _):
-        """Objeto nulo para ocupante"""
-        pass
         
     def ocupa(self, vaga):
         """ Pedido por uma vaga para que ocupe a posição nela.
@@ -309,18 +301,6 @@ class Piche(Vazio):
     def _pede_sair(self):
         """Objeto tenta sair mas não é autorizado"""
         self.taba.fala("Você ficou preso no piche")       
-        
-    def _acessa(self, ocupante):
-        """ Atualmente a posição está vaga e pode ser acessada pelo novo ocupante.
-        
-        A responsabilidade de ocupar definitivamente a vaga é do candidato a ocupante
-        Caso ele esteja realmente apto a ocupar a vaga e deve cahamar de volta ao vazio
-        com uma chamada ocupou.
-
-            :param ocupante: O canditato a ocupar a posição corrente.
-        """
-        # print(f"_acessa ocupante: {ocupante}")
-        ocupante.ocupa(self)
 
 
 class Oca(Piche):
