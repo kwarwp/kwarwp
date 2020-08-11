@@ -5,14 +5,18 @@
     .. codeauthor:: Carlo Oliveira <carlo@ufrj.br>
 
     Classes neste módulo:
-        - :py:class:`Kwarwp` Jogo para ensino de programação.
-        - :py:class:`Indio` Personagem principal do jogo.
-        - :py:class:`Vazio` Espaço vago na arena do desafio.
+        - :py:class:`Kwarwp`    Jogo para ensino de programação.
+        - :py:class:`Indio`     Personagem principal do jogo.
+        - :py:class:`Vazio`     Espaço vago na arena do desafio.
+        - :py:class:`Oca`       Destino final da aventura.
+        - :py:class:`Piche`     Uma armadilha para prender o índio.
 
     Changelog
     ---------
     .. versionadded::    20.08.a3
-        Movimentação do índio para esquerda e direita.
+        Movimentação do índio para :py:meth:`Indio.esquerda` e 
+        :py:meth:`Indio.direita`. Fala do índio: :py:meth:`Indio.fala`.
+        classes Oca e Piche, double dispatch para sair.
             
     .. versionadded::    20.08.a2
         Classe Vazio que recebe cada componente do mapa.
@@ -64,13 +68,12 @@ class Vazio():
         self.acessa = self._acessa
         """O **acessa ()** é usado como método dinâmico, variando com o estado da vaga.
         Inicialmente tem o comportamento de **_acessa ()** que é o estado vago, aceitando ocupantes"""
-        self.sair = self._sair
-        """O **acessa ()** é usado como método dinâmico, variando com o estado da vaga.
-        Inicialmente tem o comportamento de **_acessa ()** que é o estado vago, aceitando ocupantes"""
         self.ocupante = ocupante or self
         """O ocupante se não for fornecido é encenado pelo próprio vazio, agindo como nulo"""
         self.acessa(ocupante)
-        #self.ocupou(ocupante)
+        self.sair = self._sair
+        """O **sair ()** é usado como método dinâmico, variando com o estado da vaga.
+        Inicialmente tem o comportamento de **_sair ()** que é o estado leniente, aceitando saidas"""
         
     def _valida_acessa(self, ocupante):
         """ Consulta o ocupante atual se há permissão para substituí-lo pelo novo ocupante.
@@ -181,17 +184,24 @@ class Indio():
         """
         self.azimute = self.AZIMUTE[self.AZIMUTE.index(self.azimute)-3]
         self.mostra()
+       
+    def fala(self, texto=""):
+        """ O índio fala um texto dado.
+        
+        :param texto: O texto a ser falado.
+        """
+        self.taba.fala(texto)
 
     def anda(self):
-        """Objeto tenta sair e é autorizado"""
+        """Objeto tenta sair, tem que consultar a vaga onde está"""
         self.vaga.sair()      
 
     def sair(self):
-        """Objeto tenta sair e é autorizado"""
+        """Objeto de posse do índio tenta sair e é autorizado"""
         self.vaga.ocupante.siga()      
 
     def siga(self):
-        """Objeto tenta sair mas não é autorizado"""
+        """Objeto tentou sair e foi autorizado"""
         self._anda()       
 
     def _anda(self):
@@ -259,8 +269,6 @@ class Piche(Vazio):
     """
     
     def __init__(self, imagem, x, y, cena, taba):
-        # super().__init__(imagem, x, y, cena, ocupante=taba)
-        # self.lado = lado = Kwarwp.LADO
         self.taba = taba
         self.vaga = taba
         self.lado = lado = Kwarwp.LADO
@@ -271,17 +279,14 @@ class Piche(Vazio):
         """O **acessa ()** é usado como método dinâmico, variando com o estado da vaga.
         Inicialmente tem o comportamento de **_acessa ()** que é o estado vago, aceitando ocupantes"""
         self.sair = self._sair
-        """O **acessa ()** é usado como método dinâmico, variando com o estado da vaga.
-        Inicialmente tem o comportamento de **_acessa ()** que é o estado vago, aceitando ocupantes"""
-        # self.ocupante = ocupante or self
-        """O ocupante se não for fornecido é encenado pelo próprio vazio, agindo como nulo"""
-        #self.acessa(ocupante)
+        """O **sair ()** é usado como método dinâmico, variando com o estado da vaga.
+        Inicialmente tem o comportamento de **_sair ()** que é o estado vago, aceitando ocupantes"""
 
     @property        
     def elt(self):
         """ A propriedade elt faz parte do protocolo do Vitollino para anexar um elemento no outro .
 
-        No caso do índio, retorna o elt do elemento do atributo **self.indio**.
+        No caso do piche, retorna o elt do elemento do atributo **self.vazio**.
         """
         return self.vazio.elt
 
@@ -319,33 +324,14 @@ class Piche(Vazio):
 
 
 class Oca(Piche):
-    """ Poça de Piche que gruda o ńdio se ele cair nela.
-
+    """  A Oca é o destino final do índio, não poderá sair se ele entrar nela.
+    
         :param imagem: A figura representando o índio na posição indicada.
         :param x: Coluna em que o elemento será posicionado.
         :param y: Cinha em que o elemento será posicionado.
         :param cena: Cena em que o elemento será posicionado.
         :param taba: Representa a taba onde o índio faz o desafio.
     """
-    
-    def __init__(self, imagem, x, y, cena, taba):
-        super().__init__(imagem, x, y, cena, taba=taba)
-        # self.lado = lado = Kwarwp.LADO
-        # self.taba = taba
-        # self.vaga = taba
-        # self.lado = lado = Kwarwp.LADO
-        # self.posicao = (x//lado,y//lado-1)
-        # self.vazio = Kwarwp.VITOLLINO.a(imagem, w=lado, h=lado, x=0, y=0, cena=cena)
-        # self._nada = Kwarwp.VITOLLINO.a()
-        # self.acessa = self._acessa
-        # """O **acessa ()** é usado como método dinâmico, variando com o estado da vaga.
-        # Inicialmente tem o comportamento de **_acessa ()** que é o estado vago, aceitando ocupantes"""
-        # self.sair = self._sair
-        """O **acessa ()** é usado como método dinâmico, variando com o estado da vaga.
-        Inicialmente tem o comportamento de **_acessa ()** que é o estado vago, aceitando ocupantes"""
-        # self.ocupante = ocupante or self
-        """O ocupante se não for fornecido é encenado pelo próprio vazio, agindo como nulo"""
-        #self.acessa(ocupante)
     
     def _pede_sair(self):
         """Objeto tenta sair mas não é autorizado"""
@@ -415,12 +401,14 @@ class Kwarwp():
         """Cria um cenário com imagem de terra de chão batido, céu e sol"""
         mapa = self.mapa
         lado = self.lado
-        print(f"cria(self, mapa={mapa}, col={len(self.mapa[0])}")
         cena = self.v.c(fabrica["_"].imagem)
         self.ceu = self.v.a(fabrica["~"].imagem, w=lado*self.col, h=lado-10, x=0, y=0, cena=cena, vai=self.executa,
                        style={"padding-top": "10px", "text-align": "center"})
-        """No argumento *vai*, associamos o clique no céu com o método **ececuta ()** desta classe"""
+        """No argumento *vai*, associamos o clique no céu com o método **executa ()** desta classe.
+           O *ceu* agora é um argumento de instância e por isso é referenciado como **self.ceu**.
+        """
         sol = self.v.a(fabrica["*"].imagem, w=60, h=60, x=0, y=40, cena=cena, vai=self.esquerda)
+        """No argumento *vai*, associamos o clique no sol com o método **esquerda ()** desta classe."""
         self.taba = {(i, j): fabrica[imagem].objeto(fabrica[imagem].imagem, x=i*lado, y=j*lado+lado, cena=cena)
             for j, linha in enumerate(mapa) for i, imagem in enumerate(linha)}
         """Posiciona os elementos segundo suas posições i, j na matriz mapa"""
