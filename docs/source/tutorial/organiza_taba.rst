@@ -10,7 +10,7 @@ Organizando a Taba
 ===================
 
 O movimento do índio ainda está errático pois ele não sonda o ambiente, não respeita
-os limites da taba e atroplea os objetos. Vamos povoar a taba com espaços vazios
+os limites da taba e atropela os objetos. Vamos povoar a taba com espaços vazios
 predeterminados. As coisas e o índio serão colocados nestes espaços e o índio só poderá
 ir para um vazio se ele estiver dentro dos limites da taba e estiver desocupado.
 
@@ -21,13 +21,27 @@ Nesta ele muda o elemento para um **Vazio** adjacente.
 .. seealso::
  Este código é uma modificação do código descrito em :ref:`movendo_indio`
 
-O protocolo duplo despacho
---------------------------
+Padrões de projeto
+------------------
 
-Neste protocolo é estabelecido um diálogo entre um objeto que quer entrar
+Padrões de projeto são a linguagem culta do programador.
+Eles são soluções típicas para problemas comuns em projeto de software. 
+Cada padrão é como uma planta de construção que você pode customizar para
+resolver um problema de projeto particular em seu código.
+
+.. seealso ::
+ Neste site `Padrões de Projeto`_, veja também na `Apresentação de Slides Padrões de Projeto`_
+
+.. _`Padrões de Projeto`: https://refactoring.guru/pt-br/design-patterns
+.. _`Apresentação de Slides Padrões de Projeto`: http://www.inf.ufpr.br/andrey/ci163/PadroesdeProjeto.pdf
+
+O protocolo duplo despacho
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Neste protocolo é estabelecido um diálogo entre um objeto que quer entrar,
 o **Imigrante** e a vaga que quer ocupar, o **Destino**. O destino estando
 vago, pede para o imigrante ocupar imediatamente e recebe o pedido **ocupou ()**
-do imigrante. Caso odestino esteja ocupapo, ele delega a decisão ao **Ocupante**
+do imigrante. Caso odestino esteja ocupado, ele delega a decisão ao **Ocupante**
 que decide ignorar ou acatar o pedido de acesso enviando o pedido de **ocupa**
 no últino caso. Neste exemplo, o protocolo está implementado em `Classe Indio - Duplo Despacho`_
 e na `Classe Vazio`_
@@ -45,7 +59,7 @@ e na `Classe Vazio`_
         Imigrante->>Destino: acessa(imigrante) # pede para entrar
         Destino->>Imigrante: ocupa(destino)
         Note left of Destino: Destino vago <br/>autoriza o ocupa
-        Destino->>Ocupante: ocupa(destino)
+        Destino->>Ocupante: acessa(imigrante)
         Note right of Destino: Destino ocupado <br/>consulta ocupante
         Ocupante->>Imigrante: ocupa(destino)
         Note left of Ocupante: Ocupante autoriza <br/>ser substituído
@@ -54,7 +68,7 @@ e na `Classe Vazio`_
     
 
 O protocolo objeto de estado
-----------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Neste protocolo o objeto **Vazio** pode estar em um `Estado Ocupado`_ ou `Estado Vago`_.
 Nesta implementação usaremos um jeito `Pythônico`_ para fazer uma modificação dinâmica de comportamento.
@@ -85,7 +99,7 @@ representar os estados, simplesmente trocamos a operação do método **acessa (
 
 
 Classe Vazio
-============
+-------------
 
 Com esta classe vamos separar locais onde coisas e o índio podem ser alocados.
 Vamos organizar a maneira como objetos se deslocam nesta taba usando `o protocolo
@@ -122,7 +136,7 @@ Cria um espaço vazio na taba, para alojar os elementos do desafio.
             self.acessa(ocupante)
 
 Estado Ocupado
---------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
             
 Consulta o ocupante atual se há permissão para substituí-lo pelo novo ocupante.
 Veja o `O protocolo objeto de estado`_.
@@ -139,7 +153,7 @@ Veja o `O protocolo objeto de estado`_.
             self.ocupante.acessa(ocupante)
 
 Estado Vago
---------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
             
 Atualmente a posição está vaga e pode ser acessada pelo novo ocupante.
             
@@ -166,7 +180,7 @@ Atualmente a posição está vaga e pode ser acessada pelo novo ocupante.
             ocupante.ocupa(self)
 
 Confirmando a Ocupação
------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
             
 O candidato à vaga decidiu ocupá-la e efetivamente entra neste espaço.
             
@@ -195,7 +209,7 @@ O candidato à vaga decidiu ocupá-la e efetivamente entra neste espaço.
             self.acessa = self._valida_acessa
 
 Pedido para Ocupar
-------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
             
 Pedido por uma vaga para que ocupe a posição nela.
 
@@ -214,7 +228,7 @@ Pedido por uma vaga para que ocupe a posição nela.
             pass
 
 Pedido para Sair
-------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
             
 Pedido por um ocupante para que desocupe a posição nela.
 
@@ -245,7 +259,7 @@ Propriedade Elemento (elt).
             return self._nada.elt
 
 Classe Indio - Duplo Despacho 
-=============================
+------------------------------
 
 Vamos modificar esta classe para ela suportar `O protocolo duplo despacho`_
 
@@ -258,14 +272,17 @@ Cria o personagem principal na arena do Kwarwp na posição definida.
 
 .. code :: python
 
-   class Indio():
+    class Indio():
       
-      def __init__(self, imagem, x, y, cena):
-         self.lado = lado = Kwarwp.LADO
-         self.indio = Kwarwp.VITOLLINO.a(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
+        def __init__(self, imagem, x, y, cena):
+            self.lado = lado = Kwarwp.LADO
+            self.indio = Kwarwp.VITOLLINO.a(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
+            self.vaga = self
+            self.posicao = (x//lado,y//lado)
+            self.indio = Kwarwp.VITOLLINO.a(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
 
 Método Anda - Acessa uma Vaga
------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Este método foi modificado para procurar na taba um vazio adjacente
 e realizar `O protocolo duplo despacho`_.
@@ -290,7 +307,7 @@ e realizar `O protocolo duplo despacho`_.
         self.anda()
 
 Indio como Vaga Nula
---------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 O índio é usado como  `objeto nulo`_, representando uma vaga.
 
@@ -302,7 +319,7 @@ O índio é usado como  `objeto nulo`_, representando uma vaga.
         pass
 
 Indio no Despacho Duplo
------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 O índio implementa  `O protocolo duplo despacho`_, no papel de ocupante de uma vaga.
 O índio també pode funcionar como um objeto intransponível, poi quando a vaga
@@ -340,7 +357,7 @@ que ele ocupa delega a ele o pedido **acessa ()**, ele não responde nada, negan
         pass
 
 Kwarwp - Fabricando Vagas
-=========================
+---------------------------
 
 A classe Kwarwp vai ser modificada para que na fábrica seja sempre criado um **Vazio**.
 Neste vazio, o objeto a ser posicionado é alocado nesta vaga do local vazio.
@@ -364,8 +381,7 @@ Jogo para ensino de programação.
  Veja o código anterior da classe no tutorial :ref:`movendo_indio`    
 
 Vagas nas Fábricas de Componentes
----------------------------------
-
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Estes método definen fábricas de componentes.
          
     :param x: coluna em que o elemento será posicionado.
@@ -414,7 +430,7 @@ Estes método definen fábricas de componentes.
         return vaga
 
 Ocupante nulo
--------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 O Kwarwp é aqui usado como um ocupante `objeto nulo`_, usado ao fabricar espaços vazios
 O pedido de ocupar é ignorado.
