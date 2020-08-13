@@ -35,6 +35,7 @@
 
 """
 from collections import namedtuple as nt
+from kwarwp.kwarwpart import Vazio, Piche, Oca, Tora, NULO
 
 IMGUR = "https://imgur.com/"
 """Prefixo do site imgur."""
@@ -49,96 +50,6 @@ Ponto = nt("Ponto", "x y")
 """Par de coordenadas na direção horizontal (x) e vertiacal (y)."""
 Rosa = nt("Rosa", "n l s o")
 """Rosa dos ventos com as direções norte, leste, sul e oeste."""
-
-
-class Vazio():
-    """ Cria um espaço vazio na taba, para alojar os elementos do desafio.
-
-        :param imagem: A figura representando o índio na posição indicada.
-        :param x: Coluna em que o elemento será posicionado.
-        :param y: Cinha em que o elemento será posicionado.
-        :param cena: Cena em que o elemento será posicionado.
-    """
-    
-    def __init__(self, imagem, x, y, cena, ocupante=None):
-        self.lado = lado = Kwarwp.LADO
-        self.posicao = (x//lado,y//lado-1)
-        self.vazio = Kwarwp.VITOLLINO.a(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
-        self._nada = Kwarwp.VITOLLINO.a()
-        self.acessa = self._acessa
-        """O **acessa ()** é usado como método dinâmico, variando com o estado da vaga.
-        Inicialmente tem o comportamento de **_acessa ()** que é o estado vago, aceitando ocupantes"""
-        self.ocupante = ocupante or self
-        """O ocupante se não for fornecido é encenado pelo próprio vazio, agindo como nulo"""
-        self.acessa(ocupante)
-        self.sair = self._sair
-        """O **sair ()** é usado como método dinâmico, variando com o estado da vaga.
-        Inicialmente tem o comportamento de **_sair ()** que é o estado leniente, aceitando saidas"""
-        
-    def _valida_acessa(self, ocupante):
-        """ Consulta o ocupante atual se há permissão para substituí-lo pelo novo ocupante.
-
-            :param ocupante: O canditato a ocupar a posição corrente.
-        """
-        self.ocupante.acessa(ocupante)
-        
-    def _acessa(self, ocupante):
-        """ Atualmente a posição está vaga e pode ser acessada pelo novo ocupante.
-        
-        A responsabilidade de ocupar definitivamente a vaga é do candidato a ocupante
-        Caso ele esteja realmente apto a ocupar a vaga e deve cahamar de volta ao vazio
-        com uma chamada ocupou.
-
-            :param ocupante: O canditato a ocupar a posição corrente.
-        """
-        ocupante.ocupa(self)
-    
-    def _sair(self):
-        """Objeto tenta sair e recebe autorização para seguir"""
-        self.ocupante.siga()      
-    
-    def _pede_sair(self):
-        """Objeto tenta sair e consulta o ocupante para seguir"""
-        self.ocupante.sair()      
-
-    def ocupou(self, ocupante):
-        """ O candidato à vaga decidiu ocupá-la e efetivamente entra neste espaço.
-        
-        :param ocupante: O canditato a ocupar a posição corrente.
-        
-        Este ocupante vai entrar no elemento do Vitollino e definitivamente se tornar
-        o ocupante da vaga. Com isso ele troca o estado do método acessa para primeiro
-        consultar a si mesmo, o ocupante corrente usando o protocolo definido em
-        **_valida_acessa ()**
-
-        """
-        self.vazio.ocupa(ocupante)
-        self.ocupante = ocupante
-        self.acessa = self._valida_acessa
-        self.sair = self._pede_sair
-
-    @property        
-    def elt(self):
-        """ A propriedade elt faz parte do protocolo do Vitollino para anexar um elemento no outro .
-
-        No caso do espaço vazio, vai retornar um elemento que não contém nada.
-        """
-        return self._nada.elt
-        
-    def ocupa(self, vaga):
-        """ Pedido por uma vaga para que ocupe a posição nela.
-
-        No caso do espaço vazio, não faz nada.
-        """
-        pass
-        
-    def sai(self):
-        """ Pedido por um ocupante para que desocupe a posição nela.
-        """
-        self.ocupante = self
-        self.acessa = self._acessa
-        self.sair = self._sair
-        
 
 
 class Indio():
@@ -159,6 +70,7 @@ class Indio():
         """índio olhando para o norte"""
         self.taba = taba
         self.vaga = self
+        self.ocupante = NULO
         self.posicao = (x//lado,y//lado)
         self.indio = Kwarwp.VITOLLINO.a(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
         self.x = x
@@ -200,6 +112,27 @@ class Indio():
         """Objeto tenta sair, tem que consultar a vaga onde está"""
         self.vaga.sair()      
 
+    def pega(self):
+        """tenta pegar o objeto que está diante dele"""
+        destino = (self.posicao[0]+self.azimute.x, self.posicao[1]+self.azimute.y)
+        """A posição para onde o índio vai depende do vetor de azimute corrente"""
+        taba = self.taba.taba
+        if destino in taba:
+            vaga = taba[destino]
+            """Recupera na taba a vaga para a qual o índio irá se transferir"""
+            vaga.pegar(self)
+
+    def larga(self):
+        """tenta largar o objeto que está segurando"""
+        destino = (self.posicao[0]+self.azimute.x, self.posicao[1]+self.azimute.y)
+        """A posição para onde o índio vai depende do vetor de azimute corrente"""
+        taba = self.taba.taba
+        if destino in taba:
+            vaga = taba[destino]
+            """Recupera na taba a vaga para a qual o índio irá se transferir"""
+            # self.ocupante.largar(vaga)
+            vaga.acessa(self.ocupante)
+
     def sair(self):
         """Objeto de posse do índio tenta sair e é autorizado"""
         self.vaga.ocupante.siga()      
@@ -218,7 +151,21 @@ class Indio():
             vaga = taba[destino]
             """Recupera na taba a vaga para a qual o índio irá se transferir"""
             vaga.acessa(self)
-         
+ 
+    def ocupou(self, ocupante):
+        """ O candidato à vaga decidiu ocupá-la e efetivamente entra neste espaço.
+        
+        :param ocupante: O canditato a ocupar a posição corrente.
+        
+        Este ocupante vai entrar no elemento do Vitollino e definitivamente se tornar
+        o ocupante da vaga. Com isso ele troca o estado do método acessa para primeiro
+        consultar a si mesmo, o ocupante corrente usando o protocolo definido em
+        **_valida_acessa ()**
+
+        """
+        self.indio.ocupa(ocupante)
+        self.ocupante = ocupante
+        
     def sai(self):
         """ Rotina de saída falsa, o objeto Indio é usado como uma vaga nula.
         """
@@ -259,75 +206,6 @@ class Indio():
         No caso do índio, ele age como um obstáculo e não prossegue com o protocolo.
         """
         pass
-        
-
-
-class Piche(Vazio):
-    """ Poça de Piche que gruda o ńdio se ele cair nela.
-
-        :param imagem: A figura representando o índio na posição indicada.
-        :param x: Coluna em que o elemento será posicionado.
-        :param y: Cinha em que o elemento será posicionado.
-        :param cena: Cena em que o elemento será posicionado.
-        :param taba: Representa a taba onde o índio faz o desafio.
-    """
-   
-    def __init__(self, imagem, x, y, cena, taba):
-        self.taba = taba
-        self.vaga = taba
-        self.lado = lado = Kwarwp.LADO
-        self.posicao = (x//lado,y//lado-1)
-        self.vazio = Kwarwp.VITOLLINO.a(imagem, w=lado, h=lado, x=0, y=0, cena=cena)
-        self._nada = Kwarwp.VITOLLINO.a()
-        self.acessa = self._acessa
-        """O **acessa ()** é usado como método dinâmico, variando com o estado da vaga.
-        Inicialmente tem o comportamento de **_acessa ()** que é o estado vago, aceitando ocupantes"""
-        self.sair = self._sair
-        """O **sair ()** é usado como método dinâmico, variando com o estado da vaga.
-        Inicialmente tem o comportamento de **_sair ()** que é o estado vago, aceitando ocupantes"""
-        
-    def ocupa(self, vaga):
-        """ Pedido por uma vaga para que ocupe a posição nela.
-        
-        :param vaga: A vaga que será ocupada pelo componente.
-
-        No caso do índio, requisita que a vaga seja ocupada por ele.
-        """
-        self.vaga.sai()
-        self.posicao = vaga.posicao
-        vaga.ocupou(self)
-        self.vaga = vaga
-    
-    def _pede_sair(self):
-        """Objeto tenta sair mas não é autorizado"""
-        self.taba.fala("Você ficou preso no piche")       
-
-
-class Oca(Piche):
-    """  A Oca é o destino final do índio, não poderá sair se ele entrar nela.
-    
-        :param imagem: A figura representando o índio na posição indicada.
-        :param x: Coluna em que o elemento será posicionado.
-        :param y: Cinha em que o elemento será posicionado.
-        :param cena: Cena em que o elemento será posicionado.
-        :param taba: Representa a taba onde o índio faz o desafio.
-    """
-    
-    def _pede_sair(self):
-        """Objeto tenta sair mas não é autorizado"""
-        self.taba.fala("Você chegou no seu objetivo")       
-        
-    def _acessa(self, ocupante):
-        """ Atualmente a posição está vaga e pode ser acessada pelo novo ocupante.
-        
-        A responsabilidade de ocupar definitivamente a vaga é do candidato a ocupante
-        Caso ele esteja realmente apto a ocupar a vaga e deve cahamar de volta ao vazio
-        com uma chamada ocupou.
-
-            :param ocupante: O canditato a ocupar a posição corrente.
-        """
-        self.taba.fala("Você chegou no seu objetivo")       
-        ocupante.ocupa(self)
 
 
 class Kwarwp():
@@ -348,7 +226,7 @@ class Kwarwp():
         """Cria um matriz com os elementos descritos em cada linha de texto"""
         self.taba = {}
         """Cria um dicionário com os elementos traduzidos a partir da interpretação do mapa"""
-        self.o_indio = None
+        self.o_indio = NULO
         """Instância do personagem principal, o índio, vai ser atribuído pela fábrica do índio"""
         self.lado, self.col, self.lin = 100, len(self.mapa[0]), len(self.mapa)+1
         """Largura da casa da arena dos desafios, número de colunas e linhas no mapa"""
@@ -370,7 +248,7 @@ class Kwarwp():
         "^": Fab(self.indio, f"{IMGUR}UCWGCKR.png"), # INDIO
         ".": Fab(self.vazio, f"{IMGUR}npb9Oej.png"), # VAZIO
         "_": Fab(self.coisa, f"{IMGUR}sGoKfvs.jpg"), # SOLO
-        "#": Fab(self.coisa, f"{IMGUR}ldI7IbK.png"), # TORA
+        "#": Fab(self.atora, f"{IMGUR}ldI7IbK.png"), # TORA
         "@": Fab(self.barra, f"{IMGUR}tLLVjfN.png"), # PICHE
         "~": Fab(self.coisa, f"{IMGUR}UAETaiP.gif"), # CEU
         "*": Fab(self.coisa, f"{IMGUR}PfodQmT.gif"), # SOL
@@ -421,6 +299,20 @@ class Kwarwp():
         """
         self.o_indio.executa()
         
+    def atora(self, imagem, x, y, cena):
+        """ Cria uma tora na arena do Kwarwp na posição definida.
+
+        :param x: coluna em que o elemento será posicionado.
+        :param y: linha em que o elemento será posicionado.
+        :param cena: cena em que o elemento será posicionado.
+        
+        Cria uma vaga vazia e coloca o componente dentro dela.
+        """
+        coisa = Tora(imagem, x=0, y=0, cena=cena, taba=self)
+        vaga = Vazio("", x=x, y=y, cena=cena, ocupante=coisa)
+        coisa.vazio.vai = lambda *_: self.o_indio.larga()
+        return vaga
+        
     def maloc(self, imagem, x, y, cena):
         """ Cria uma maloca na arena do Kwarwp na posição definida.
 
@@ -467,7 +359,7 @@ class Kwarwp():
         :param y: linha em que o elemento será posicionado.
         :param cena: cena em que o elemento será posicionado.
         """
-        vaga = Vazio(imagem, x=x, y=y, cena=cena, ocupante=self)
+        vaga = Vazio(imagem, x=x, y=y, cena=cena, ocupante=NULO)
         """ O Kwarwp é aqui usado como um ocupante nulo, que não ocupa uma vaga vazia."""
         return vaga
         
@@ -480,9 +372,11 @@ class Kwarwp():
         """
         # self.o_indio = Indio(imagem, x=x, y=y, cena=cena)
         self.o_indio = Indio(imagem, x=1, y=0, cena=cena, taba=self)
+        self.o_indio.indio.vai = lambda *_: self.o_indio.pega()
         """o índio tem deslocamento zero, pois é relativo à vaga"""
         vaga = Vazio("", x=x, y=y, cena=cena, ocupante=self.o_indio)
         return vaga
+
 
 def main(vitollino, medidas={}):
     """ Rotina principal que invoca a classe Kwarwp.
