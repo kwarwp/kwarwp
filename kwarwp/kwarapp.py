@@ -248,7 +248,7 @@ class Kwarwp():
         "^": Fab(self.indio, f"{IMGUR}UCWGCKR.png"), # INDIO
         ".": Fab(self.vazio, f"{IMGUR}npb9Oej.png"), # VAZIO
         "_": Fab(self.coisa, f"{IMGUR}sGoKfvs.jpg"), # SOLO
-        "#": Fab(self.atora, f"{IMGUR}ldI7IbK.png"), # TORA
+        "#": Fab(self.atora, f"{IMGUR}0jSB27g.png"), # TORA
         "@": Fab(self.barra, f"{IMGUR}tLLVjfN.png"), # PICHE
         "~": Fab(self.coisa, f"{IMGUR}UAETaiP.gif"), # CEU
         "*": Fab(self.coisa, f"{IMGUR}PfodQmT.gif"), # SOL
