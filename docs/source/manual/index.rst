@@ -35,6 +35,7 @@ Documentação
    :caption: Contents:
    
    modules.rst
+   module_parts.rst
 
 
 .. _Projeto Kwarwp: http://activufrj.nce.ufrj.br/wiki/labase/Projeto_Kwarwp

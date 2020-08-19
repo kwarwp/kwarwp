@@ -9,9 +9,13 @@
         - :py:class:`Oca`       Destino final da aventura.
         - :py:class:`Piche`     Uma armadilha para prender o índio.
         - :py:class:`Tora`      Uma tora que o índio pode pegar.
+        - :py:class:`Nulo`      Objeto Nulo para default em argumentos.
 
     Changelog
     ---------
+    .. versionchanged::    20.08.b1
+        modifica :meth:`Vazio.ocupou` para receber também a posição.
+        
     .. versionadded::    20.08.b0
         Moveu :class:`Vazio`, :class:`Oca`, :class:`Piche` para cá.
         Adicionou :class:`Tora`
@@ -22,7 +26,7 @@
 class Nulo:
     """Objeto nulo que responde passivamente a todas as requisições."""
     def __init__(self):
-        self.pegar = self.ocupa = self.nulo
+        self.pegar = self.ocupa = self.ocupou = self.elt = self.nulo
         
     def nulo(self, *_, **__):
         """Método nulo, responde passivamente a todas as chamadas.
@@ -94,10 +98,11 @@ class Vazio():
         """Objeto tenta sair e consulta o ocupante para seguir"""
         self.ocupante.sair()      
 
-    def ocupou(self, ocupante):
+    def ocupou(self, ocupante, pos=(0, 0)):
         """ O candidato à vaga decidiu ocupá-la e efetivamente entra neste espaço.
         
         :param ocupante: O canditato a ocupar a posição corrente.
+        :param pos: A posição (atitude) do sprite do ocupante.
         
         Este ocupante vai entrar no elemento do Vitollino e definitivamente se tornar
         o ocupante da vaga. Com isso ele troca o estado do método acessa para primeiro
@@ -105,7 +110,7 @@ class Vazio():
         **_valida_acessa ()**
 
         """
-        self.vazio.ocupa(ocupante)
+        self.vazio.ocupa(ocupante, pos)
         self.ocupante = ocupante
         self.acessa = self._valida_acessa
         self.sair = self._pede_sair
@@ -118,7 +123,7 @@ class Vazio():
         """
         return self._nada.elt
         
-    def ocupa(self, vaga):
+    def ocupa(self, vaga, *_):
         """ Pedido por uma vaga para que ocupe a posição nela.
 
         No caso do espaço vazio, não faz nada.

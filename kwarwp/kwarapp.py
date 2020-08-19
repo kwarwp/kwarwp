@@ -7,12 +7,13 @@
     Classes neste módulo:
         - :py:class:`Kwarwp`    Jogo para ensino de programação.
         - :py:class:`Indio`     Personagem principal do jogo.
-        - :py:class:`Vazio`     Espaço vago na arena do desafio.
-        - :py:class:`Oca`       Destino final da aventura.
-        - :py:class:`Piche`     Uma armadilha para prender o índio.
+        - :py:class:`JogoProxy` Proxy que enfileira comandos gráficos.
 
     Changelog
     ---------
+    .. versionadded::    20.08.b1
+        :py:class:`JogoProxy` - fila de comandos.
+
     .. versionadded::    20.08.a3
         Movimentação do índio para :py:meth:`Indio.esquerda` e 
         :py:meth:`Indio.direita`. Fala do índio: :py:meth:`Indio.fala`.
@@ -52,6 +53,123 @@ Rosa = nt("Rosa", "n l s o")
 """Rosa dos ventos com as direções norte, leste, sul e oeste."""
 
 
+class JogoProxy():
+    """ Proxy que enfileira comandos gráficos.
+    
+    :param vitollino: Empacota o engenho de jogo Vitollino.
+    :param elt: Elemento que vai ser encapsulado pelo proxy.
+    """
+    COMANDOS = []
+    """Fila de comandos criados pela execução do índio."""
+    ATIVA = False
+    """ Ativa a colocação de comandos na fila."""
+   
+    def __init__(self, vitollino=None, elt=None):
+        class AdaptaElemento(vitollino.a):
+            """ Adapta um Elemento do Vitollino para agrupar ocupa e pos.
+
+            :param vitollino: Referência ao Jogo do vitolino.
+            :param elt: Referência ao elemento que ele adapta.
+            """
+                
+            def ocupa(self, ocupante=None, pos=(0, 0)):
+                # super().elt.pos = pos
+                #vitollino.a.pos.fset(self, pos)
+                ocupante = ocupante or NULO
+                ocupante.pos = pos
+                # print(f"AdaptaElemento pos: {self.pos}")
+                super().ocupa(ocupante) if ocupante else None
+
+        self.v = vitollino
+        """Cria um referência para o jogo do vitollino"""
+        self.ae = AdaptaElemento
+        """Cria um referência o Adapador de Eelementos"""
+        self.elt = elt
+        
+    @property    
+    def siz(self):
+        """Propriedade tamanho"""
+        return self.elt.siz
+        
+    def a(self, *args, **kwargs):
+        """Encapsula a criação de elementos
+        
+        :param args: coleção de argumentos posicionais.
+        :param kwargs: coleção de argumentos nominais.
+        :return: Proxy para um Elemento construído com estes argumentos.
+        
+        """
+        return JogoProxy(elt=self.ae(*args, **kwargs), vitollino=self.v)
+        
+    def cria(self):
+        """Fábrica do JogoProxy"""
+        return self
+        
+    def ativa(self):
+        """Ativa Fábrica do JogoProxy"""
+        JogoProxy.ATIVA = True
+        
+    def lidar(self, metodo):
+        """Lida com modo de operação do JogoProxy"""
+        self._enfileira(metodo) if JogoProxy.ATIVA else self._executa(metodo)
+        
+    def c(self, *args, **kwargs):
+        """Encapsula a criação de cenas - apenas delega.
+        
+        :param args: coleção de argumentos posicionais.
+        :param kwargs: coleção de argumentos nominais.
+        :return: Uma Cena do Vitollino construída com estes argumentos.
+        
+        """
+        return self.v.c(*args, **kwargs)
+        
+    @siz.setter    
+    def siz(self, value):
+        """Propriedade tamanho"""
+        self.elt.siz = value
+        
+    @property    
+    def pos(self):
+        """Propriedade posição"""
+        return self.elt.pos
+        
+    @property    
+    def x(self):
+        """Propriedade posição x"""
+        return self.elt.x
+        
+    @property    
+    def y(self):
+        """Propriedade posição y"""
+        return self.elt.y
+        
+    @pos.setter    
+    def pos(self, value):
+        """Propriedade posição"""
+        def _pos(val=value):
+            self.elt.pos = val
+        self.lidar(_pos)
+
+    def ocupa(self, ocupante=None, pos=(0, 0)):
+        """Muda a posição e atitude de um elemento"""
+        def _pos(val=ocupante):
+            destino = val.elt if val else None
+            self.elt.ocupa(destino, pos)
+        self.lidar(_pos)
+
+    def _enfileira(self, metodo):
+        """Coloca um comando na fila"""
+        self.COMANDOS.append(metodo)
+
+    def _executa(self, metodo):
+        """Executa imediamente um comando, não põe na fila"""
+        metodo()
+
+    def executa(self, *_):
+        """Tira e executa um comando na fila"""
+        self.COMANDOS.pop(0)() if self.COMANDOS else None
+
+
 class Indio():
     """ Cria o personagem principal na arena do Kwarwp na posição definida.
 
@@ -78,28 +196,43 @@ class Indio():
         if x:
             self.indio.siz = (lado*3, lado*4)
             """Define as proporções da folha de sprites"""
-            self.mostra()
+            self.gira()
        
-    def mostra(self):
+    def gira(self):
         """ Modifica a figura (Sprite) do índio mostrando para onde está indo.
         """
         sprite_col = sum(self.posicao) % 3
         """Faz com que três casas adjacentes tenha valores diferentes para a coluna do sprite"""
         sprite_lin = self.AZIMUTE.index(self.azimute)
         """A linha do sprite depende da direção dque índio está olhando"""
-        self.indio.pos = (-self.lado*sprite_col, -self.lado*sprite_lin)
+        # self.indio.ocupa(ocupante=ocupante, pos=(-self.lado*sprite_col, -self.lado*sprite_lin))
+        # self.indio.pos = (-self.lado*sprite_col, -self.lado*sprite_lin)
+        pos = (-self.lado*sprite_col, -self.lado*sprite_lin)
+        self.indio.pos = pos
+       
+    def mostra(self, vaga=None):
+        """ Modifica a figura (Sprite) do índio mostrando para onde está indo.
+        """
+        sprite_col = sum(self.posicao) % 3
+        """Faz com que três casas adjacentes tenha valores diferentes para a coluna do sprite"""
+        sprite_lin = self.AZIMUTE.index(self.azimute)
+        """A linha do sprite depende da direção dque índio está olhando"""
+        # self.indio.ocupa(ocupante=ocupante, pos=(-self.lado*sprite_col, -self.lado*sprite_lin))
+        # self.indio.pos = (-self.lado*sprite_col, -self.lado*sprite_lin)
+        pos = (-self.lado*sprite_col, -self.lado*sprite_lin)
+        vaga.ocupou(self, pos) # if vaga else self.indio.ocupa(None,pos=pos)
        
     def esquerda(self):
         """ Faz o índio mudar da direção em que está olhando para a esquerda.
         """
         self.azimute = self.AZIMUTE[self.AZIMUTE.index(self.azimute)-1]
-        self.mostra()
+        self.gira()
        
     def direita(self):
         """ Faz o índio mudar da direção em que está olhando para a direita.
         """
         self.azimute = self.AZIMUTE[self.AZIMUTE.index(self.azimute)-3]
-        self.mostra()
+        self.gira()
        
     def fala(self, texto=""):
         """ O índio fala um texto dado.
@@ -174,7 +307,16 @@ class Indio():
     def executa(self):
         """ Roteiro do índio. Conjunto de comandos para ele executar.
         """
+        self.esquerda()
         self.anda()
+        self.pega()
+        self.direita()
+        self.anda()
+        self.anda()
+        self.anda()
+        self.esquerda()
+        self.anda()
+        self.larga()
 
     @property        
     def elt(self):
@@ -184,7 +326,7 @@ class Indio():
         """
         return self.indio.elt
         
-    def ocupa(self, vaga):
+    def ocupa(self, vaga, *_):
         """ Pedido por uma vaga para que ocupe a posição nela.
         
         :param vaga: A vaga que será ocupada pelo componente.
@@ -193,10 +335,10 @@ class Indio():
         """
         self.vaga.sai()
         self.posicao = vaga.posicao
-        vaga.ocupou(self)
+        self.mostra(vaga) if self.x else vaga.ocupou(self)
         self.vaga = vaga
-        if self.x:
-            self.mostra()
+        # if self.x:
+        #     self.mostra()
         
     def acessa(self, ocupante):
         """ Pedido de acesso a essa posição, delegada ao ocupante pela vaga.
@@ -260,12 +402,12 @@ class Kwarwp():
         mapa = self.mapa
         lado = self.lado
         cena = self.v.c(fabrica["_"].imagem)
-        self.ceu = self.v.a(fabrica["~"].imagem, w=lado*self.col, h=lado-10, x=0, y=0, cena=cena, vai=self.executa,
+        self.ceu = self.v.a(fabrica["~"].imagem, w=lado*self.col, h=lado-10, x=0, y=0, cena=cena, vai=self.passo,
                        style={"padding-top": "10px", "text-align": "center"})
         """No argumento *vai*, associamos o clique no céu com o método **executa ()** desta classe.
            O *ceu* agora é um argumento de instância e por isso é referenciado como **self.ceu**.
         """
-        sol = self.v.a(fabrica["*"].imagem, w=60, h=60, x=0, y=40, cena=cena, vai=self.esquerda)
+        sol = self.v.a(fabrica["*"].imagem, w=60, h=60, x=0, y=40, cena=cena, vai=self.executa)
         """No argumento *vai*, associamos o clique no sol com o método **esquerda ()** desta classe."""
         self.taba = {(i, j): fabrica[imagem].objeto(fabrica[imagem].imagem, x=i*lado, y=j*lado+lado, cena=cena)
             for j, linha in enumerate(mapa) for i, imagem in enumerate(linha)}
@@ -289,14 +431,17 @@ class Kwarwp():
         """
         pass
         
-    def esquerda(self, *_):
+    def passo(self, *_):
         """ Ordena a execução do roteiro do índio.
         """
-        self.o_indio.esquerda()
+        # self.o_indio.esquerda()
+        self.v.executa()
         
     def executa(self, *_):
         """ Ordena a execução do roteiro do índio.
         """
+        self.v.ativa()
+        JogoProxy.ATIVA = True
         self.o_indio.executa()
         
     def atora(self, imagem, x, y, cena):
@@ -385,7 +530,11 @@ def main(vitollino, medidas={}):
     :param medidas: Um dicionário usado para redimensionar a tela.
     """
     # print(f"main(vitollino={vitollino} medidas={medidas}")
-    Kwarwp(vitollino, medidas=medidas)
+    JogoProxy.COMANDOS, JogoProxy.ATIVA = [], False
+    print(f"def main: {JogoProxy} vitollino {vitollino}")
+    vitollino_proxy = JogoProxy(vitollino=vitollino()).cria
+    print(f"def main vitollino_proxy: {vitollino_proxy}, {vitollino_proxy()}")
+    return Kwarwp(vitollino=vitollino_proxy, medidas=medidas)
         
     
 if __name__ == "__main__":
