@@ -370,10 +370,12 @@ class Kwarwp():
         :param y: linha em que o elemento será posicionado.
         :param cena: cena em que o elemento será posicionado.
         """
-        # self.o_indio = Indio(imagem, x=x, y=y, cena=cena)
         self.o_indio = Indio(imagem, x=1, y=0, cena=cena, taba=self)
+        """ O índio tem deslocamento zero, pois é relativo à vaga.
+            O **x=1** serve para distinguir o indio de outros derivados.
+        """
         self.o_indio.indio.vai = lambda *_: self.o_indio.pega()
-        """o índio tem deslocamento zero, pois é relativo à vaga"""
+        """o índio.vai é associado ao seu próprio metodo pega"""
         vaga = Vazio("", x=x, y=y, cena=cena, ocupante=self.o_indio)
         return vaga
 

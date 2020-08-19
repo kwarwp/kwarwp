@@ -39,7 +39,7 @@ class Test_Kwarwp(TestCase):
     INDIO = "https://imgur.com/UCWGCKR.png"
     OCA = "https://imgur.com/dZQ8liT.jpg"
     PICHE = "https://imgur.com/tLLVjfN.png"
-    TORA = "https://imgur.com/ldI7IbK.png"
+    TORA = "https://imgur.com/0jSB27g.png"
     
     def setUp(self):
         elts = self.elts = {}

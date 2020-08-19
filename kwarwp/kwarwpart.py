@@ -9,12 +9,13 @@
         - :py:class:`Oca`       Destino final da aventura.
         - :py:class:`Piche`     Uma armadilha para prender o índio.
         - :py:class:`Tora`      Uma tora que o índio pode pegar.
+        - :py:class:`Nulo`      Objeto nulo passivo a todas as requisições.
 
     Changelog
     ---------
     .. versionadded::    20.08.b0
         Moveu :class:`Vazio`, :class:`Oca`, :class:`Piche` para cá.
-        Adicionou :class:`Tora`
+        Adicionou :class:`Tora` e classe :class:`Nulo`
 
 """
 
@@ -134,7 +135,7 @@ class Vazio():
 
 
 class Piche(Vazio):
-    """ Poça de Piche que gruda o ńdio se ele cair nela.
+    """ Poça de Piche que gruda o índio se ele cair nela.
 
         :param imagem: A figura representando o índio na posição indicada.
         :param x: Coluna em que o elemento será posicionado.
@@ -235,17 +236,17 @@ class Tora(Piche):
 
     @property        
     def posicao(self):
-        """ A propriedade elt faz parte do protocolo do Vitollino para anexar um elemento no outro .
+        """ A propriedade posição faz parte do protocolo do double dispatch com o Indio .
 
-        No caso da tora, retorna o elt do elemento do atributo **self.vazio**.
+        No caso da tora, retorna o a posição do atributo **self.vaga**.
         """
         return self.vaga.posicao
 
     @posicao.setter        
     def posicao(self, _):
-        """ A propriedade elt faz parte do protocolo do Vitollino para anexar um elemento no outro .
+        """ A propriedade posição faz parte do protocolo do double dispatch com o Indio .
 
-        No caso da tora, retorna o elt do elemento do atributo **self.vazio**.
+        No caso da tora, é uma propriedade de somente leitura, não executa nada.
         """
         pass
 
