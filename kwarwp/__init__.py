@@ -10,5 +10,5 @@ Changelog
         version.
 
 """
-__version__ = "20.08.a3"
+__version__ = "20.08.b0"
 
