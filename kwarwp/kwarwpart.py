@@ -148,7 +148,7 @@ class Piche(Vazio):
         from kwarwp.kwarapp import Kwarwp
         self.taba = taba
         self.vaga = taba
-        self.lado = lado = Kwarwp.LADO
+        self.lado = lado = Kwarwp.LADO or 100
         self.posicao = (x//lado,y//lado-1)
         self.vazio = Kwarwp.VITOLLINO.a(imagem, w=lado, h=lado, x=0, y=0, cena=cena)
         # self._nada = Kwarwp.VITOLLINO.a()
