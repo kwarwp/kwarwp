@@ -146,6 +146,8 @@ class Piche(Vazio):
    
     def __init__(self, imagem, x, y, cena, taba):
         from kwarwp.kwarapp import Kwarwp
+        from _spy.vitollino.main import Jogo
+        Kwarwp.VITOLLINO = Jogo
         self.taba = taba
         self.vaga = taba
         self.lado = lado = Kwarwp.LADO or 100
