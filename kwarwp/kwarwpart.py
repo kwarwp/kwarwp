@@ -18,7 +18,7 @@
         Adicionou :class:`Tora` e classe :class:`Nulo`
 
 """
-VITOLLINO, LADO = None, None
+
 
 class Nulo:
     """Objeto nulo que responde passivamente a todas as requisições."""
@@ -45,15 +45,16 @@ class Vazio():
         :param y: Cinha em que o elemento será posicionado.
         :param cena: Cena em que o elemento será posicionado.
     """
+    VITOLLINO, LADO = None, None
     
     def __init__(self, imagem, x, y, cena, ocupante=None):
         from kwarwp.kwarapp import Kwarwp
         from _spy.vitollino.main import Jogo
         Kwarwp.VITOLLINO = Kwarwp.VITOLLINO # or Jogo()
-        self.lado = lado = LADO # or 100
+        self.lado = lado = self.LADO # or 100
         self.posicao = (x//lado,y//lado-1)
-        self.vazio = VITOLLINO.a(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
-        self._nada = VITOLLINO.a()
+        self.vazio = self.VITOLLINO.a(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
+        self._nada = self.VITOLLINO.a()
         self.acessa = self._acessa
         """O **acessa ()** é usado como método dinâmico, variando com o estado da vaga.
         Inicialmente tem o comportamento de **_acessa ()** que é o estado vago, aceitando ocupantes"""
@@ -152,9 +153,9 @@ class Piche(Vazio):
         Kwarwp.VITOLLINO = Kwarwp.VITOLLINO or Jogo()
         self.taba = taba
         self.vaga = taba
-        self.lado = lado = LADO or 100
+        self.lado = lado = self.LADO or 100
         self.posicao = (x//lado,y//lado-1)
-        self.vazio = VITOLLINO.a(imagem, w=lado, h=lado, x=0, y=0, cena=cena)
+        self.vazio = self.VITOLLINO.a(imagem, w=lado, h=lado, x=0, y=0, cena=cena)
         # self._nada = Kwarwp.VITOLLINO.a()
         self.ocupante = NULO
 
