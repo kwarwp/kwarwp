@@ -15,10 +15,14 @@
     ---------
     .. versionchanged::    20.08.b1
         modifica :meth:`Vazio.ocupou` para receber também a posição.
+        - :py:class:`Nulo`      Objeto nulo passivo a todas as requisições.
+
+    .. versionchanged::    20.08.b0
+        Moveu constantes de classe VITOLLINO, LADO para Vazio.
         
     .. versionadded::    20.08.b0
         Moveu :class:`Vazio`, :class:`Oca`, :class:`Piche` para cá.
-        Adicionou :class:`Tora`
+        Adicionou :class:`Tora` e classe :class:`Nulo`
 
 """
 
@@ -48,13 +52,13 @@ class Vazio():
         :param y: Cinha em que o elemento será posicionado.
         :param cena: Cena em que o elemento será posicionado.
     """
+    VITOLLINO, LADO = None, None
     
     def __init__(self, imagem, x, y, cena, ocupante=None):
-        from kwarwp.kwarapp import Kwarwp
-        self.lado = lado = Kwarwp.LADO
+        self.lado = lado = self.LADO # or 100
         self.posicao = (x//lado,y//lado-1)
-        self.vazio = Kwarwp.VITOLLINO.a(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
-        self._nada = Kwarwp.VITOLLINO.a()
+        self.vazio = self.VITOLLINO.a(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
+        self._nada = self.VITOLLINO.a()
         self.acessa = self._acessa
         """O **acessa ()** é usado como método dinâmico, variando com o estado da vaga.
         Inicialmente tem o comportamento de **_acessa ()** que é o estado vago, aceitando ocupantes"""
@@ -139,7 +143,7 @@ class Vazio():
 
 
 class Piche(Vazio):
-    """ Poça de Piche que gruda o ńdio se ele cair nela.
+    """ Poça de Piche que gruda o índio se ele cair nela.
 
         :param imagem: A figura representando o índio na posição indicada.
         :param x: Coluna em que o elemento será posicionado.
@@ -149,12 +153,11 @@ class Piche(Vazio):
     """
    
     def __init__(self, imagem, x, y, cena, taba):
-        from kwarwp.kwarapp import Kwarwp
         self.taba = taba
         self.vaga = taba
-        self.lado = lado = Kwarwp.LADO
+        self.lado = lado = self.LADO or 100
         self.posicao = (x//lado,y//lado-1)
-        self.vazio = Kwarwp.VITOLLINO.a(imagem, w=lado, h=lado, x=0, y=0, cena=cena)
+        self.vazio = self.VITOLLINO.a(imagem, w=lado, h=lado, x=0, y=0, cena=cena)
         # self._nada = Kwarwp.VITOLLINO.a()
         self.ocupante = NULO
 
@@ -240,17 +243,17 @@ class Tora(Piche):
 
     @property        
     def posicao(self):
-        """ A propriedade elt faz parte do protocolo do Vitollino para anexar um elemento no outro .
+        """ A propriedade posição faz parte do protocolo do double dispatch com o Indio .
 
-        No caso da tora, retorna o elt do elemento do atributo **self.vazio**.
+        No caso da tora, retorna o a posição do atributo **self.vaga**.
         """
         return self.vaga.posicao
 
     @posicao.setter        
     def posicao(self, _):
-        """ A propriedade elt faz parte do protocolo do Vitollino para anexar um elemento no outro .
+        """ A propriedade posição faz parte do protocolo do double dispatch com o Indio .
 
-        No caso da tora, retorna o elt do elemento do atributo **self.vazio**.
+        No caso da tora, é uma propriedade de somente leitura, não executa nada.
         """
         pass
 

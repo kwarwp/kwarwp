@@ -42,7 +42,6 @@ class Test_Kwarwp(TestCase):
     INDIO = "https://imgur.com/UCWGCKR.png"
     OCA = "https://imgur.com/dZQ8liT.jpg"
     PICHE = "https://imgur.com/tLLVjfN.png"
-    # TORA = "https://imgur.com/ldI7IbK.png"
     TORA = "https://imgur.com/0jSB27g.png"
     
     def setUp(self):
@@ -85,8 +84,9 @@ class Test_Kwarwp(TestCase):
         self.v().c = MagicMock(name="Vitollino_cria")
         self.v().a = self.e = FakeElemento
         self.k = Kwarwp(self.v)
-        Kwarwp.VITOLLINO.a = FakeElemento
+        Vazio.VITOLLINO.a = FakeElemento
         self.t = FakeTaba()
+        self.LADO = Vazio.LADO
         
     def testa_cria(self):
         """ Cria o ambiente de programação Kwarwp."""
@@ -139,7 +139,7 @@ class Test_Kwarwp(TestCase):
         """ Vai até a tora pega e larga."""
         cena = self.k.cria()
         self.k.o_indio.larga()
-        l = self.k.LADO
+        l = self.LADO
         indio, tora = self._pega_tora()
         indio.larga()
         pos = tora.posicao
@@ -165,7 +165,7 @@ class Test_Kwarwp(TestCase):
         """ Vai até a piche, oca e vazio e tenta pegar."""
         cena = self.k.cria()
         ftaba = self.t
-        l = self.k.LADO
+        l = self.LADO
         indio = self.k.o_indio
         indio.pega()
         coisa = Oca("", x=0, y=0, cena=cena, taba=self.k)
@@ -183,7 +183,7 @@ class Test_Kwarwp(TestCase):
     def testa_cria_indio(self):
         """ Cria o índio com a fábrica."""
         self.k = main(self.v)
-        self.assertIsInstance(self.k.VITOLLINO,  JogoProxy, f"but self.k.VITOLLINO was {self.k.VITOLLINO}")
+        self.assertIsInstance(Vazio.VITOLLINO,  JogoProxy, f"but self.k.VITOLLINO was {Vazio.VITOLLINO}")
         cena = self.k.cria()
         coisa = self.k.taba[3,3]
         self.assertIsInstance(coisa.ocupante,  Indio, f"but coisa was {coisa}")
@@ -215,7 +215,7 @@ class Test_Kwarwp(TestCase):
         """ Tenta mover o índio, mas fica preso."""
         ftaba = self.t
         cena = self.k.cria()
-        l = self.k.LADO
+        l = self.LADO
         indio = self.k.o_indio
         piche = Piche("", x=0, y=0, cena=cena, taba=ftaba)
         vaga = Vazio("", x=3*l, y=2*l, cena=cena, ocupante=piche)
@@ -236,7 +236,7 @@ class Test_Kwarwp(TestCase):
         """ Chega no seu destino, tenta mover o índio, mas fica preso."""
         ftaba = self.t
         cena = self.k.cria()
-        l = self.k.LADO
+        l = self.LADO
         indio = self.k.o_indio
         oca = Oca("", x=0, y=0, cena=cena, taba=ftaba)
         vaga = Vazio("", x=3*l, y=2*l, cena=cena, ocupante=oca)
