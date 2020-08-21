@@ -13,6 +13,9 @@
 
     Changelog
     ---------
+    .. versionchanged::    20.08.b0
+        Moveu constantes de classe VITOLLINO, LADO para Vazio.
+        
     .. versionadded::    20.08.b0
         Moveu :class:`Vazio`, :class:`Oca`, :class:`Piche` para cá.
         Adicionou :class:`Tora` e classe :class:`Nulo`
@@ -48,9 +51,6 @@ class Vazio():
     VITOLLINO, LADO = None, None
     
     def __init__(self, imagem, x, y, cena, ocupante=None):
-        from kwarwp.kwarapp import Kwarwp
-        from _spy.vitollino.main import Jogo
-        Kwarwp.VITOLLINO = Kwarwp.VITOLLINO # or Jogo()
         self.lado = lado = self.LADO # or 100
         self.posicao = (x//lado,y//lado-1)
         self.vazio = self.VITOLLINO.a(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
@@ -148,9 +148,6 @@ class Piche(Vazio):
     """
    
     def __init__(self, imagem, x, y, cena, taba):
-        from kwarwp.kwarapp import Kwarwp
-        from _spy.vitollino.main import Jogo
-        Kwarwp.VITOLLINO = Kwarwp.VITOLLINO or Jogo()
         self.taba = taba
         self.vaga = taba
         self.lado = lado = self.LADO or 100
@@ -271,7 +268,3 @@ class Tora(Piche):
         No caso da tora, ela age como um obstáculo e não prossegue com o protocolo.
         """
         pass
-
-def main(kwarwp):
-    global VITOLLINO, LADO
-    VITOLLINO, LADO = kwarwp.VITOLLINO, kwarwp.LADO
