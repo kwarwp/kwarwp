@@ -281,3 +281,27 @@ TypeError: unsupported operand type(s) for //: 'int' and 'NoneType'
     kmain(self)
 NameError: name 'kmain' is not defined
 '''},
+{'date': 'Fri Aug 21 2020 09:27:19.822 GMt-0300 (Horário Padrão de Brasília) -X- SuPyGirls -X-',
+'error': '''Traceback (most recent call last):
+  module _core.main line 177
+    dialog.action(lambda *_: self.start()
+  module _core.supygirls_factory line 135
+    self.act(self, lambda *_: self.hide() or extra()) if self.act else None
+  module _core.supygirls_factory line 306
+    return self._first_response(lambda: self._executa_acao(), self.extra, self.error)
+  module _core.supygirls_factory line 278
+    traceback.print_exc(file=sys.stderr)
+  module _core.supygirls_factory line 295
+    exec(self.code, glob)  # dict(__name__="__main__"))
+  module <module> line 397
+    main(Jogo, STYLE)
+  module <module> line 391
+    Kwarwp(vitollino, medidas=medidas).cria()
+  module <module> line 271
+    self.taba = {(i, j): fabrica[imagem].objeto(fabrica[imagem].imagem, x=i*lado, y=j*lado+lado, cena=cena)
+  module <module> line 374
+    self.o_indio = Indio(imagem, x=1, y=0, cena=cena, taba=self)
+  module <module> line 74
+    self.posicao = (x//lado,y//lado)
+TypeError: unsupported operand type(s) for //: 'int' and 'NoneType'
+'''},
