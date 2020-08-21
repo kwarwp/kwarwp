@@ -35,7 +35,7 @@
 
 """
 from collections import namedtuple as nt
-from kwarwp.kwarwpart import Vazio, Piche, Oca, Tora, NULO
+from kwarwp.kwarwpart import Vazio, Piche, Oca, Tora, NULO, main as kmain
 
 IMGUR = "https://imgur.com/"
 """Prefixo do site imgur."""
@@ -231,6 +231,7 @@ class Kwarwp():
         self.lado, self.col, self.lin = 100, len(self.mapa[0]), len(self.mapa)+1
         """Largura da casa da arena dos desafios, número de colunas e linhas no mapa"""
         Kwarwp.LADO = self.lado
+        kmain(self)
         w, h = self.col *self.lado, self.lin *self.lado
         medidas.update(width=w, height=f"{h}px")
         #self.cena = self.cria(mapa=self.mapa) if vitollino else None
