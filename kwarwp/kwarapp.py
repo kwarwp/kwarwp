@@ -13,6 +13,10 @@
 
     Changelog
     ---------
+    .. versionchanged::    20.08.b0
+        Moveu constantes de classe VITOLLINO, LADO para Vazio.
+        Moveu :class:`Vazio`, :class:`Oca`, :class:`Piche` para kwarwpart.
+        
     .. versionadded::    20.08.a3
         Movimentação do índio para :py:meth:`Indio.esquerda` e 
         :py:meth:`Indio.direita`. Fala do índio: :py:meth:`Indio.fala`.
@@ -65,21 +69,21 @@ class Indio():
     """Constante com os pares ordenados que representam os vetores unitários dos pontos cardeais."""
     
     def __init__(self, imagem, x, y, cena, taba):
-        self.lado = lado = Kwarwp.LADO
+        self.lado = lado = Vazio.LADO
         self.azimute = self.AZIMUTE.n
         """índio olhando para o norte"""
         self.taba = taba
         self.vaga = self
         self.ocupante = NULO
         self.posicao = (x//lado,y//lado)
-        self.indio = Kwarwp.VITOLLINO.a(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
+        self.indio = Vazio.VITOLLINO.a(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
         self.x = x
         """Este x provisoriamente distingue o índio de outras coisas construídas com esta classe"""
         if x:
             self.indio.siz = (lado*3, lado*4)
             """Define as proporções da folha de sprites"""
             self.mostra()
-       
+
     def mostra(self):
         """ Modifica a figura (Sprite) do índio mostrando para onde está indo.
         """
@@ -88,19 +92,19 @@ class Indio():
         sprite_lin = self.AZIMUTE.index(self.azimute)
         """A linha do sprite depende da direção dque índio está olhando"""
         self.indio.pos = (-self.lado*sprite_col, -self.lado*sprite_lin)
-       
+
     def esquerda(self):
         """ Faz o índio mudar da direção em que está olhando para a esquerda.
         """
         self.azimute = self.AZIMUTE[self.AZIMUTE.index(self.azimute)-1]
         self.mostra()
-       
+
     def direita(self):
         """ Faz o índio mudar da direção em que está olhando para a direita.
         """
         self.azimute = self.AZIMUTE[self.AZIMUTE.index(self.azimute)-3]
         self.mostra()
-       
+
     def fala(self, texto=""):
         """ O índio fala um texto dado.
         
@@ -215,13 +219,10 @@ class Kwarwp():
         :param mapa: Um texto representando o mapa do desafio.
         :param medidas: Um dicionário usado para redimensionar a tela.
     """
-    VITOLLINO = None
-    """Referência estática para obter o engenho de jogo."""
-    LADO = None
-    """Referência estática para definir o lado do piso da casa."""
     
     def __init__(self, vitollino=None, mapa=MAPA_INICIO, medidas={}):
-        Kwarwp.VITOLLINO = self.v = vitollino()
+        Vazio.VITOLLINO = self.v = vitollino()
+        """Referência estática para obter o engenho de jogo."""
         self.mapa = mapa.split()
         """Cria um matriz com os elementos descritos em cada linha de texto"""
         self.taba = {}
@@ -230,10 +231,12 @@ class Kwarwp():
         """Instância do personagem principal, o índio, vai ser atribuído pela fábrica do índio"""
         self.lado, self.col, self.lin = 100, len(self.mapa[0]), len(self.mapa)+1
         """Largura da casa da arena dos desafios, número de colunas e linhas no mapa"""
-        Kwarwp.LADO = self.lado
+        Vazio.LADO = self.lado
+        """Referência estática para definir o lado do piso da casa."""
+        #kmain(self)
         w, h = self.col *self.lado, self.lin *self.lado
         medidas.update(width=w, height=f"{h}px")
-        self.cena = self.cria(mapa=self.mapa) if vitollino else None
+        #self.cena = self.cria(mapa=self.mapa) if vitollino else None
 
     def cria(self, mapa=""):
         """ Fábrica de componentes.
@@ -387,7 +390,7 @@ def main(vitollino, medidas={}):
     :param medidas: Um dicionário usado para redimensionar a tela.
     """
     # print(f"main(vitollino={vitollino} medidas={medidas}")
-    Kwarwp(vitollino, medidas=medidas)
+    Kwarwp(vitollino, medidas=medidas).cria()
         
     
 if __name__ == "__main__":
