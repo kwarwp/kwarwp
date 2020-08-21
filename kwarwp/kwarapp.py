@@ -13,6 +13,10 @@
 
     Changelog
     ---------
+    .. versionchanged::    20.08.b0
+        Moveu constantes de classe VITOLLINO, LADO para Vazio.
+        Moveu :class:`Vazio`, :class:`Oca`, :class:`Piche` para kwarwpart.
+        
     .. versionadded::    20.08.a3
         Movimentação do índio para :py:meth:`Indio.esquerda` e 
         :py:meth:`Indio.direita`. Fala do índio: :py:meth:`Indio.fala`.
@@ -79,7 +83,7 @@ class Indio():
             self.indio.siz = (lado*3, lado*4)
             """Define as proporções da folha de sprites"""
             self.mostra()
-       
+
     def mostra(self):
         """ Modifica a figura (Sprite) do índio mostrando para onde está indo.
         """
@@ -88,19 +92,19 @@ class Indio():
         sprite_lin = self.AZIMUTE.index(self.azimute)
         """A linha do sprite depende da direção dque índio está olhando"""
         self.indio.pos = (-self.lado*sprite_col, -self.lado*sprite_lin)
-       
+
     def esquerda(self):
         """ Faz o índio mudar da direção em que está olhando para a esquerda.
         """
         self.azimute = self.AZIMUTE[self.AZIMUTE.index(self.azimute)-1]
         self.mostra()
-       
+
     def direita(self):
         """ Faz o índio mudar da direção em que está olhando para a direita.
         """
         self.azimute = self.AZIMUTE[self.AZIMUTE.index(self.azimute)-3]
         self.mostra()
-       
+
     def fala(self, texto=""):
         """ O índio fala um texto dado.
         
