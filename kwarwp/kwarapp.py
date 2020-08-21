@@ -233,7 +233,7 @@ class Kwarwp():
         Kwarwp.LADO = self.lado
         w, h = self.col *self.lado, self.lin *self.lado
         medidas.update(width=w, height=f"{h}px")
-        self.cena = self.cria(mapa=self.mapa) if vitollino else None
+        #self.cena = self.cria(mapa=self.mapa) if vitollino else None
 
     def cria(self, mapa=""):
         """ Fábrica de componentes.
@@ -387,7 +387,7 @@ def main(vitollino, medidas={}):
     :param medidas: Um dicionário usado para redimensionar a tela.
     """
     # print(f"main(vitollino={vitollino} medidas={medidas}")
-    Kwarwp(vitollino, medidas=medidas)
+    Kwarwp(vitollino, medidas=medidas).cria()
         
     
 if __name__ == "__main__":
