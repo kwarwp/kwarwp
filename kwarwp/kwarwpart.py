@@ -18,7 +18,7 @@
         Adicionou :class:`Tora` e classe :class:`Nulo`
 
 """
-
+VITOLLINO, LADO = None, None
 
 class Nulo:
     """Objeto nulo que responde passivamente a todas as requisições."""
@@ -50,10 +50,10 @@ class Vazio():
         from kwarwp.kwarapp import Kwarwp
         from _spy.vitollino.main import Jogo
         Kwarwp.VITOLLINO = Kwarwp.VITOLLINO # or Jogo()
-        self.lado = lado = Kwarwp.LADO # or 100
+        self.lado = lado = LADO # or 100
         self.posicao = (x//lado,y//lado-1)
-        self.vazio = Kwarwp.VITOLLINO.a(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
-        self._nada = Kwarwp.VITOLLINO.a()
+        self.vazio = VITOLLINO.a(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
+        self._nada = VITOLLINO.a()
         self.acessa = self._acessa
         """O **acessa ()** é usado como método dinâmico, variando com o estado da vaga.
         Inicialmente tem o comportamento de **_acessa ()** que é o estado vago, aceitando ocupantes"""
@@ -152,9 +152,9 @@ class Piche(Vazio):
         Kwarwp.VITOLLINO = Kwarwp.VITOLLINO or Jogo()
         self.taba = taba
         self.vaga = taba
-        self.lado = lado = Kwarwp.LADO or 100
+        self.lado = lado = LADO or 100
         self.posicao = (x//lado,y//lado-1)
-        self.vazio = Kwarwp.VITOLLINO.a(imagem, w=lado, h=lado, x=0, y=0, cena=cena)
+        self.vazio = VITOLLINO.a(imagem, w=lado, h=lado, x=0, y=0, cena=cena)
         # self._nada = Kwarwp.VITOLLINO.a()
         self.ocupante = NULO
 
@@ -270,3 +270,7 @@ class Tora(Piche):
         No caso da tora, ela age como um obstáculo e não prossegue com o protocolo.
         """
         pass
+
+def main(kwarwp):
+    global VITOLLINO, LADO
+    VITOLLINO, LADO = kwarwp.VITOLLINO, kwarwp.LADO
