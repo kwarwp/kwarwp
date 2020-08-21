@@ -77,8 +77,9 @@ class Test_Kwarwp(TestCase):
         self.v().c = MagicMock(name="Vitollino_cria")
         self.v().a = FakeElemento
         self.k = Kwarwp(self.v)
-        Kwarwp.VITOLLINO.a = FakeElemento
+        Vazio.VITOLLINO.a = FakeElemento
         self.t = FakeTaba()
+        self.LADO = Vazio.LADO
         
     def testa_cria(self):
         """ Cria o ambiente de programação Kwarwp."""
@@ -131,7 +132,7 @@ class Test_Kwarwp(TestCase):
         """ Vai até a tora pega e larga."""
         cena = self.k.cria()
         self.k.o_indio.larga()
-        l = self.k.LADO
+        l = self.LADO
         indio, tora = self._pega_tora()
         indio.larga()
         pos = tora.posicao
@@ -157,7 +158,7 @@ class Test_Kwarwp(TestCase):
         """ Vai até a piche, oca e vazio e tenta pegar."""
         cena = self.k.cria()
         ftaba = self.t
-        l = self.k.LADO
+        l = self.LADO
         indio = self.k.o_indio
         indio.pega()
         coisa = Oca("", x=0, y=0, cena=cena, taba=self.k)
@@ -203,7 +204,7 @@ class Test_Kwarwp(TestCase):
         """ Tenta mover o índio, mas fica preso."""
         ftaba = self.t
         cena = self.k.cria()
-        l = self.k.LADO
+        l = self.LADO
         indio = self.k.o_indio
         piche = Piche("", x=0, y=0, cena=cena, taba=ftaba)
         vaga = Vazio("", x=3*l, y=2*l, cena=cena, ocupante=piche)
@@ -224,7 +225,7 @@ class Test_Kwarwp(TestCase):
         """ Chega no seu destino, tenta mover o índio, mas fica preso."""
         ftaba = self.t
         cena = self.k.cria()
-        l = self.k.LADO
+        l = self.LADO
         indio = self.k.o_indio
         oca = Oca("", x=0, y=0, cena=cena, taba=ftaba)
         vaga = Vazio("", x=3*l, y=2*l, cena=cena, ocupante=oca)
