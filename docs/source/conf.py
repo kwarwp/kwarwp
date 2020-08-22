@@ -16,7 +16,8 @@ import os
 import sys
 # sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('../../'))
-sys.path.insert(0, os.path.abspath('../../libs'))
+# sys.path.insert(0, os.path.abspath('../../libs'))
+from kwarwp import __version__
 
 
 # -- Project information -----------------------------------------------------
@@ -26,9 +27,9 @@ copyright = '2020, Carlo E. T. Oliveira'
 author = 'Carlo E. T. Oliveira'
 
 # The short X.Y version
-version = ''
+version = __version__
 # The full version, including alpha/beta/rc tags
-release = '20.07'
+release = __version__
 
 
 # -- General configuration ---------------------------------------------------
@@ -45,6 +46,7 @@ extensions = [
     'sphinx.ext.doctest',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
+    'sphinxcontrib.mermaid'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -73,7 +75,7 @@ exclude_patterns = []
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = None
-
+html_favicon = '_static/favicon.png'
 
 # -- Options for HTML output -------------------------------------------------
 

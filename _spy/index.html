@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Kwarwp - Aventuras com o Python</title>
+    <!-- stylesheets -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
+    <link rel="shortcut icon" href="image/favicon.ico" type="image/x-icon"/>
+    <script type="text/javascript" src="https://cdn.rawgit.com/brython-dev/brython/3.8.0/www/src/brython.js"></script>
+</head>
+<body onload="brython()" bgcolor="black">
+<script type="text/python">
+    from _spy.vitollino.main import Jogo, STYLE
+    from kwarwp.kwarapp import main
+    main(Jogo, STYLE)
+</script>
+<div id="pydiv"></div>
+</body>
+</html>

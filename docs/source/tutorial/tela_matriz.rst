@@ -3,6 +3,9 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+
+.. _usando_mapa:
+
 Usando um Mapa
 ===============
 
@@ -45,7 +48,7 @@ num dicionário de imagens dos elementos.
 
 
 Arena onde os desafios ocorrem.
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Esta versão recebe como parâmetro um mapa que define a montagem da arena.
 
@@ -115,7 +118,7 @@ Posiciona os elementos segundo suas posições i, j na matriz mapa
 
 .. code:: python
           
-          [self.cria_elemento( x=i*lado, y=j*lado+lado, cena=cena)
+          [self.cria_elemento(imagem, x=i*lado, y=j*lado+lado, cena=cena)
               for j, linha in enumerate(mapa) for i, imagem in enumerate(linha)]
           cena.vai()
           return cena
@@ -128,7 +131,7 @@ Cria um elemento na arena do Kwarwp na posição definida.
 
 .. code:: python
 
-      def cria_elemento(self, x, y, cena):
+      def cria_elemento(self,imagem, x, y, cena):
           lado = self.lado
           return self.v.a(self.GLIFOS[imagem], w=lado, h=lado, x=i*lado, y=j*lado+lado, cena=cena)
 

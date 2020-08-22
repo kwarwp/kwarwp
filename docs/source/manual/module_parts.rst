@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Kwarwp
-=========
+Partes do Kwarwp
+=================
 
 Um jogo de aventura que se joga aprendendo e criando programas na linguagem Python.
 
@@ -16,13 +16,13 @@ O jogo é dirigido principalmente ao ensino de programação de computadores par
 Documentação
 ------------
 
-Descrição dos módulos do Kwarwp.
+Descrição dos módulos de partes do Kwarwp.
 
-.. automodule:: kwarwp.kwarapp
+.. automodule:: kwarwp.kwarwpart
     :members:
     :undoc-members:
     :platform: Web
-    :synopsis: Aplicativo principal do Kwarwp.
+    :synopsis: Coletânea de peças do Kwarwp.
 
 Indices and tables
 ------------------

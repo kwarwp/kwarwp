@@ -32,6 +32,12 @@ Tutorial
    ambiente.rst
    inicio.rst
    tela_matriz.rst
+   indio.rst
+   move_indio.rst
+   organiza_taba.rst
+   melhora_indio.rst
+   inclui_tora.rst
+   tora_partes.rst
 
 
 .. _Projeto Kwarwp: http://activufrj.nce.ufrj.br/wiki/labase/Projeto_Kwarwp
