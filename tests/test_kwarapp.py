@@ -14,9 +14,11 @@ Changelog
 
         "&": Fab(self.maloc, f"{IMGUR}dZQ8liT.jpg"), # OCA
         "^": Fab(self.indio, f"{IMGUR}UCWGCKR.png"), # INDIO
+        "`": Fab(self.indio, f"{IMGUR}nvrwu0r.png"), # INDIA
+        "p": Fab(self.indio, f"{IMGUR}HeiupbP.png"), # PAJE
         ".": Fab(self.vazio, f"{IMGUR}npb9Oej.png"), # VAZIO
         "_": Fab(self.coisa, f"{IMGUR}sGoKfvs.jpg"), # SOLO
-        "#": Fab(self.coisa, f"{IMGUR}ldI7IbK.png"), # TORA
+        "#": Fab(self.atora, f"{IMGUR}0jSB27g.png"), # TORA
         "@": Fab(self.barra, f"{IMGUR}tLLVjfN.png"), # PICHE
         "~": Fab(self.coisa, f"{IMGUR}UAETaiP.gif"), # CEU
         "*": Fab(self.coisa, f"{IMGUR}PfodQmT.gif"), # SOL
@@ -31,6 +33,7 @@ from unittest import TestCase
 from unittest.mock import MagicMock
 from kwarwp.kwarapp import Kwarwp, Indio, JogoProxy, main
 from kwarwp.kwarwpart import Piche, Vazio, Oca, Tora
+from kwarwp.main import main as mn, Kaiowa
 #sys.path.insert(0, os.path.abspath('../../libs'))
 
 class Test_Kwarwp(TestCase):
@@ -40,6 +43,7 @@ class Test_Kwarwp(TestCase):
     """
     ABERTURA = "https://i.imgur.com/dZQ8liT.jpg"
     INDIO = "https://imgur.com/UCWGCKR.png"
+    INDIA = "https://imgur.com/nvrwu0r.png"
     OCA = "https://imgur.com/dZQ8liT.jpg"
     PICHE = "https://imgur.com/tLLVjfN.png"
     TORA = "https://imgur.com/0jSB27g.png"
@@ -82,11 +86,25 @@ class Test_Kwarwp(TestCase):
                 self._pos = value
         self.v = MagicMock(name="Vitollino")
         self.v().c = MagicMock(name="Vitollino_cria")
-        self.v().a = self.e = FakeElemento
+        self.v().a = self.v().e = self.e = FakeElemento
         self.k = Kwarwp(self.v)
         Vazio.VITOLLINO.a = FakeElemento
         self.t = FakeTaba()
         self.LADO = Vazio.LADO
+        
+    def testa_cria_dois_indios(self):
+        """ Cria o ambiente com dois índio."""
+        krw = mn(self.v, {})
+        self.assertIn(self.INDIO, self.elts)
+        self.assertIn(self.INDIA, self.elts)
+        self.assertIn(Kaiowa, [type(i) for i in krw.os_indios])
+        io, ia = krw.os_indios
+        krw.executa()
+        self.assertTrue(ia.vitollino._ativa, f"but india cmd: {ia.vitollino._ativa}")
+        self.assertEquals(krw.v._corrente, io.vitollino, f"but indio cmd: {krw.v._corrente}")
+        self.assertEquals(0, len(krw.v.comandos), f"but indio cmd: {krw.v.comandos}")
+        self.assertEquals(10, len(io.vitollino.comandos), f"but indio cmd: {io.vitollino.comandos}")
+        self.assertEquals(10, len(ia.vitollino.comandos), f"but india cmd: {ia.vitollino.comandos}")
         
     def testa_cria(self):
         """ Cria o ambiente de programação Kwarwp."""
@@ -336,27 +354,31 @@ class Test_Kwarwp(TestCase):
     def testa_empilha_ocupa_jogo_proxy(self):
         """Empilha um comando de ocupa no proxy para o Elemento Jogo"""
         x = JogoProxy(vitollino=self.v())
-        z = len(x.COMANDOS)
-        [x.COMANDOS.pop() for _ in range(z)]
-        x.ativa()
+        y = JogoProxy(vitollino=self.v(), proxy=x)
+        # x.COMANDOS = x.comandos
+        z = len(x.comandos)
+        [x.comandos.pop() for _ in range(z)]
+        y.ativa()
         # self.assertEquals(x.lidar, x._enfileira, f"mas o lidar era {x.lidar}")
         # x.COMANDOS = []
+        # x.COMANDOS = x.comandos
         cena = x.c("_IMAGEM_")
         self.assertIn("Vitollino_cria", str(cena.name))
         vag = x.a("_IMAGEM_VAGA_", x=998, cena=cena)
-        el0 = x.a("_IMAGEM_OCUPA0_", x=997, cena=cena)
+        el0 = y.a("_IMAGEM_OCUPA0_", x=997, cena=cena)
         el1 = x.a("_IMAGEM_OCUPA1_", x=997, cena=cena)
         self.assertIsInstance(vag.elt, self.e)
+        y.executa()
+        self.assertEquals(vag._corrente, y, f"mas x corrente era {vag._corrente}")
         vag.ocupa(el0)
         self.assertIsInstance(vag, JogoProxy)
-        self.assertEquals(1, len(x.COMANDOS), f"mas a pilha era {x.COMANDOS}")
+        self.assertEquals(1, len(y.comandos), f"mas a pilha era {x.comandos}")
         vag.ocupa(el1)
-        self.assertEquals(2,  len(x.COMANDOS))
-        x.executa()
-        self.assertEquals(1, len(x.COMANDOS), f"mas a pilha ficou {x.COMANDOS}")
+        self.assertEquals(2,  len(x.comandos))
+        self.assertEquals(1, len(x.comandos), f"mas a pilha ficou {x.comandos}")
         self.assertEquals(el0.elt,  vag.elt.destino)
         x.executa()
-        self.assertEquals(0, len(x.COMANDOS), f"mas a pilha ficou ainda {x.COMANDOS}")
+        self.assertEquals(0, len(x.comandos), f"mas a pilha ficou ainda {x.comandos}")
         self.assertEquals(el1.elt,  vag.elt.destino)
         
     def testa_avanca_passo_a_passo(self):
@@ -367,7 +389,9 @@ class Test_Kwarwp(TestCase):
         [x.COMANDOS.pop() for _ in range(z)]
         JogoProxy.ATIVA = False
         krp = Kwarwp(x.cria)
+        krp.os_indios = []
         cena = krp.cria()
+        self.assertCountEqual([krp.o_indio], krp.os_indios, f"mas indios era {krp.os_indios}")
         self.assertEquals(0, len(x.COMANDOS), f"mas a pilha era {x.COMANDOS}")
         indio = krp.o_indio
         self.assertIsInstance(indio.indio, JogoProxy)

@@ -30,7 +30,7 @@
 class Nulo:
     """Objeto nulo que responde passivamente a todas as requisições."""
     def __init__(self):
-        self.pegar = self.ocupa = self.ocupou = self.elt = self.nulo
+        self.pegar = self.ocupa = self.ocupou = self.elt = self.corrente = self.nulo
         
     def nulo(self, *_, **__):
         """Método nulo, responde passivamente a todas as chamadas.

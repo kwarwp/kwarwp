@@ -11,6 +11,11 @@
 
     Changelog
     ---------
+
+    .. versionadded::    20.08.b1
+        Adicionou :class:`JogoProxy` para realizar o passo a passo.
+        Capacidade de gerenciar mais de um índio.
+
     .. versionchanged::    20.08.b0
         Moveu constantes de classe VITOLLINO, LADO para Vazio.
         Moveu :class:`Vazio`, :class:`Oca`, :class:`Piche` para kwarwpart.
@@ -36,7 +41,7 @@
         classe Kwarwp.
 
 """
-from collections import namedtuple as nt
+from collections import namedtuple as nt, deque
 from kwarwp.kwarwpart import Vazio, Piche, Oca, Tora, NULO
 
 IMGUR = "https://imgur.com/"
@@ -60,12 +65,12 @@ class JogoProxy():
     :param vitollino: Empacota o engenho de jogo Vitollino.
     :param elt: Elemento que vai ser encapsulado pelo proxy.
     """
-    COMANDOS = []
-    """Fila de comandos criados pela execução do índio."""
-    ATIVA = False
-    """ Ativa a colocação de comandos na fila."""
+    # COMANDOS = []
+    # """Fila de comandos criados pela execução do índio."""
+    # ATIVA = False
+    # """ Ativa a colocação de comandos na fila."""
    
-    def __init__(self, vitollino=None, elt=None):
+    def __init__(self, vitollino=None, elt=None, proxy=None, master=None):
         class AdaptaElemento(vitollino.a):
             """ Adapta um Elemento do Vitollino para agrupar ocupa e pos.
 
@@ -82,6 +87,11 @@ class JogoProxy():
                 super().ocupa(ocupante) if ocupante else None
 
         self.v = vitollino
+        self.proxy = proxy or self
+        self.master = master or NULO
+        self._corrente = self
+        self.comandos = []
+        self._ativa = False
         """Cria um referência para o jogo do vitollino"""
         self.ae = AdaptaElemento
         """Cria um referência o Adapador de Eelementos"""
@@ -100,19 +110,42 @@ class JogoProxy():
         :return: Proxy para um Elemento construído com estes argumentos.
         
         """
-        return JogoProxy(elt=self.ae(*args, **kwargs), vitollino=self.v)
+        return JogoProxy(elt=self.ae(*args, **kwargs), vitollino=self.v, proxy=self)
+        
+    def e(self, *args, **kwargs):
+        """Encapsula a criação de elementos ativos, que executam scripts
+        
+        :param args: coleção de argumentos posicionais.
+        :param kwargs: coleção de argumentos nominais.
+        :return: Proxy para um Elemento construído com estes argumentos.
+        
+        """
+        return JogoProxy(elt=self.ae(*args, **kwargs), vitollino=self.v, proxy=self)
         
     def cria(self):
         """Fábrica do JogoProxy"""
         return self
+    
+    @property    
+    def corrente(self):
+        """Ativa Fábrica do JogoProxy"""
+        self.proxy._corrente
+
+    @corrente.setter
+    def corrente(self, mestre):
+        """Ativa Fábrica do JogoProxy"""
+        self._corrente = mestre
         
     def ativa(self):
         """Ativa Fábrica do JogoProxy"""
-        JogoProxy.ATIVA = True
+        # JogoProxy.ATIVA = True
+        self._ativa = True
+        self.proxy.corrente(self)
         
     def lidar(self, metodo):
         """Lida com modo de operação do JogoProxy"""
-        self._enfileira(metodo) if JogoProxy.ATIVA else self._executa(metodo)
+        self.master.corrente(self)
+        self.corrente._enfileira(metodo) if self._ativa else self._executa(metodo)
         
     def c(self, *args, **kwargs):
         """Encapsula a criação de cenas - apenas delega.
@@ -160,7 +193,7 @@ class JogoProxy():
 
     def _enfileira(self, metodo):
         """Coloca um comando na fila"""
-        self.COMANDOS.append(metodo)
+        self.comandos.append(metodo)
 
     def _executa(self, metodo):
         """Executa imediamente um comando, não põe na fila"""
@@ -168,7 +201,7 @@ class JogoProxy():
 
     def executa(self, *_):
         """Tira e executa um comando na fila"""
-        self.COMANDOS.pop(0)() if self.COMANDOS else None
+        self.comandos.pop(0)() if self.comandos else None
 
 
 class Indio():
@@ -183,21 +216,27 @@ class Indio():
     AZIMUTE = Rosa(Ponto(0, -1),Ponto(1, 0),Ponto(0, 1),Ponto(-1, 0),)
     """Constante com os pares ordenados que representam os vetores unitários dos pontos cardeais."""
     
-    def __init__(self, imagem, x, y, cena, taba):
+    def __init__(self, imagem, x, y, cena, taba, vitollino=None):
+        self.vitollino = vitollino or Vazio.VITOLLINO
         self.lado = lado = Vazio.LADO
         self.azimute = self.AZIMUTE.n
         """índio olhando para o norte"""
         self.taba = taba
         self.vaga = self
         self.ocupante = NULO
-        self.posicao = (x//lado,y//lado)
-        self.indio = Vazio.VITOLLINO.a(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
+        self.posicao = (x//lado,y//lado) 
+        self.indio = self.vitollino.e(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
         self.x = x
         """Este x provisoriamente distingue o índio de outras coisas construídas com esta classe"""
         if x:
             self.indio.siz = (lado*3, lado*4)
             """Define as proporções da folha de sprites"""
             self.gira()
+       
+    def ativa(self):
+        """ Ativa o proxy do índio para enfileirar comandos.
+        """
+        self.vitollino.ativa()
        
     def gira(self):
         """ Modifica a figura (Sprite) do índio mostrando para onde está indo.
@@ -318,6 +357,9 @@ class Indio():
         self.esquerda()
         self.anda()
         self.larga()
+        
+    def passo(self):
+        self.vitollino.executa()
 
     @property        
     def elt(self):
@@ -359,23 +401,25 @@ class Kwarwp():
         :param medidas: Um dicionário usado para redimensionar a tela.
     """
     
-    def __init__(self, vitollino=None, mapa=MAPA_INICIO, medidas={}):
+    def __init__(self, vitollino=None, mapa=None, medidas={}, indios=()):
         Vazio.VITOLLINO = self.v = vitollino()
+        self.vitollino = vitollino
         """Referência estática para obter o engenho de jogo."""
-        self.mapa = mapa.split()
+        self.mapa = (mapa or MAPA_INICIO).split()
         """Cria um matriz com os elementos descritos em cada linha de texto"""
         self.taba = {}
         """Cria um dicionário com os elementos traduzidos a partir da interpretação do mapa"""
         self.o_indio = NULO
+        self.os_indios = []
         """Instância do personagem principal, o índio, vai ser atribuído pela fábrica do índio"""
         self.lado, self.col, self.lin = 100, len(self.mapa[0]), len(self.mapa)+1
         """Largura da casa da arena dos desafios, número de colunas e linhas no mapa"""
         Vazio.LADO = self.lado
         """Referência estática para definir o lado do piso da casa."""
-        #kmain(self)
         w, h = self.col *self.lado, self.lin *self.lado
         medidas.update(width=w, height=f"{h}px")
-        #self.cena = self.cria(mapa=self.mapa) if vitollino else None
+        self.indios = deque(indios or [Indio])
+        self.cena = self.cria(mapa=self.mapa) if vitollino else None
 
     def cria(self, mapa=""):
         """ Fábrica de componentes.
@@ -388,6 +432,8 @@ class Kwarwp():
         fabrica = {
         "&": Fab(self.maloc, f"{IMGUR}dZQ8liT.jpg"), # OCA
         "^": Fab(self.indio, f"{IMGUR}UCWGCKR.png"), # INDIO
+        "`": Fab(self.indio, f"{IMGUR}nvrwu0r.png"), # INDIA
+        "p": Fab(self.indio, f"{IMGUR}HeiupbP.png"), # PAJE
         ".": Fab(self.vazio, f"{IMGUR}npb9Oej.png"), # VAZIO
         "_": Fab(self.coisa, f"{IMGUR}sGoKfvs.jpg"), # SOLO
         "#": Fab(self.atora, f"{IMGUR}0jSB27g.png"), # TORA
@@ -435,14 +481,20 @@ class Kwarwp():
         """ Ordena a execução do roteiro do índio.
         """
         # self.o_indio.esquerda()
-        self.v.executa()
+        # self.v.executa()
+        # self.o_indio.passo()
+
+        [indio.passo() for indio in self.os_indios]
+
         
     def executa(self, *_):
         """ Ordena a execução do roteiro do índio.
         """
-        self.v.ativa()
-        JogoProxy.ATIVA = True
-        self.o_indio.executa()
+        # self.v.ativa()
+        # JogoProxy.ATIVA = True
+        # self.o_indio.ativa()
+        # self.o_indio.executa()
+        [indio.ativa() and indio.executa() for indio in self.os_indios]
         
     def atora(self, imagem, x, y, cena):
         """ Cria uma tora na arena do Kwarwp na posição definida.
@@ -515,17 +567,20 @@ class Kwarwp():
         :param y: linha em que o elemento será posicionado.
         :param cena: cena em que o elemento será posicionado.
         """
-        self.o_indio = Indio(imagem, x=1, y=0, cena=cena, taba=self)
+        self.o_indio = self.indios[0](imagem, x=1, y=0, cena=cena, taba=self, vitollino=self.v)
         """ O índio tem deslocamento zero, pois é relativo à vaga.
             O **x=1** serve para distinguir o indio de outros derivados.
         """
         self.o_indio.indio.vai = lambda *_: self.o_indio.pega()
         """o índio.vai é associado ao seu próprio metodo pega"""
         vaga = Vazio("", x=x, y=y, cena=cena, ocupante=self.o_indio)
+        self.os_indios.append(self.o_indio)
+        self.indios.rotate()
+        """recebe a definição do próximo índio"""
         return vaga
 
 
-def main(vitollino, medidas={}):
+def main(vitollino, medidas={}, mapa=None, indios=()):
     """ Rotina principal que invoca a classe Kwarwp.
     
     :param vitollino: Empacota o engenho de jogo Vitollino.
@@ -533,10 +588,11 @@ def main(vitollino, medidas={}):
     """
     # print(f"main(vitollino={vitollino} medidas={medidas}")
     JogoProxy.COMANDOS, JogoProxy.ATIVA = [], False
-    print(f"def main: {JogoProxy} vitollino {vitollino}")
+    # print(f"def main: {JogoProxy} vitollino {vitollino}")
     vitollino_proxy = JogoProxy(vitollino=vitollino()).cria
-    print(f"def main vitollino_proxy: {vitollino_proxy}, {vitollino_proxy()}")
-    return Kwarwp(vitollino=vitollino_proxy, medidas=medidas)
+    # print(f"def main vitollino_proxy: {vitollino_proxy}, {vitollino_proxy()}")
+    # mapa, indios = alternate()
+    return Kwarwp(vitollino=vitollino_proxy, medidas=medidas, mapa=mapa, indios=indios)
         
     
 if __name__ == "__main__":
