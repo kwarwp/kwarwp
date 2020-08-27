@@ -64,6 +64,22 @@ class Vazio():
         self.sair = self._sair
         """O **sair ()** é usado como método dinâmico, variando com o estado da vaga.
         Inicialmente tem o comportamento de **_sair ()** que é o estado leniente, aceitando saidas"""
+
+    def sai(self):
+        """ Pedido por um ocupante para que desocupe a posição nela.
+        """
+        self.ocupante = self
+        self.acessa = self._acessa
+        self.sair = self._sair
+
+    def limpa(self):
+        """ Pedido por um ocupante para ele seja eliminado do jogo.
+        """
+        self._nada.ocupa(self.ocupante)
+        """a figura do ocupante vai ser anexada ao elemento nada, que não é apresentado"""
+        self.ocupante = self
+        self.acessa = self._acessa
+        self.sair = self._sair
         
     def pegar(self, requisitante):
         """ Consulta o ocupante atual se há permissão para pegar e entregar ao requistante.
@@ -128,13 +144,6 @@ class Vazio():
         No caso do espaço vazio, não faz nada.
         """
         pass
-        
-    def sai(self):
-        """ Pedido por um ocupante para que desocupe a posição nela.
-        """
-        self.ocupante = self
-        self.acessa = self._acessa
-        self.sair = self._sair
 
 
 class Piche(Vazio):
@@ -187,6 +196,14 @@ class Piche(Vazio):
         """Objeto tenta sair mas não é autorizado"""
         self.taba.fala("Você ficou preso no piche")       
 
+    def sai(self):
+        """ Pedido por um ocupante para que desocupe a posição nela.
+        """
+        self.ocupante = self
+        self.acessa = self._acessa
+        self.sair = self._sair
+        self.vaga.limpa()
+
 
 class Oca(Piche):
     """  A Oca é o destino final do índio, não poderá sair se ele entrar nela.
@@ -197,6 +214,8 @@ class Oca(Piche):
         :param cena: Cena em que o elemento será posicionado.
         :param taba: Representa a taba onde o índio faz o desafio.
     """
+    def sai(self):
+        pass
     
     def _pede_sair(self):
         """Objeto tenta sair mas não é autorizado"""
