@@ -123,6 +123,24 @@ class Test_Kwarwp(TestCase):
         self.assertEquals((2, 3),  pos, f"but tora pos was {pos}")
         return indio, tora
         
+    def _pega_tora_elimina_piche(self):
+        """ Vai até a tora e pega e usa para eliminar o piche."""
+        cena = self.k.cria()
+        l = self.LADO
+        indio = self.k.o_indio
+        vaga_tora = self.k.taba[2, 3]
+        tora = Tora("", x=0, y=0, cena=cena, taba=self.k)
+        vaga = Vazio("", x=3*l, y=2*l, cena=cena, ocupante=tora)
+        vaga_tora = self.k.taba[(2, 3)] = vaga
+        indio.pega()
+        indio.direita()
+        piche = Piche("", x=0, y=0, cena=cena, taba=self.k)
+        vaga = Vazio("", x=3*l, y=2*l, cena=cena, ocupante=piche)
+        vaga_piche = self.k.taba[(3,2)] = vaga
+        indio.larga()
+        indio.pega()
+        self.assertEquals(vaga_piche.vazio,  vaga_piche, f"but vazio was {vaga_piche.vazio}")
+        
     def testa_pega_tora(self):
         """ Vai até a tora e pega."""
         cena = self.k.cria()
