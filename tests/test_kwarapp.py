@@ -27,7 +27,7 @@ sys.path.insert(0, os.path.abspath('../'))
 from unittest import TestCase
 from unittest.mock import MagicMock
 from kwarwp.kwarapp import Kwarwp, Indio
-from kwarwp.kwarwpart import Piche, Vazio, Oca, Tora
+from kwarwp.kwarwpart import Piche, Vazio, Oca, Tora, NULO
 #sys.path.insert(0, os.path.abspath('../../libs'))
 
 class Test_Kwarwp(TestCase):
@@ -106,6 +106,26 @@ class Test_Kwarwp(TestCase):
         tora = self.elts[self.TORA]
         self.assertIsInstance(vaga_tora.ocupante,  Tora, f"but vaga_tora was {vaga_tora.ocupante}")
         self.assertEquals(vaga_tora.vazio.destino, tora)
+        
+    def testa_empurra_tora(self):
+        """ Vai até a tora e empurra."""
+        cena = self.k.cria()
+        vaga_tora = self.k.taba[1, 3]
+        self.assertEquals(vaga_tora.taba,  self.k, f"but taba was {vaga_tora.taba}")
+        tora = vaga_tora.ocupante
+        pos = tora.posicao
+        self.assertEquals((1, 3),  pos, f"but last pos was {pos}")
+        indio = self.k.o_indio
+        indio.esquerda()
+        indio.anda()
+        pos = indio.posicao
+        self.assertEquals((2, 3),  pos, f"but indio pos was {pos}")
+        vaga = indio.vaga
+        indio.empurra()
+        pos = tora.posicao
+        self.assertEquals((0, 3),  pos, f"but tora pos was {pos}")
+        self.assertEquals(vaga,  NULO, f"but vaga pos was {vaga}")
+        return indio, tora
         
     def _pega_tora(self):
         """ Vai até a tora e pega."""
