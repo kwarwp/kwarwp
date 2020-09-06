@@ -20,7 +20,11 @@ class Vitollino(Jogo):
 
 def main():
     kwarwp_main(Vitollino)
+
+def main_test():
+    from kwarwp.btest_kwarwp import main
+    main()
         
     
 if __name__ == "__main__":
-    main()
+    main_test()

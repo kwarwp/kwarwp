@@ -124,7 +124,24 @@ class Test_Kwarwp(TestCase):
         indio.empurra()
         pos = tora.posicao
         self.assertEquals((0, 3),  pos, f"but tora pos was {pos}")
-        self.assertEquals(vaga,  NULO, f"but vaga pos was {vaga}")
+        self.assertEquals(vaga.ocupante,  NULO, f"but vaga ocupante was {vaga.ocupante}")
+        vaga = indio.vaga
+        indio.empurra()
+        pos = tora.posicao
+        self.assertEquals((0, 3),  pos, f"but tora new pos was {pos}")
+        self.assertEquals(vaga.ocupante,  indio, f"but vaga new  ocupante {vaga.ocupante}")
+        vaga = tora.vaga
+        indio.pega()
+        pos = tora.posicao
+        self.assertEquals((1, 3),  pos, f"but tora taken pos was {pos}")
+        self.assertEquals(vaga.ocupante,  NULO, f"but vaga taken  ocupante {vaga.ocupante}")
+        self.assertEquals(tora.vaga,  indio, f"but tora vaga {tora.vaga}")
+        # vaga = tora.vaga
+        indio.larga()
+        pos = tora.posicao
+        self.assertEquals((0, 3),  pos, f"but tora drop pos was {pos}")
+        self.assertEquals(vaga.ocupante,  tora, f"but vaga drop  ocupante {vaga.ocupante}")
+        self.assertEquals(tora.vaga,  vaga, f"but tora drop vaga {tora.vaga}")
         return indio, tora
         
     def _pega_tora(self):
@@ -176,7 +193,7 @@ class Test_Kwarwp(TestCase):
         pos = tora.posicao
         self.assertEquals((1, 3),  pos, f"but tora pos was {pos}")
         coisa = Tora("", x=0, y=0, cena=cena, taba=self.k)
-        vaga = Vazio("", x=0*l, y=3*l, cena=cena, ocupante=coisa)
+        vaga = Vazio("", x=0*l, y=3*l, cena=cena, ocupante=coisa, taba=self.k)
         vazio = self.k.taba[(0,3)] = vaga
         indio.pega()
         pos = tora.posicao
@@ -200,11 +217,11 @@ class Test_Kwarwp(TestCase):
         indio = self.k.o_indio
         indio.pega()
         coisa = Oca("", x=0, y=0, cena=cena, taba=self.k)
-        vaga = Vazio("", x=3*l, y=2*l, cena=cena, ocupante=coisa)
+        vaga = Vazio("", x=3*l, y=2*l, cena=cena, ocupante=coisa, taba=self.k)
         vazio = self.k.taba[(3,2)] = vaga
         indio.pega()
         coisa = Piche("", x=0, y=0, cena=cena, taba=self.k)
-        vaga = Vazio("", x=3*l, y=2*l, cena=cena, ocupante=coisa)
+        vaga = Vazio("", x=3*l, y=2*l, cena=cena, ocupante=coisa, taba=self.k)
         vazio = self.k.taba[(3,2)] = vaga
         indio.pega()
         indio.esquerda()
@@ -245,7 +262,7 @@ class Test_Kwarwp(TestCase):
         l = self.LADO
         indio = self.k.o_indio
         piche = Piche("", x=0, y=0, cena=cena, taba=ftaba)
-        vaga = Vazio("", x=3*l, y=2*l, cena=cena, ocupante=piche)
+        vaga = Vazio("", x=3*l, y=2*l, cena=cena, ocupante=piche, taba=ftaba)
         vazio = self.k.taba[(3,1)] = vaga
         self.assertIsInstance(vazio.ocupante, Piche, f"but vaga was {type(vazio.ocupante)}")
         pos = piche.posicao
@@ -266,7 +283,7 @@ class Test_Kwarwp(TestCase):
         l = self.LADO
         indio = self.k.o_indio
         oca = Oca("", x=0, y=0, cena=cena, taba=ftaba)
-        vaga = Vazio("", x=3*l, y=2*l, cena=cena, ocupante=oca)
+        vaga = Vazio("", x=3*l, y=2*l, cena=cena, ocupante=oca, taba=ftaba)
         vazio = self.k.taba[(3,1)] = vaga
         self.assertIsInstance(vazio.ocupante, Oca, f"but vaga was {type(vazio.ocupante)}")
         pos = oca.posicao

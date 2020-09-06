@@ -7,8 +7,11 @@
     <!-- fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
     <link rel="shortcut icon" href="image/favicon.ico" type="image/x-icon"/>
-    <script type="text/javascript" src="https://cdn.rawgit.com/brython-dev/brython/3.8.0/www/src/brython.js"></script>
-</head>
+    <!-- script type="text/javascript" src="https://cdn.rawgit.com/brython-dev/brython/3.8.0/www/src/brython.js"></script -->
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.8.10/brython.min.js">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.8.10/brython_stdlib.js">
+    </script></head>
 <body onload="brython()" bgcolor="black">
 <script type="text/python">
     from _spy.vitollino.main import Jogo, STYLE
@@ -16,5 +19,7 @@
     main(Jogo, STYLE)
 </script>
 <div id="pydiv"></div>
+<div id="container"></div>
+<div id="report"></div>
 </body>
 </html>

@@ -288,6 +288,7 @@ class Tora(Piche):
         """
         self.empurrante = empurrante
         self.vaga.acessar(self, azimute)
+        self.empurrante = NULO
         
     def ocupa(self, vaga):
         """ Pedido por uma vaga para que ocupe a posição nela.
@@ -299,8 +300,7 @@ class Tora(Piche):
         self.vaga.sai()
         self.posicao = vaga.posicao
         vaga.ocupou(self)
-        self.empurrante.ocupa(self.vaga) # if self.empurrante is not NULO else None
-        self.empurrante = NULO
+        self.empurrante.ocupa(self.vaga) if self.empurrante is not NULO else None
         self.vaga = vaga
 
     @property        
