@@ -11,13 +11,13 @@ Changelog
 
 """
 from _spy.vitollino.main import Jogo
-from unittest import TestCase
+#from unittest import TestCase
 # from unittest.mock import MagicMock
 from kwarwp.kwarapp import Kwarwp, Indio
 from kwarwp.kwarwpart import Piche, Vazio, Oca, Tora, NULO
 #sys.path.insert(0, os.path.abspath('../../libs'))
 
-class Test_Kwarwp(TestCase):
+class Test_Kwarwp: #(TestCase):
     """ Jogo para ensino de programação.
     
         :param vitollino: Empacota o engenho de jogo Vitollino.
@@ -140,9 +140,9 @@ def main():
     # main()
 
     import unittest
-    import kwarwp.htmlrunner as htmlrun
-    suite = unittest.TestLoader().loadTestsFromTestCase(Test_Kwarwp)
-    htmlrun.HTMLTestRunner().run(suite)        
+    #import kwarwp.htmlrunner as htmlrun
+    #suite = unittest.TestLoader().loadTestsFromTestCase(Test_Kwarwp)
+    #htmlrun.HTMLTestRunner().run(suite)        
     
 if __name__ == "__main__":
     main()
