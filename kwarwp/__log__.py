@@ -357,3 +357,7 @@ Exception: <TypeError: bases[i].$dict is undefined>
 'error': '''
 Exception: <TypeError: bases[i].$dict is undefined>
 '''},
+{'date': 'Wed Sep 09 2020 18:41:48.830 GMt-0300 (Horário Padrão de Brasília) -X- SuPyGirls -X-',
+'error': '''
+Exception: <TypeError: bases[i].$dict is undefined>
+'''},
