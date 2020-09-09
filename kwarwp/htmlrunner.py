@@ -132,8 +132,8 @@ class _TestResult(TestResult):
         #   stack trace,
         # )
         self.result = []
-        document <= html.DIV(Id="container")
-        document <= html.DIV(Id="report")
+        document["pydiv"] <= html.DIV(Id="container")
+        document["pydiv"] <= html.DIV(Id="report")
 
     def startTest(self, test):
         TestResult.startTest(self, test)
@@ -208,7 +208,7 @@ class _TestResult(TestResult):
         lines = "\n".join(f"line {line}" for line in infos[:-1])
         return [html.TD(lines + "\nline %s - %s: %s" %(infos[-1],
             err[0].__name__,
-            str(err[1]).splitlines()[0].replace('<', '&lt;')),
+            str(err[1]).splitlines()[0].replace('<', '<')),
                 Class="error_message")]
 
 class HTMLTestRunner:
