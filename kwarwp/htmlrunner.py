@@ -132,8 +132,6 @@ class _TestResult(TestResult):
         #   stack trace,
         # )
         self.result = []
-        document["pycard"] <= html.DIV(Id="container")
-        document["pycard"] <= html.DIV(Id="report")
 
     def startTest(self, test):
         TestResult.startTest(self, test)
@@ -222,6 +220,8 @@ class HTMLTestRunner:
         document.bgColor = "white"
         self.hider = html.DIV()
         self.hider <= document["pydiv"]
+        document["pycard"] <= html.DIV(Id="container")
+        document["pycard"] <= html.DIV(Id="report")
 
     def run(self, test):
         "Run the given test case or test suite."
