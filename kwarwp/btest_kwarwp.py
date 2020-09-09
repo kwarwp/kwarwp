@@ -140,9 +140,9 @@ def main():
     # main()
 
     import unittest
-    #import kwarwp.htmlrunner as htmlrun
-    #suite = unittest.TestLoader().loadTestsFromTestCase(Test_Kwarwp)
-    #htmlrun.HTMLTestRunner().run(suite)        
+    import kwarwp.htmlrunner as htmlrun
+    suite = unittest.TestLoader().loadTestsFromTestCase(Test_Kwarwp)
+    htmlrun.HTMLTestRunner().run(suite)        
     
 if __name__ == "__main__":
     main()
