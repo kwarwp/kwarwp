@@ -349,3 +349,7 @@ AttributeError: 'NoneType' object has no attribute 'a'
     fabrica = {
 AttributeError: 'Kwarwp' object has no attribute 'indi0'
 '''},
+{'date': 'Wed Sep 09 2020 18:38:10.216 GMt-0300 (Horário Padrão de Brasília) -X- SuPyGirls -X-',
+'error': '''
+Exception: <TypeError: bases[i].$dict is undefined>
+'''},
