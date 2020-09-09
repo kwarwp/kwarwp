@@ -132,8 +132,8 @@ class _TestResult(TestResult):
         #   stack trace,
         # )
         self.result = []
-        document["pydiv"] <= html.DIV(Id="container")
-        document["pydiv"] <= html.DIV(Id="report")
+        document["pycard"] <= html.DIV(Id="container")
+        document["pycard"] <= html.DIV(Id="report")
 
     def startTest(self, test):
         TestResult.startTest(self, test)
