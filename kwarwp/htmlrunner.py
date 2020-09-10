@@ -1,15 +1,16 @@
 # kwarwp.kwarwp.htmlrunner.py
 # SPDX-License-Identifier: GPL-3.0-or-later
-""" Projeto sem descrição, (mude esta linha).
+""" Jogo para ensino de programação Python.
 
-.. codeauthor:: Nome Sobrenome <mail@local.tipo>
+.. codeauthor:: Carlo Oliveira <carlo@ufrj.br>
 
 Changelog
 ---------
 .. versionadded::    20.09
-        Descreva o que você adicionou no código.
+        classe TestRunner.
 
-
+"""
+"""
 A TestRunner for use with the Python unit testing framework. It
 generates a HTML report to show the result at a glance.
 

@@ -39,6 +39,7 @@ Tutorial
    inclui_tora.rst
    tora_partes.rst
    tira_piche.rst
+   test_unitario.rst
 
 
 .. _Projeto Kwarwp: http://activufrj.nce.ufrj.br/wiki/labase/Projeto_Kwarwp
