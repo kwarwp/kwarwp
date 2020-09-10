@@ -361,3 +361,11 @@ Exception: <TypeError: bases[i].$dict is undefined>
 'error': '''
 Exception: <TypeError: bases[i].$dict is undefined>
 '''},
+{'date': 'Wed Sep 09 2020 22:53:24.431 GMt-0300 (Horário Padrão de Brasília) -X- SuPyGirls -X-',
+'error': '''
+SyntaxError: invalid syntax
+
+ module __ge739 line 2
+  UTF8 -*-# Este arquivo é parte do programa Vi:
+          ^
+'''},
