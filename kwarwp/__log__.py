@@ -389,3 +389,10 @@ SyntaxError: invalid syntax
 'error': '''
 Exception: <TypeError: bases[i].$dict is undefined>
 '''},
+{'date': 'Wed Sep 09 2020 23:09:00.888 GMt-0300 (Horário Padrão de Brasília) -X- SuPyGirls -X-',
+'error': '''
+ module __ge739 line 2
+  UTF8 -*-# Este arquivo é parte do programa Vi:
+          ^
+SyntaxError: invalid syntax
+'''},
