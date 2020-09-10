@@ -1,4 +1,4 @@
-# kwarwp.kwarwp.main.py
+# kwarwp.kwarwp.btest_kwarwp.py
 # SPDX-License-Identifier: GPL-3.0-or-later
 """ Jogo para ensino de programação Python.
 
@@ -6,8 +6,8 @@
 
 Changelog
 ---------
-.. versionadded::    20.07
-        classe Vitollino.
+.. versionadded::    20.09
+        classe Test_Kwarwp.
 
 """
 from _spy.vitollino.main import Jogo
@@ -18,9 +18,8 @@ from kwarwp.kwarwpart import Piche, Vazio, Oca, Tora, NULO
 #sys.path.insert(0, os.path.abspath('../../libs'))
 
 class Test_Kwarwp(TestCase):
-    """ Jogo para ensino de programação.
+    """ Teste do Jogo para ensino de programação.
     
-        :param vitollino: Empacota o engenho de jogo Vitollino.
     """
     ABERTURA = "https://i.imgur.com/dZQ8liT.jpg"
     INDIO = "https://imgur.com/UCWGCKR.png"
@@ -129,7 +128,6 @@ class Test_Kwarwp(TestCase):
         self.assertEqual(vaga.ocupante,  tora, f"but vaga drop  ocupante {vaga.ocupante}")
         self.assertEqual(tora.vaga,  vaga, f"but tora drop vaga {tora.vaga}")
         return indio, tora
-
 
 def main():
     # from unittest import main

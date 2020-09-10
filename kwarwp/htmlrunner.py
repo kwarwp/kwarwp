@@ -1,4 +1,4 @@
-# kwarwp.kwarwp.main.py
+# kwarwp.kwarwp.htmlrunner.py
 # SPDX-License-Identifier: GPL-3.0-or-later
 """ Jogo para ensino de programação Python.
 
@@ -6,8 +6,8 @@
 
 Changelog
 ---------
-.. versionadded::    20.07
-        classe Vitollino.
+.. versionadded::    20.09
+        classe TestRunner.
 
 """
 """
@@ -207,7 +207,7 @@ class _TestResult(TestResult):
         lines = "\n".join(f"line {line}" for line in infos[:-1])
         return [html.TD(lines + "\nline %s - %s: %s" %(infos[-1],
             err[0].__name__,
-            str(err[1]).splitlines()[0].replace('<', '&lt;')),
+            str(err[1]).splitlines()[0].replace('<', '<')),
                 Class="error_message")]
 
 class HTMLTestRunner:
