@@ -103,9 +103,6 @@ class Test_Kwarwp(TestCase):
         self.assertEqual(coisa.ocupante.vazio, tora, f"but coisa.ocupante.indio was {coisa.ocupante.vazio}")
         # self.assertEqual((0, 0), tora.pos, f"but tora.pos was {tora.pos}")
         
-    def _not(self):
-        self.assertEqual((0, 0), tora.pos, f"but tora.pos was {tora.pos}")
-
     def testa_empurra_tora(self):
         """ Vai até a tora e empurra."""
         cena = self.k.cria()
