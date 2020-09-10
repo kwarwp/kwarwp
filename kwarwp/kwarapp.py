@@ -402,9 +402,9 @@ def main(vitollino, medidas={}):
     :param vitollino: Empacota o engenho de jogo Vitollino.
     :param medidas: Um dicionário usado para redimensionar a tela.
     """
-    # print(f"main(vitollino={vitollino} medidas={medidas}")
-    # Kwarwp(vitollino, medidas=medidas).cria()
-    main_test()
+    print(f"main(vitollino={vitollino} medidas={medidas}")
+    Kwarwp(vitollino, medidas=medidas).cria()
+    #main_test()
 
 def main_test():
     from kwarwp.btest_kwarwp import main
@@ -414,5 +414,5 @@ def main_test():
 if __name__ == "__main__":
     from _spy.vitollino.main import Jogo, STYLE
     STYLE.update(width=600, height="500px")
-    #main(Jogo, STYLE)
-    main_test()
+    main(Jogo, STYLE)
+    #main_test()
