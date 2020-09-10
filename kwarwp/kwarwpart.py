@@ -284,7 +284,8 @@ class Tora(Piche):
     def empurrar(self, empurrante, azimute):
         """ Consulta o ocupante atual se há permissão para pegar e entregar ao requistante.
 
-            :param requistante: O ator querendo pegar o objeto.
+            :param empurrante: O ator querendo empurrar o objeto.
+            :param azimute: A direção em que se quer empurrar o objeto.
         """
         self.empurrante = empurrante
         self.vaga.acessar(self, azimute)
