@@ -18,9 +18,8 @@ from kwarwp.kwarwpart import Piche, Vazio, Oca, Tora, NULO
 #sys.path.insert(0, os.path.abspath('../../libs'))
 
 class Test_Kwarwp(TestCase):
-    """ Jogo para ensino de programação.
+    """ Teste do Jogo para ensino de programação.
     
-        :param vitollino: Empacota o engenho de jogo Vitollino.
     """
     ABERTURA = "https://i.imgur.com/dZQ8liT.jpg"
     INDIO = "https://imgur.com/UCWGCKR.png"
