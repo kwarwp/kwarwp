@@ -220,16 +220,28 @@ class HTMLTestRunner:
         document.body.bgColor = "white"
         document.bgColor = "white"
         self.hider = html.DIV()
+        self.pydiv = document["pydiv"]
         self.hider <= document["pydiv"]
+        document["pycard"] <= html.DIV(Id="container")
+        document["pycard"] <= html.DIV(Id="report")
+
+    def back_editor(self, *_):
+        self.hider <= document["container"]
+        self.hider <= document["report"]
+        document["pyparent"] <= self.pydiv
+
 
     def run(self, test):
         "Run the given test case or test suite."
+        b = html.BUTTON("Clique para voltar para o editor", Id="editor")
+        b.onclick = self.back_editor
         t = html.TABLE(Id="report")
         t <= html.TR(html.TH(x, Class="header", style = {"backgroundColor" : "lightgrey"})
             for x in ('Test class', 'Method', 'Line', 'T(ms)', 'Result',
             'Error message')
         )
         document["container"].html = ""
+        document["container"] <= b
         document["container"] <= t
         result = _TestResult(self.verbosity)
         test(result)

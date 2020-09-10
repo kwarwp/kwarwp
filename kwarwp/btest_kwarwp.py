@@ -88,52 +88,48 @@ class Test_Kwarwp(TestCase):
         cena = self.k.cria()
         coisa = self.k.taba[3,3]
         self.assertIsInstance(coisa.ocupante,  Indio, f"but ocupante was {coisa.ocupante}")
-        self.assertEquals(100, coisa.lado, f"but coisa.lado was {coisa.lado}")
+        self.assertEqual(100, coisa.lado, f"but coisa.lado was {coisa.lado}")
         indio = self.elts[self.INDIO]
-        self.assertEquals(coisa.ocupante.indio, indio, f"but coisa.ocupante.indio was {coisa.ocupante.indio}")
-        self.assertEquals((0, 0), indio.pos, f"but indio.pos was {indio.pos}")
+        self.assertEqual(coisa.ocupante.indio, indio, f"but coisa.ocupante.indio was {coisa.ocupante.indio}")
+        self.assertEqual((0, 0), indio.pos, f"but indio.pos was {indio.pos}")
         
     def testa_empurra_tora(self):
         """ Vai até a tora e empurra."""
         cena = self.k.cria()
         vaga_tora = self.k.taba[1, 3]
-        self.assertEquals(vaga_tora.taba,  self.k, f"but taba was {vaga_tora.taba}")
+        self.assertEqual(vaga_tora.taba,  self.k, f"but taba was {vaga_tora.taba}")
         tora = vaga_tora.ocupante
         pos = tora.posicao
-        self.assertEquals((1, 3),  pos, f"but last pos was {pos}")
+        self.assertEqual((1, 3),  pos, f"but last pos was {pos}")
         indio = self.k.o_indio
         indio.esquerda()
         indio.anda()
         pos = indio.posicao
-        self.assertEquals((2, 3),  pos, f"but indio pos was {pos}")
+        self.assertEqual((2, 3),  pos, f"but indio pos was {pos}")
         vaga = indio.vaga
         indio.empurra()
         pos = tora.posicao
-        self.assertEquals((0, 3),  pos, f"but tora pos was {pos}")
-        self.assertEquals(vaga.ocupante,  NULO, f"but vaga ocupante was {vaga.ocupante}")
+        self.assertEqual((0, 3),  pos, f"but tora pos was {pos}")
+        self.assertEqual(vaga.ocupante,  NULO, f"but vaga ocupante was {vaga.ocupante}")
         vaga = indio.vaga
         indio.empurra()
         pos = tora.posicao
-        self.assertEquals((0, 3),  pos, f"but tora new pos was {pos}")
-        self.assertEquals(vaga.ocupante,  indio, f"but vaga new  ocupante {vaga.ocupante}")
+        self.assertEqual((0, 3),  pos, f"but tora new pos was {pos}")
+        self.assertEqual(vaga.ocupante,  indio, f"but vaga new  ocupante {vaga.ocupante}")
         vaga = tora.vaga
         indio.pega()
         pos = tora.posicao
-        self.assertEquals((1, 3),  pos, f"but tora taken pos was {pos}")
-        self.assertEquals(vaga.ocupante,  NULO, f"but vaga taken  ocupante {vaga.ocupante}")
-        self.assertEquals(tora.vaga,  indio, f"but tora vaga {tora.vaga}")
+        self.assertEqual((1, 3),  pos, f"but tora taken pos was {pos}")
+        self.assertEqual(vaga.ocupante,  NULO, f"but vaga taken  ocupante {vaga.ocupante}")
+        self.assertEqual(tora.vaga,  indio, f"but tora vaga {tora.vaga}")
         # vaga = tora.vaga
         indio.larga()
         pos = tora.posicao
-        self.assertEquals((0, 3),  pos, f"but tora drop pos was {pos}")
-        self.assertEquals(vaga.ocupante,  tora, f"but vaga drop  ocupante {vaga.ocupante}")
-        self.assertEquals(tora.vaga,  vaga, f"but tora drop vaga {tora.vaga}")
+        self.assertEqual((0, 3),  pos, f"but tora drop pos was {pos}")
+        self.assertEqual(vaga.ocupante,  tora, f"but vaga drop  ocupante {vaga.ocupante}")
+        self.assertEqual(tora.vaga,  vaga, f"but tora drop vaga {tora.vaga}")
         return indio, tora
 
-
-class Vitollino(Jogo):
-    """ Empacota o engenho de jogo Vitollino """
-    pass
 
 def main():
     # from unittest import main

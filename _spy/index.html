@@ -8,18 +8,30 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
     <link rel="shortcut icon" href="image/favicon.ico" type="image/x-icon"/>
     <!-- script type="text/javascript" src="https://cdn.rawgit.com/brython-dev/brython/3.8.0/www/src/brython.js"></script -->
-    <script src="https://cdn.jsdelivr.net/npm/brython@3.8.10/brython.min.js">
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.8.0/brython.min.js">
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/brython@3.8.10/brython_stdlib.js">
-    </script></head>
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.8.0/brython_stdlib.min.js">
+    </script>
+</head>
 <body onload="brython()" bgcolor="black">
+    <script  type="text/javascript">
+    function decodeUnicode(str) {
+  // Going backwards: from bytestream, to percent-encoding, to original string.
+  return decodeURIComponent(atob(str).split('').map(function (c) {
+    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
+}
+    </script>
 <script type="text/python">
     from _spy.vitollino.main import Jogo, STYLE
     from kwarwp.kwarapp import main
     main(Jogo, STYLE)
 </script>
-<div id="pydiv"></div>
-<div id="container"></div>
-<div id="report"></div>
+  <div id="pyparent" class="card">
+      <!-- about content -->
+      <div id="pycard"></div>
+      <div id="pydiv" class="card is-12by8" style="min-height:600px;">
+      </div>
+  </div>
 </body>
 </html>
