@@ -385,3 +385,7 @@ SyntaxError: invalid syntax
   TF8 -*-# Este arquivo é parte do programa Vit:
          ^
 '''},
+{'date': 'Wed Sep 09 2020 23:06:42.183 GMt-0300 (Horário Padrão de Brasília) -X- SuPyGirls -X-',
+'error': '''
+Exception: <TypeError: bases[i].$dict is undefined>
+'''},
