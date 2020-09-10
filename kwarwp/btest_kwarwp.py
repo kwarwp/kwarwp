@@ -101,7 +101,7 @@ class Test_Kwarwp(TestCase):
         self.assertEqual(100, coisa.lado, f"but coisa.lado was {coisa.lado}")
         tora = self.elts[self.TORA]
         self.assertEqual(coisa.ocupante.vazio, tora, f"but coisa.ocupante.indio was {coisa.ocupante.vazio}")
-        # self.assertEqual((0, 0), tora.pos, f"but tora.pos was {tora.pos}")
+        self.assertEqual((0, 0), tora.pos, f"but tora.pos was {tora.pos}")
         
     def testa_empurra_tora(self):
         """ Vai até a tora e empurra."""
