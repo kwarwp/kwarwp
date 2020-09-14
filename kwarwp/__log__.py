@@ -610,3 +610,9 @@ AttributeError: 'NoneType' object has no attribute 'incrementaldecoder'
     """Brython front end client.
 TypeError: Object passed as base class is not a class
 '''},
+{'date': 'Mon Sep 14 2020 13:50:19.336 GMt-0300 (Horário Padrão de Brasília) -X- SuPyGirls -X-',
+'error': '''Traceback (most recent call last):
+  File __code/_core/supygirls_factory.py, line 20, in <module>
+    """Brython front end client.
+TypeError: Object passed as base class is not a class
+'''},
