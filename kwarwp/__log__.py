@@ -530,3 +530,17 @@ TypeError: Object passed as base class is not a class
 'error': ''''''},
 {'date': 'Mon Sep 14 2020 13:44:06.614 GMt-0300 (Horário Padrão de Brasília) -X- SuPyGirls -X-',
 'error': ''''''},
+{'date': 'Mon Sep 14 2020 13:46:23.242 GMt-0300 (Horário Padrão de Brasília) -X- SuPyGirls -X-',
+'error': '''Traceback (most recent call last):
+  File __code/_core/supygirls_factory.py, line 135, in action
+    <unknown>
+  File __code/_core/supygirls_factory.py, line 310, in executa_acao
+    <unknown>
+  File __code/_core/supygirls_factory.py, line 268, in _first_response
+    <unknown>
+  File __code/_core/supygirls_factory.py, line 310, in <lambda>
+    <unknown>
+  File __code/_core/supygirls_factory.py, line 299, in _executa_acao
+    <unknown>
+Exception: <Javascript TypeError>: Cannot read property '$is_class' of undefined
+'''},
