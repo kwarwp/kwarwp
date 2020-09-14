@@ -616,3 +616,9 @@ TypeError: Object passed as base class is not a class
     """Brython front end client.
 TypeError: Object passed as base class is not a class
 '''},
+{'date': 'Mon Sep 14 2020 13:50:36.841 GMt-0300 (Horário Padrão de Brasília) -X- SuPyGirls -X-',
+'error': '''  File <string>, line 20
+    class Test_Kwarwp(TestCase)
+                                ^
+SyntaxError: invalid syntax 
+'''},
