@@ -471,3 +471,9 @@ SyntaxError: invalid syntax
     <unknown>
 AttributeError: 'NoneType' object has no attribute 'incrementaldecoder'
 '''},
+{'date': 'Mon Sep 14 2020 13:30:15.530 GMt-0300 (Horário Padrão de Brasília) -X- SuPyGirls -X-',
+'error': '''  File <string>, line 20
+    class Test_Kwarwp(TestCase)
+                                ^
+SyntaxError: invalid syntax 
+'''},
