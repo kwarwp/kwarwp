@@ -604,3 +604,9 @@ Exception: <Javascript TypeError>: Cannot read property '$is_class' of undefined
     <unknown>
 AttributeError: 'NoneType' object has no attribute 'incrementaldecoder'
 '''},
+{'date': 'Mon Sep 14 2020 13:49:11.547 GMt-0300 (Horário Padrão de Brasília) -X- SuPyGirls -X-',
+'error': '''Traceback (most recent call last):
+  File __code/_core/supygirls_factory.py, line 20, in <module>
+    """Brython front end client.
+TypeError: Object passed as base class is not a class
+'''},
