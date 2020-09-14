@@ -522,3 +522,5 @@ SyntaxError: invalid syntax
   File <string>, line 20, in <module>
 TypeError: Object passed as base class is not a class
 '''},
+{'date': 'Mon Sep 14 2020 13:41:26.322 GMt-0300 (Horário Padrão de Brasília) -X- SuPyGirls -X-',
+'error': ''''''},
