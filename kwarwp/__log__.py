@@ -507,3 +507,18 @@ SyntaxError: invalid syntax
                                 ^
 SyntaxError: invalid syntax 
 '''},
+{'date': 'Mon Sep 14 2020 13:39:13.383 GMt-0300 (Horário Padrão de Brasília) -X- SuPyGirls -X-',
+'error': '''Traceback (most recent call last):
+  File __code/_core/supygirls_factory.py, line 135, in action
+    self.act(self, lambda *_: self.hide() or extra()) if self.act else None
+  File __code/_core/supygirls_factory.py, line 310, in executa_acao
+    return self._first_response(lambda: self._executa_acao(), self.extra, self.error)
+  File __code/_core/supygirls_factory.py, line 268, in _first_response
+    action()
+  File __code/_core/supygirls_factory.py, line 310, in <lambda>
+    
+  File __code/_core/supygirls_factory.py, line 299, in _executa_acao
+    exec(self.code, glob)  # dict(__name__="__main__"))
+  File <string>, line 20, in <module>
+TypeError: Object passed as base class is not a class
+'''},
