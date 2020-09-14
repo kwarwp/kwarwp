@@ -495,3 +495,9 @@ SyntaxError: invalid syntax
     """Brython front end client.
 TypeError: Object passed as base class is not a class
 '''},
+{'date': 'Mon Sep 14 2020 13:37:56.920 GMt-0300 (Horário Padrão de Brasília) -X- SuPyGirls -X-',
+'error': '''  File <string>, line 21
+    """ Teste do Jogo para ensino de programação.
+         ^
+SyntaxError: invalid syntax 
+'''},
