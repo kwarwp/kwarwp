@@ -483,3 +483,9 @@ SyntaxError: invalid syntax
                                 ^
 SyntaxError: invalid syntax 
 '''},
+{'date': 'Mon Sep 14 2020 13:33:36.967 GMt-0300 (Horário Padrão de Brasília) -X- SuPyGirls -X-',
+'error': '''  File <string>, line 24
+    ABERTURA  "https://i.imgur.com/dZQ8liT.jpg"
+               ^
+SyntaxError: invalid syntax 
+'''},
