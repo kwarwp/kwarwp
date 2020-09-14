@@ -411,3 +411,63 @@ SyntaxError: invalid syntax
   UTF8 -*-# Este arquivo é parte do programa Vi:
           ^
 '''},
+{'date': 'Mon Sep 14 2020 13:28:57.330 GMt-0300 (Horário Padrão de Brasília) -X- SuPyGirls -X-',
+'error': '''Traceback (most recent call last):
+  File __code/_core/supygirls_factory.py, line 135, in action
+    <unknown>
+  File __code/_core/supygirls_factory.py, line 310, in executa_acao
+    <unknown>
+  File __code/_core/supygirls_factory.py, line 268, in _first_response
+    <unknown>
+  File __code/_core/supygirls_factory.py, line 310, in <lambda>
+    <unknown>
+  File __code/_core/supygirls_factory.py, line 299, in _executa_acao
+    <unknown>
+  File __code/_core/supygirls_factory.py, line 153, in <module>
+    main()
+  File __code/_core/supygirls_factory.py, line 150, in main
+    htmlrun.HTMLTestRunner().run(suite)
+  File __code/kwarwp/htmlrunner.py, line 247, in run
+    <unknown>
+  File https://cdn.jsdelivr.net/npm/brython@3.8.6/Lib/unittest.suite, line 84, in __call__
+    <unknown>
+  File https://cdn.jsdelivr.net/npm/brython@3.8.6/Lib/unittest.suite, line 122, in run
+    <unknown>
+  File https://cdn.jsdelivr.net/npm/brython@3.8.6/Lib/unittest.case, line 736, in __call__
+    <unknown>
+  File https://cdn.jsdelivr.net/npm/brython@3.8.6/Lib/unittest.case, line 684, in run
+    <unknown>
+  File https://cdn.jsdelivr.net/npm/brython@3.8.6/Lib/unittest.case, line 600, in _feedErrorsToResult
+    <unknown>
+  File __code/kwarwp/htmlrunner.py, line 186, in addFailure
+    <unknown>
+  File https://cdn.jsdelivr.net/npm/brython@3.8.6/Lib/unittest.result, line 17, in addFailure
+    <unknown>
+  File https://cdn.jsdelivr.net/npm/brython@3.8.6/Lib/unittest.result, line 122, in addFailure
+    <unknown>
+  File https://cdn.jsdelivr.net/npm/brython@3.8.6/Lib/unittest.result, line 185, in _exc_info_to_string
+    <unknown>
+  File https://cdn.jsdelivr.net/npm/brython@3.8.6/Lib/traceback, line 509, in __init__
+    <unknown>
+  File https://cdn.jsdelivr.net/npm/brython@3.8.6/Lib/traceback, line 366, in extract
+    <unknown>
+  File https://cdn.jsdelivr.net/npm/brython@3.8.6/Lib/traceback, line 288, in line
+    <unknown>
+  File https://cdn.jsdelivr.net/npm/brython@3.8.6/Lib/linecache, line 16, in getline
+    <unknown>
+  File https://cdn.jsdelivr.net/npm/brython@3.8.6/Lib/linecache, line 47, in getlines
+    <unknown>
+  File https://cdn.jsdelivr.net/npm/brython@3.8.6/Lib/linecache, line 137, in updatecache
+    <unknown>
+  File https://cdn.jsdelivr.net/npm/brython@3.8.6/Lib/_io, line 517, in readlines
+    <unknown>
+  File https://cdn.jsdelivr.net/npm/brython@3.8.6/Lib/_io, line 1948, in __next__
+    <unknown>
+  File https://cdn.jsdelivr.net/npm/brython@3.8.6/Lib/_io, line 1969, in readline
+    <unknown>
+  File https://cdn.jsdelivr.net/npm/brython@3.8.6/Lib/_io, line 1647, in _get_decoder
+    <unknown>
+  File VFS.codecs.py, line 995, in getincrementaldecoder
+    <unknown>
+AttributeError: 'NoneType' object has no attribute 'incrementaldecoder'
+'''},
