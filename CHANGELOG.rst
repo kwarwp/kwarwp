@@ -12,6 +12,22 @@ The format is based on `Keep a Changelog`_.
 -------------
 - to be defined
 
+`20.09.a1`_
+----------------
+
+Added
++++++
+- Jogo Proxy.
+- More indians.
+
+`20.09.a0`_
+----------------
+
+Added
++++++
+- Brython Unit Tests.
+- HtmlTestRunner.
+
 `20.08.b1`_
 ------------
 
@@ -91,6 +107,8 @@ LABASE_ - NCE_ - UFRJ_
 .. _20.08.a3: https://github.com/kwarwp/kwarwp/tree/release_20_08_a3
 .. _20.08.b0: https://github.com/kwarwp/kwarwp/tree/release_20_08_b0
 .. _20.08.b1: https://github.com/kwarwp/kwarwp/tree/release_20_08_b1
+.. _20.09.a0: https://github.com/kwarwp/kwarwp/tree/release_20_09_a0
+.. _20.09.a1: https://github.com/kwarwp/kwarwp/tree/release_20_09_a1
 
 .. |LABASE| image:: https://cetoli.gitlab.io/spyms/image/labase-logo-8.png
    :target: http://labase.activufrj.nce.ufrj.br

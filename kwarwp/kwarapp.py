@@ -64,23 +64,17 @@ class JogoProxy():
     
     :param vitollino: Empacota o engenho de jogo Vitollino.
     :param elt: Elemento que vai ser encapsulado pelo proxy.
+    :param proxy: Referência para o objeto proxy parente.
+    :param master: Determina se este elemento vai ser mestre de comandos.
     """
-    # COMANDOS = []
-    # """Fila de comandos criados pela execução do índio."""
-    # ATIVA = False
-    # """ Ativa a colocação de comandos na fila."""
    
     def __init__(self, vitollino=None, elt=None, proxy=None, master=False):
         class AdaptaElemento(vitollino.a):
             """ Adapta um Elemento do Vitollino para agrupar ocupa e pos.
 
-            :param vitollino: Referência ao Jogo do vitolino.
-            :param elt: Referência ao elemento que ele adapta.
             """
                 
             def ocupa(self, ocupante=None, pos=(0, 0)):
-                # super().elt.pos = pos
-                #vitollino.a.pos.fset(self, pos)
                 ocupante = ocupante or NULO
                 ocupante.pos = pos
                 # print(f"AdaptaElemento pos: {self.pos}")
@@ -88,7 +82,7 @@ class JogoProxy():
 
         self.v = vitollino
         self.proxy = proxy or self
-        self.master = master # or NULO
+        self.master = master
         self._corrente = self
         self.comandos = []
         self._ativa = False
@@ -103,7 +97,7 @@ class JogoProxy():
         return self.elt.siz
         
     def a(self, *args, **kwargs):
-        """Encapsula a criação de elementos
+        """Método fábrica - Encapsula a criação de elementos
         
         :param args: coleção de argumentos posicionais.
         :param kwargs: coleção de argumentos nominais.
@@ -113,7 +107,7 @@ class JogoProxy():
         return JogoProxy(elt=self.ae(*args, **kwargs), vitollino=self.v, proxy=self)
         
     def e(self, *args, **kwargs):
-        """Encapsula a criação de elementos ativos, que executam scripts
+        """Método fábrica - Encapsula a criação de elementos ativos, que executam scripts
         
         :param args: coleção de argumentos posicionais.
         :param kwargs: coleção de argumentos nominais.
@@ -362,7 +356,6 @@ class Indio():
         self.larga()
         
     def passo(self):
-        #self.vitollino.executa()
         self.indio.executa()
 
     @property        
