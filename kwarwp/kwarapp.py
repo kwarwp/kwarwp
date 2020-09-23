@@ -70,7 +70,7 @@ class JogoProxy():
     # ATIVA = False
     # """ Ativa a colocação de comandos na fila."""
    
-    def __init__(self, vitollino=None, elt=None, proxy=None, master=None):
+    def __init__(self, vitollino=None, elt=None, proxy=None, master=False):
         class AdaptaElemento(vitollino.a):
             """ Adapta um Elemento do Vitollino para agrupar ocupa e pos.
 
@@ -88,7 +88,7 @@ class JogoProxy():
 
         self.v = vitollino
         self.proxy = proxy or self
-        self.master = master or NULO
+        self.master = master # or NULO
         self._corrente = self
         self.comandos = []
         self._ativa = False
@@ -120,7 +120,7 @@ class JogoProxy():
         :return: Proxy para um Elemento construído com estes argumentos.
         
         """
-        return JogoProxy(elt=self.ae(*args, **kwargs), vitollino=self.v, proxy=self)
+        return JogoProxy(elt=self.ae(*args, **kwargs), vitollino=self.v, proxy=self, master=True)
         
     def cria(self):
         """Fábrica do JogoProxy"""
@@ -129,7 +129,7 @@ class JogoProxy():
     @property    
     def corrente(self):
         """Ativa Fábrica do JogoProxy"""
-        self.proxy._corrente
+        return self.proxy._corrente
 
     @corrente.setter
     def corrente(self, mestre):
@@ -140,12 +140,14 @@ class JogoProxy():
         """Ativa Fábrica do JogoProxy"""
         # JogoProxy.ATIVA = True
         self._ativa = True
-        self.proxy.corrente(self)
+        self.proxy.corrente = self
         
     def lidar(self, metodo):
         """Lida com modo de operação do JogoProxy"""
-        self.master.corrente(self)
-        self.corrente._enfileira(metodo) if self._ativa else self._executa(metodo)
+        #self.master.corrente(self)
+        self.ativa() if self.master else None
+        print(self._ativa, self.proxy._ativa, metodo)
+        self.corrente._enfileira(metodo) if self.proxy._ativa else self._executa(metodo)
         
     def c(self, *args, **kwargs):
         """Encapsula a criação de cenas - apenas delega.
@@ -236,7 +238,8 @@ class Indio():
     def ativa(self):
         """ Ativa o proxy do índio para enfileirar comandos.
         """
-        self.vitollino.ativa()
+        #self.vitollino.ativa()
+        self.indio.ativa()
        
     def gira(self):
         """ Modifica a figura (Sprite) do índio mostrando para onde está indo.
@@ -359,7 +362,8 @@ class Indio():
         self.larga()
         
     def passo(self):
-        self.vitollino.executa()
+        #self.vitollino.executa()
+        self.indio.executa()
 
     @property        
     def elt(self):
@@ -494,7 +498,10 @@ class Kwarwp():
         # JogoProxy.ATIVA = True
         # self.o_indio.ativa()
         # self.o_indio.executa()
-        [indio.ativa() and indio.executa() for indio in self.os_indios]
+        # [indio.ativa() and indio.executa() for indio in self.os_indios]
+        self.os_indios[0].ativa()
+        self.v.ativa()
+        self.os_indios[0].executa()
         
     def atora(self, imagem, x, y, cena):
         """ Cria uma tora na arena do Kwarwp na posição definida.
