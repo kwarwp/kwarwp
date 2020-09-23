@@ -491,10 +491,10 @@ class Kwarwp():
         # JogoProxy.ATIVA = True
         # self.o_indio.ativa()
         # self.o_indio.executa()
-        # [indio.ativa() and indio.executa() for indio in self.os_indios]
-        self.os_indios[0].ativa()
         self.v.ativa()
-        self.os_indios[0].executa()
+        [indio.ativa() or indio.executa() for indio in self.os_indios]
+        # self.os_indios[0].ativa()
+        # self.os_indios[0].executa()
         
     def atora(self, imagem, x, y, cena):
         """ Cria uma tora na arena do Kwarwp na posição definida.
