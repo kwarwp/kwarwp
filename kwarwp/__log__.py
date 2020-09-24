@@ -670,3 +670,28 @@ TypeError: __init__ missing 1 positional argument: 'taba'
     vaga = Vazio("", x=x, y=y, cena=cena, ocupante=coisa)
 TypeError: __init__ missing 1 positional argument: 'taba'
 '''},
+{'date': 'Thu Sep 24 2020 12:41:56.425 GMt-0300 (Horário Padrão de Brasília) -X- SuPyGirls -X-',
+'error': '''False False <function _pos>
+Traceback (most recent call last):
+  module _core.main line 180
+    dialog.action(lambda *_: self.start()
+  module _core.supygirls_factory line 135
+    self.act(self, lambda *_: self.hide() or extra()) if self.act else None
+  module _core.supygirls_factory line 310
+    return self._first_response(lambda: self._executa_acao(), self.extra, self.error)
+  module _core.supygirls_factory line 282
+    traceback.print_exc(file=sys.stderr)
+  module _core.supygirls_factory line 299
+    exec(self.code, glob)  # dict(__name__="__main__"))
+  module <module> line 601
+    main(Jogo, STYLE)
+  module <module> line 595
+    return Kwarwp(vitollino=vitollino_proxy, medidas=medidas, mapa=mapa, indios=indios)
+  module <module> line 419
+    self.cena = self.cria(mapa=self.mapa) if vitollino else None
+  module <module> line 455
+    self.taba = {(i, j): fabrica[imagem].objeto(fabrica[imagem].imagem, x=i*lado, y=j*lado+lado, cena=cena)
+  module <module> line 523
+    vaga = Vazio("", x=x, y=y, cena=cena, ocupante=coisa)
+TypeError: __init__ missing 1 positional argument: 'taba'
+'''},
