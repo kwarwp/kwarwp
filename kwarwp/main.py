@@ -10,7 +10,7 @@ Changelog
         classe Vitollino.
 
 """
-from _spy.vitollino.main import Jogo
+from _spy.vitollino.main import Jogo, STYLE
 from kwarwp.kwarapp import main as kwarwp_main, Indio
 MAPA_INICIO = """
 @....&
@@ -43,4 +43,4 @@ def main(vitollino, medidas):
         
     
 if __name__ == "__main__":
-    main()
+    main(Jogo, STYLE)
