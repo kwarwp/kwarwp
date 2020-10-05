@@ -287,7 +287,7 @@ class Tora(Piche):
         """
         self.empurrante = empurrante
         self.vaga.acessar(self, azimute)
-        self.empurrante = NULO
+        #self.empurrante = NULO
         
     def ocupa(self, vaga):
         """ Pedido por uma vaga para que ocupe a posição nela.
