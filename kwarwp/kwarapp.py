@@ -47,7 +47,7 @@ from kwarwp.kwarwpart import Vazio, Piche, Oca, Tora, NULO
 IMGUR = "https://imgur.com/"
 """Prefixo do site imgur."""
 MAPA_INICIO = """
-#..
+#^¨
 """
 """Mapa com o posicionamento inicial dos elementos."""
 Ponto = nt("Ponto", "x y")
@@ -435,6 +435,7 @@ class Kwarwp():
         "^": Fab(self.indio, f"{IMGUR}UCWGCKR.png"), # INDIO
         "`": Fab(self.indio, f"{IMGUR}nvrwu0r.png"), # INDIA
         "p": Fab(self.indio, f"{IMGUR}HeiupbP.png"), # PAJE
+        "¨": Fab(self.apedra, f"{IMGUR}Sx3OH66.png"), # PEDRA
         ".": Fab(self.vazio, f"{IMGUR}npb9Oej.png"), # VAZIO
         "_": Fab(self.coisa, f"{IMGUR}sGoKfvs.jpg"), # SOLO
         "#": Fab(self.atora, f"{IMGUR}0jSB27g.png"), # TORA
@@ -504,6 +505,20 @@ class Kwarwp():
         
     def atora(self, imagem, x, y, cena):
         """ Cria uma tora na arena do Kwarwp na posição definida.
+
+        :param x: coluna em que o elemento será posicionado.
+        :param y: linha em que o elemento será posicionado.
+        :param cena: cena em que o elemento será posicionado.
+        
+        Cria uma vaga vazia e coloca o componente dentro dela.
+        """
+        coisa = Tora(imagem, x=0, y=0, cena=cena, taba=self)
+        vaga = Vazio("", x=x, y=y, cena=cena, ocupante=coisa, taba=self)
+        coisa.vazio.vai = lambda *_: self.o_indio.larga()
+        return vaga
+        
+    def apedra(self, imagem, x, y, cena):
+        """ Cria uma pedra na arena do Kwarwp na posição definida.
 
         :param x: coluna em que o elemento será posicionado.
         :param y: linha em que o elemento será posicionado.
