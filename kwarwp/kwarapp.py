@@ -380,6 +380,8 @@ class Indio():
         """
         self.esquerda()
         self.anda()
+        self.pega()
+        self.larga()
         self.empurra()
         self.direita()
         self.direita()
