@@ -156,6 +156,11 @@ class JogoProxy():
         self.elt.siz = value
         
     @property    
+    def elt(self):
+        """Propriedade elemento"""
+        return self.elt
+        
+    @property    
     def pos(self):
         """Propriedade posição"""
         return self.elt.pos
@@ -455,7 +460,8 @@ class Kwarwp():
             for j, linha in enumerate(mapa) for i, imagem in enumerate(linha)}
         """Posiciona os elementos segundo suas posições i, j na matriz mapa"""
         cena.vai()
-        Kwarwp.KW.fala(Vazio.LADO)
+        #Kwarwp.KW.fala(Vazio.LADO)
+        self.fala(Vazio.LADO)
         return cena
         
     def fala(self, texto=""):
