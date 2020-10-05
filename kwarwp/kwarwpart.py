@@ -199,6 +199,7 @@ class Piche(Vazio):
         self.vazio = self.VITOLLINO.a(imagem, w=lado, h=lado, x=0, y=0, cena=cena)
         # self._nada = Kwarwp.VITOLLINO.a()
         self.ocupante = NULO
+        self.empurrante = NULO
 
         self.acessa = self._acessa
         """O **acessa ()** é usado como método dinâmico, variando com o estado da vaga.
@@ -258,7 +259,6 @@ class Oca(Piche):
         self.taba.fala("Você chegou no seu objetivo")       
         ocupante.ocupa(self)
 
-
 class Tora(Piche):
     """  A Tora é um pedaço de tronco cortado que o índio pode carregar ou empurrar.
     
@@ -312,6 +312,31 @@ class Tora(Piche):
         No caso da tora, ela age como um obstáculo e não prossegue com o protocolo.
         """
         pass
+        
+    def empurrar(self, empurrante, azimute):
+        """ Registra o empurrante para uso no procolo e inicia dispathc com a vaga.
+            :param requistante: O ator querendo pegar o objeto.
+        """
+        print("Estou sendo empurrada") 
+        
+        self.empurrante = empurrante
+        # continue aqui com o início do double dispatch para ocupar a vaga na direção do azimute
+        self.vaga.acessar(self, azimute)
+        self.empurrante = NULO
+        
+    def ocupa(self, vaga):
+        """ Pedido por uma vaga para que ocupe a posição nela.
+        :param vaga: A vaga que será ocupada pelo componente.
+        No caso da tora, requisita que a vaga seja ocupada por ele.
+        Também autoriza o empurrante a ocupar a vaga onde estava.
+        """
+        # o código usual do ocupa
+        self.vaga.sai()
+        self.posicao = vaga.posicao
+        vaga.ocupou(self)
+
+        self.empurrante.ocupa(self.vaga) if self.empurrante is not NULO else None
+        self.vaga = vaga
 
 
 class Pedra(Tora):
