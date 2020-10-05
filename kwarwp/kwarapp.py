@@ -361,7 +361,7 @@ class Indio():
         """
         pass
          
-    def executa(self):
+    def _executa(self):
         """ Roteiro do índio. Conjunto de comandos para ele executar.
         """
         self.esquerda()
@@ -374,6 +374,15 @@ class Indio():
         self.esquerda()
         self.anda()
         self.larga()
+         
+    def executa(self):
+        """ Roteiro do índio. Conjunto de comandos para ele executar.
+        """
+        self.direita()
+        self.anda()
+        self.pega()
+        self.empurra()
+        self.empurra()
         
     def passo(self):
         self.indio.executa()
