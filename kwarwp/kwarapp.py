@@ -76,6 +76,9 @@ class JogoProxy():
                 ocupante.pos = pos
                 # print(f"AdaptaElemento pos: {self.pos}")
                 super().ocupa(ocupante) if ocupante else None
+                
+            def fala(self, texto):
+                self.elt.html = texto
 
         self.v = vitollino
         self.proxy = proxy or self
@@ -461,14 +464,14 @@ class Kwarwp():
             for j, linha in enumerate(mapa) for i, imagem in enumerate(linha)}
         """Posiciona os elementos segundo suas posições i, j na matriz mapa"""
         cena.vai()
-        #Kwarwp.KW.fala(Vazio.LADO)
-        self.fala(Vazio.LADO)
+        Kwarwp.KW.fala(Vazio.LADO)
+        #self.fala(Vazio.LADO)
         return cena
         
     def fala(self, texto=""):
         """ O Kwarwp é aqui usado para falar algo que ficará escrito no céu.
         """
-        self.ceu.elt.html = str(texto)
+        self.ceu.elt.fala(texto)
         pass
         
     def sai(self, *_):
