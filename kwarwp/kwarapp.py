@@ -47,10 +47,7 @@ from kwarwp.kwarwpart import Vazio, Piche, Oca, Tora, NULO
 IMGUR = "https://imgur.com/"
 """Prefixo do site imgur."""
 MAPA_INICIO = """
-@....&
-......
-......
-.#.^..
+#..
 """
 """Mapa com o posicionamento inicial dos elementos."""
 Ponto = nt("Ponto", "x y")
