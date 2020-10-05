@@ -394,8 +394,10 @@ class Kwarwp():
         :param mapa: Um texto representando o mapa do desafio.
         :param medidas: Um dicionário usado para redimensionar a tela.
     """
+    KW = None
     
     def __init__(self, vitollino=None, mapa=None, medidas={}, indios=()):
+        Kwarwp.KW = self
         Vazio.VITOLLINO = self.v = vitollino()
         self.vitollino = vitollino
         """Referência estática para obter o engenho de jogo."""
@@ -453,6 +455,7 @@ class Kwarwp():
             for j, linha in enumerate(mapa) for i, imagem in enumerate(linha)}
         """Posiciona os elementos segundo suas posições i, j na matriz mapa"""
         cena.vai()
+        Kwarwp.KW.fala(Vazio.LADO)
         return cena
         
     def fala(self, texto=""):
