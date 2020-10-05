@@ -47,7 +47,7 @@ from kwarwp.kwarwpart import Vazio, Piche, Oca, Tora, Pedra, NULO
 IMGUR = "https://imgur.com/"
 """Prefixo do site imgur."""
 MAPA_INICIO = """
-#^¨..
+..#^¨..
 """
 """Mapa com o posicionamento inicial dos elementos."""
 Ponto = nt("Ponto", "x y")
@@ -378,7 +378,12 @@ class Indio():
     def executa(self):
         """ Roteiro do índio. Conjunto de comandos para ele executar.
         """
+        self.esquerda()
+        self.anda()
+        self.empurra()
         self.direita()
+        self.direita()
+        self.anda()
         self.anda()
         self.pega()
         self.empurra()
