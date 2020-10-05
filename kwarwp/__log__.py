@@ -735,3 +735,35 @@ TypeError: main() missing 2 positional arguments: vitollino,medidas
     coisa.vazio.vai = lambda *_: self.o_indio.larga()
 AttributeError: 'Nulo' object has no attribute 'vazio'
 '''},
+{'date': 'Mon Oct 05 2020 17:09:11.145 GMt-0300 (Horário Padrão de Brasília) -X- SuPyGirls -X-',
+'error': '''Traceback (most recent call last):
+  module _core.main line 180
+    dialog.action(lambda *_: self.start()
+  module _core.supygirls_factory line 135
+    self.act(self, lambda *_: self.hide() or extra()) if self.act else None
+  module _core.supygirls_factory line 310
+    return self._first_response(lambda: self._executa_acao(), self.extra, self.error)
+  module _core.supygirls_factory line 282
+    traceback.print_exc(file=sys.stderr)
+  module _core.supygirls_factory line 299
+    exec(self.code, glob)  # dict(__name__="__main__"))
+  module <module> line 599
+    main(Jogo, STYLE)
+  module <module> line 593
+    return Kwarwp(vitollino=vitollino_proxy, medidas=medidas, mapa=mapa, indios=indios)
+  module <module> line 416
+    self.cena = self.cria(mapa=self.mapa) if vitollino else None
+  module <module> line 452
+    self.taba = {(i, j): fabrica[imagem].objeto(fabrica[imagem].imagem, x=i*lado, y=j*lado+lado, cena=cena)
+  module <module> line 506
+    vaga = Vazio("", x=x, y=y, cena=cena, ocupante=coisa, taba=self)
+  module kwarwp.kwarwpart line 70
+    self.acessa(ocupante)
+  module kwarwp.kwarwpart line 121
+    ocupante.ocupa(self)
+  module kwarwp.kwarwpart line 227
+    vaga.ocupou(self)
+  module kwarwp.kwarwpart line 156
+    self.vazio.ocupa(ocupante, pos)
+TypeError: ocupa() takes 2 positional arguments but more were given
+'''},
