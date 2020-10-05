@@ -279,6 +279,28 @@ class Tora(Piche):
         # self.posicao = vaga.posicao
         vaga.ocupou(self)
         self.vaga = vaga
+        
+    def empurrar(self, empurrante, azimute):
+        """ Consulta o ocupante atual se há permissão para pegar e entregar ao requistante.
+
+            :param requistante: O ator querendo pegar o objeto.
+        """
+        self.empurrante = empurrante
+        self.vaga.acessar(self, azimute)
+        self.empurrante = NULO
+        
+    def ocupa(self, vaga):
+        """ Pedido por uma vaga para que ocupe a posição nela.
+        
+        :param vaga: A vaga que será ocupada pelo componente.
+
+        No caso do índio, requisita que a vaga seja ocupada por ele.
+        """
+        self.vaga.sai()
+        self.posicao = vaga.posicao
+        vaga.ocupou(self)
+        self.empurrante.ocupa(self.vaga) if self.empurrante is not NULO else None
+        self.vaga = vaga
 
     @property        
     def posicao(self):
@@ -312,31 +334,6 @@ class Tora(Piche):
         No caso da tora, ela age como um obstáculo e não prossegue com o protocolo.
         """
         pass
-        
-    def empurrar(self, empurrante, azimute):
-        """ Registra o empurrante para uso no procolo e inicia dispathc com a vaga.
-            :param requistante: O ator querendo pegar o objeto.
-        """
-        print("Estou sendo empurrada") 
-        
-        self.empurrante = empurrante
-        # continue aqui com o início do double dispatch para ocupar a vaga na direção do azimute
-        self.vaga.acessar(self, azimute)
-        self.empurrante = NULO
-        
-    def ocupa(self, vaga):
-        """ Pedido por uma vaga para que ocupe a posição nela.
-        :param vaga: A vaga que será ocupada pelo componente.
-        No caso da tora, requisita que a vaga seja ocupada por ele.
-        Também autoriza o empurrante a ocupar a vaga onde estava.
-        """
-        # o código usual do ocupa
-        self.vaga.sai()
-        self.posicao = vaga.posicao
-        vaga.ocupou(self)
-
-        self.empurrante.ocupa(self.vaga) if self.empurrante is not NULO else None
-        self.vaga = vaga
 
 
 class Pedra(Tora):
