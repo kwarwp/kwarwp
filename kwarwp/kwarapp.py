@@ -458,7 +458,7 @@ class Kwarwp():
     def fala(self, texto=""):
         """ O Kwarwp é aqui usado para falar algo que ficará escrito no céu.
         """
-        self.ceu.elt.html = texto
+        self.ceu.elt.html = str(texto)
         pass
         
     def sai(self, *_):
