@@ -312,3 +312,21 @@ class Tora(Piche):
         No caso da tora, ela age como um obstáculo e não prossegue com o protocolo.
         """
         pass
+
+
+class Pedra(Tora):
+    """  A Pedra é um uma coisa muito pesada que o índio só consegue empurrar.
+    
+        :param imagem: A figura representando o índio na posição indicada.
+        :param x: Coluna em que o elemento será posicionado.
+        :param y: Linha em que o elemento será posicionado.
+        :param cena: Cena em que o elemento será posicionado.
+        :param taba: Representa a taba onde o índio faz o desafio.
+    """
+        
+    def pegar(self, requisitante):
+        """ Consulta o ocupante atual se há permissão para pegar e entregar ao requistante.
+
+            :param requistante: O ator querendo pegar o objeto.
+        """
+        pass
