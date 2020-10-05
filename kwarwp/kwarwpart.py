@@ -299,7 +299,7 @@ class Tora(Piche):
         self.vaga.sai()
         self.posicao = vaga.posicao
         vaga.ocupou(self)
-        self.empurrante.fala(self.empurrante.indio.pos) if self.empurrante is not NULO else None
+        self.empurrante.fala(self.empurrante.indio.pos)# if self.empurrante is not NULO else None
         self.empurrante.ocupa(self.vaga) if self.empurrante is not NULO else None
         self.vaga = vaga
 
