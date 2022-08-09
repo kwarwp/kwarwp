@@ -27,10 +27,11 @@ Jogo.a:
 Código Fonte
 ------------
 
-Este tutorial ensina passo a passo a criação de um Ambiente de desenvolvimento na WEB.
+Este tutorial ensina passo a passo a criação de um Ambiente de desenvolvimento na WEB, o qual funcionará no navegador Firefox. 
+O código abaixo montará a cena inicial com os elementos: Índio, Oca, Tora e Piche.
 
 .. code:: python
-
+  
   class Kwarwp():
       """ Jogo para ensino de programação.
 
@@ -60,6 +61,7 @@ Este tutorial ensina passo a passo a criação de um Ambiente de desenvolvimento
           cena.vai()
           return cena
 
+  
 Tela Gerada
 ------------
 
@@ -69,4 +71,29 @@ Tela Gerada
    :scale: 50
    :alt: Tela inicial do Kwarwp
    :align: center
+
+
+Complementação do Código
+------------------------
+
+Se usado outro navegador, a cena só aparecerá com o acréscimo da linha abaixo 
+antes da declaração da classe Kwarwp.
+
+.. code:: python
+
+  from _spy.vitollino.main import Cena, STYLE
+  """Importa os compenentes Cena e STYLE do Vitollino""" 
+
+  class Kwarwp():
+  . . .
+
+E também com o acréscimo das linhas abaixo no final do código, com indentação alinhada à declaração da classe Kwarwp.
+
+.. code:: python  
+  
+  if __name__ == "__main__":
+    from _spy.vitollino.main import Jogo
+    STYLE["width"]=600
+    STYLE["height"]=500
+    Kwarwp(Jogo) 
 
